@@ -1,4 +1,4 @@
-package by.mishastoma.libraryweb.command;
+package by.mishastoma.libraryweb.controller.command;
 
 import by.mishastoma.libraryweb.exception.CommandException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package by.mishastoma.libraryweb.pool;
+package by.mishastoma.libraryweb.controller.pool;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,9 +8,10 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
 public class ConnectionPool {
+    private static final int DEFAULT_POOL_SIZE = 8;
     private static ConnectionPool instance;
-    private BlockingQueue<Connection> free = new LinkedBlockingDeque<>(8);
-    private BlockingQueue<Connection> used = new LinkedBlockingDeque<>(8);
+    private BlockingQueue<Connection> free = new LinkedBlockingDeque<>(DEFAULT_POOL_SIZE);
+    private BlockingQueue<Connection> used = new LinkedBlockingDeque<>(DEFAULT_POOL_SIZE);
 
 
     static {
@@ -33,7 +34,7 @@ public class ConnectionPool {
         properties.put("useLegacyDateTimeCode", "false");
         properties.put("serverTimezone", "UTC");
         properties.put("ServerSslCert", "classpath:server.crt");
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
             Connection connection = null;
             try {
                 connection = DriverManager.getConnection(url, properties);
@@ -72,7 +73,7 @@ public class ConnectionPool {
     }
 
     public void destroyPool(){
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
             try {
                 free.take().close();
             } catch (SQLException | InterruptedException e) {
