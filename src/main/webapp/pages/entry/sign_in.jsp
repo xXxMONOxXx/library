@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<fmt:setBundle basename="i18n/language"/>
+<%@include file="/pages/parts/header.jsp"%>
 
 <!DOCTYPE html>
 <html>
@@ -10,10 +10,6 @@
     <title><fmt:message key="entry.sign_in"/></title>
 </head>
 <body>
-
-<header>
-    <jsp:include page="/pages/parts/header.jsp"/>
-</header>
 
 <section class="vh-100 bg-image">
     <div class="mask d-flex align-items-center h-100 gradient-custom-3">
@@ -26,7 +22,7 @@
 
                             <p class="text-danger"> ${sign_in_msg}</p>
 
-                            <form action="${pageContext.request.contextPath}/controller">
+                            <form action="${pageContext.request.contextPath}/controller" method="post">
                                 <input type="hidden" name="command" value="sign_in"/>
                                 <div class="form-outline mb-4">
                                     <label class="form-label"><fmt:message key="entry.login"/></label>

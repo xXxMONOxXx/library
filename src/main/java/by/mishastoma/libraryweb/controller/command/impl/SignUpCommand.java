@@ -1,41 +1,67 @@
 package by.mishastoma.libraryweb.controller.command.impl;
 
+import by.mishastoma.libraryweb.controller.AttributeName;
+import by.mishastoma.libraryweb.controller.PagesPath;
+import by.mishastoma.libraryweb.controller.ParameterName;
+import by.mishastoma.libraryweb.controller.Router;
 import by.mishastoma.libraryweb.controller.command.Command;
-import by.mishastoma.libraryweb.dao.impl.UserDaoImpl;
-import by.mishastoma.libraryweb.entity.User;
+import by.mishastoma.libraryweb.exception.ServiceException;
+import by.mishastoma.libraryweb.model.entity.User;
 import by.mishastoma.libraryweb.exception.CommandException;
+import by.mishastoma.libraryweb.model.service.UserService;
+import by.mishastoma.libraryweb.model.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import java.time.LocalDate;
+import java.util.*;
 
 
 public class SignUpCommand implements Command {
     @Override
-    public String execute(HttpServletRequest request) throws CommandException {
-        String[] date = request.getParameter("birthdate").split("-");
-        User user = new User.Builder()
-                .withLogin(request.getParameter("login"))
-                .withPassword(request.getParameter("password"))
-                .withFirstName(request.getParameter("firstname"))
-                .withLastName(request.getParameter("lastname"))
-                .withEmail(request.getParameter("email"))
-                .withBirthdate(LocalDate.of(Integer.parseInt(date[0]), Integer.parseInt(date[1]),Integer.parseInt(date[2])))
-                .build();
-        String page = null;
+    public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
+        Router router = new Router();
+        Set<String> invalids = new HashSet<>();
+        UserService service = UserServiceImpl.getInstance();
         try{
-            UserDaoImpl dao = UserDaoImpl.getInstance(); //todo switch to userdao instead
-            if(dao.insert(user)){
-                page = "pages/home/home.jsp";
+            Optional<User> user = service.signUp(request, invalids);
+            if(user.isPresent()){
+
+                router.setPage(PagesPath.HOME);
+                //todo add session
             }
             else{
-                request.setAttribute("sign_up_msg", "Login or email is already in use.");
-                page = "pages/entry/sign_up.jsp";
+                addInvalidsToRequest(request, invalids);
+                router.setPage(PagesPath.ENTRY_SIGN_UP);
             }
         }
-        catch (Exception e){
+        catch (ServiceException e){
             throw new CommandException(e);
-            //todo
         }
-        return page;
+        return router;
+    }
+
+    private void addInvalidsToRequest(HttpServletRequest request, Set<String> invalids){
+        //todo not best approach request.setAttribute(AttributeName.SIGN_UP_LOGIN_IS_INVALID, invalids.contains(ParameterName.SIGN_UP_LOGIN_IS_VALID);
+        if(invalids.contains(ParameterName.SIGN_UP_LOGIN_IS_INVALID)){
+            request.setAttribute(AttributeName.SIGN_UP_LOGIN_IS_INVALID, true);
+        }
+        if(invalids.contains(ParameterName.SIGN_UP_FIRSTNAME_IS_INVALID)){
+            request.setAttribute(AttributeName.SIGN_UP_FIRSTNAME_IS_INVALID, true);
+        }
+        if(invalids.contains(ParameterName.SIGN_UP_LASTNAME_IS_INVALID)){
+            request.setAttribute(AttributeName.SIGN_UP_LASTNAME_IS_INVALID, true);
+        }
+        if(invalids.contains(ParameterName.SIGN_UP_EMAIL_IS_INVALID)){
+            request.setAttribute(AttributeName.SIGN_UP_EMAIL_IS_INVALID, true);
+        }
+        if(invalids.contains(ParameterName.SIGN_UP_BIRTHDATE_IS_INVALID)){
+            request.setAttribute(AttributeName.SIGN_UP_BIRTHDATE_IS_INVALID, true);
+        }
+        if(invalids.contains(ParameterName.SIGN_UP_PASSWORD_IS_INVALID)){
+            request.setAttribute(AttributeName.SIGN_UP_PASSWORD_IS_INVALID, true);
+        }
+        if(invalids.contains(ParameterName.SIGN_UP_PASSWORD_CONFIRM_IS_INVALID)){
+            request.setAttribute(AttributeName.SIGN_UP_PASSWORD_CONFIRM_IS_INVALID, true);
+        }
     }
 }

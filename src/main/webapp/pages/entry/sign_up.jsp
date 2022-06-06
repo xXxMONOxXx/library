@@ -2,16 +2,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<fmt:setBundle basename="i18n/language"/>
+<%@include file="/pages/parts/header.jsp"%>
 
 <html>
 <head>
     <title><fmt:message key="entry.sign_up"/></title>
 </head>
 <body>
-<header>
-    <jsp:include page="/pages/parts/header.jsp"/>
-</header>
 
 <section class="vh-100 bg-image">
     <div class="mask d-flex align-items-center h-100 gradient-custom-3">
@@ -22,42 +19,61 @@
                         <div class="card-body p-5">
                             <h2 class="text-uppercase text-center mb-5"><fmt:message key="entry.create_account"/></h2>
 
-                            <p class="text-danger"> ${sign_up_msg}</p>
-
-                            <form action="${pageContext.request.contextPath}/controller">
+                            <form action="${pageContext.request.contextPath}/controller" method="post">
 
                                 <input type="hidden" name="command" value="sign_up"/>
 
+                                <c:if test="${requestScope.sign_up_login_is_invalid}">
+                                    <p class="text-danger"> <fmt:message key="entry.invalid.login"/></p>
+                                </c:if>
                                 <div class="form-outline mb-4">
                                     <label class="form-label"><fmt:message key="entry.login"/></label>
                                     <input type="text" name = "login" class="form-control form-control-lg"/>
                                 </div>
 
+                                <c:if test="${requestScope.sign_up_firstname_is_invalid}">
+                                    <p class="text-danger"> <fmt:message key="entry.invalid.firstname"/></p>
+                                </c:if>
                                 <div class="form-outline mb-4">
                                     <label class="form-label"><fmt:message key="entry.firstname"/></label>
-                                    <input type="text" name="firstname" class="form-control form-control-lg"/>
+                                    <input type="text" name="first_name" class="form-control form-control-lg"/>
                                 </div>
 
+                                <c:if test="${requestScope.sign_up_lastname_is_invalid}">
+                                    <p class="text-danger"> <fmt:message key="entry.invalid.lastname"/></p>
+                                </c:if>
                                 <div class="form-outline mb-4">
                                     <label class="form-label"><fmt:message key="entry.lastname"/></label>
-                                    <input type="text" name="lastname" class="form-control form-control-lg"/>
+                                    <input type="text" name="last_name" class="form-control form-control-lg"/>
                                 </div>
 
+                                <c:if test="${requestScope.sign_up_email_is_invalid}">
+                                    <p class="text-danger"> <fmt:message key="entry.invalid.email"/></p>
+                                </c:if>
                                 <div class="form-outline mb-4">
                                     <label class="form-label"><fmt:message key="entry.email"/></label>
                                     <input type="email" name="email" class="form-control form-control-lg"/>
                                 </div>
 
+                                <c:if test="${requestScope.sign_up_birthdate_is_invalid}">
+                                    <p class="text-danger"> <fmt:message key="entry.invalid.birthdate"/></p>
+                                </c:if>
                                 <div class="form-outline mb-4">
                                     <label class="form-label"><fmt:message key="entry.birthdate"/></label>
                                     <input type="date" name="birthdate" class="form-control form-control-lg"/>
                                 </div>
 
+                                <c:if test="${requestScope.sign_up_password_is_invalid}">
+                                    <p class="text-danger"> <fmt:message key="entry.invalid.password"/></p>
+                                </c:if>
                                 <div class="form-outline mb-4">
                                     <label class="form-label"><fmt:message key="entry.password"/></label>
                                     <input type="password" name="password" class="form-control form-control-lg"/>
                                 </div>
 
+                                <c:if test="${requestScope.sign_up_password_repeat_is_invalid}">
+                                    <p class="text-danger"> <fmt:message key="entry.invalid.password_repeat"/></p>
+                                </c:if>
                                 <div class="form-outline mb-4">
                                     <label class="form-label"><fmt:message key="entry.password_repeat"/></label>
                                     <input type="password" name="password_confirm" class="form-control form-control-lg"/>
@@ -75,7 +91,6 @@
                                         class="fw-bold text-body"><u><fmt:message key="entry.sign_in_here"/></u></a></p>
 
                             </form>
-
                         </div>
                     </div>
                 </div>
@@ -85,7 +100,7 @@
 </section>
 <br/>
 <footer>
-    <jsp:include page="/pages/parts/footer.jsp"/>
+    <c:import url="/pages/parts/footer.jsp"/>
 </footer>
 </body>
 </html>

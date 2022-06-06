@@ -1,8 +1,8 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<fmt:setBundle basename="i18n/language"/>
+<fmt:setLocale value="${sessionScope.language}" scope="session"/>
+<fmt:setBundle basename="language"/>
 
 <html>
 <head>
@@ -32,7 +32,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/pages/admin/users.jsp"><fmt:message key="header.users"/></a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/controller?command=get_all_users"><fmt:message key="header.users"/></a>
             </li>
 
             <li class="nav-item">
@@ -40,7 +40,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/controller?command=get_all_users"><fmt:message key="entry.sign_in"/></a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/pages/entry/sign_in.jsp"><fmt:message key="entry.sign_in"/></a>
             </li>
 
         </ul>
