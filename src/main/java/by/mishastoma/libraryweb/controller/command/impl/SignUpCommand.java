@@ -12,6 +12,7 @@ import by.mishastoma.libraryweb.model.service.UserService;
 import by.mishastoma.libraryweb.model.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.util.*;
 
@@ -23,11 +24,12 @@ public class SignUpCommand implements Command {
         Set<String> invalids = new HashSet<>();
         UserService service = UserServiceImpl.getInstance();
         try{
-            Optional<User> user = service.signUp(request, invalids);
+            Optional<User> user = service.signUp(createUserMap(request), invalids);
             if(user.isPresent()){
-
                 router.setPage(PagesPath.HOME);
-                //todo add session
+                HttpSession session = request.getSession();
+                session.setAttribute(AttributeName.ID, user.get().getId());
+                session.setAttribute(AttributeName.ROLE, user.get().getRole().toString());
             }
             else{
                 addInvalidsToRequest(request, invalids);
@@ -41,7 +43,14 @@ public class SignUpCommand implements Command {
     }
 
     private void addInvalidsToRequest(HttpServletRequest request, Set<String> invalids){
-        //todo not best approach request.setAttribute(AttributeName.SIGN_UP_LOGIN_IS_INVALID, invalids.contains(ParameterName.SIGN_UP_LOGIN_IS_VALID);
+        // todo not the best approach request.setAttribute(AttributeName.SIGN_UP_LOGIN_IS_INVALID, invalids.contains(ParameterName.SIGN_UP_LOGIN_IS_VALID);
+        // or use loop
+
+//        for(String invalid : invalids){
+//            request.setAttribute(invalid, true);
+//        }
+
+        // but harder to read, if using ↑
         if(invalids.contains(ParameterName.SIGN_UP_LOGIN_IS_INVALID)){
             request.setAttribute(AttributeName.SIGN_UP_LOGIN_IS_INVALID, true);
         }
@@ -63,5 +72,17 @@ public class SignUpCommand implements Command {
         if(invalids.contains(ParameterName.SIGN_UP_PASSWORD_CONFIRM_IS_INVALID)){
             request.setAttribute(AttributeName.SIGN_UP_PASSWORD_CONFIRM_IS_INVALID, true);
         }
+    }
+
+    private Map<String, String> createUserMap(HttpServletRequest request){
+        Map<String, String> userMap = new HashMap<>();
+        userMap.put(ParameterName.LOGIN, request.getParameter(ParameterName.LOGIN));
+        userMap.put(ParameterName.FIRST_NAME, request.getParameter(ParameterName.FIRST_NAME));
+        userMap.put(ParameterName.LAST_NAME, request.getParameter(ParameterName.LAST_NAME));
+        userMap.put(ParameterName.EMAIL, request.getParameter(ParameterName.EMAIL));
+        userMap.put(ParameterName.BIRTHDATE, request.getParameter(ParameterName.BIRTHDATE));
+        userMap.put(ParameterName.PASSWORD, request.getParameter(ParameterName.PASSWORD));
+        userMap.put(ParameterName.PASSWORD_REPEAT, request.getParameter(ParameterName.PASSWORD_REPEAT));
+        return userMap;
     }
 }

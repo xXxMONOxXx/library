@@ -9,11 +9,9 @@ import by.mishastoma.libraryweb.exception.ServiceException;
 import by.mishastoma.libraryweb.model.service.UserService;
 import by.mishastoma.libraryweb.validator.UserValidator;
 import by.mishastoma.libraryweb.validator.impl.UserValidatorImpl;
-import jakarta.servlet.http.HttpServletRequest;
 
 import java.time.LocalDate;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 
 public class UserServiceImpl implements UserService {
@@ -34,8 +32,8 @@ public class UserServiceImpl implements UserService {
         Optional<User> optionalUser = Optional.empty();
         UserValidator validator = UserValidatorImpl.getInstance();
 
-        if (true) { // todo validate (validator.isValidLogin(login) && validator.isValidPassword(password))
-            try { // todo add new sign in methods (email)
+        if (validator.isValidLogin(login) && validator.isValidPassword(password)) {
+            try { // todo add new sign in methods (email) AND check for is_blocked
                 UserDao dao = UserDaoImpl.getInstance();
                 optionalUser = dao.signIn(login, password);
             } catch (DaoException e) {
@@ -46,71 +44,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> signUp(HttpServletRequest request, Set<String> invalids) throws ServiceException {
+    public Optional<User> signUp(Map<String, String> mapUser, Set<String> invalids) throws ServiceException {
         Optional<User> optionalUser = Optional.empty();
-
-        UserValidator validator = UserValidatorImpl.getInstance();
-        String login = request.getParameter(ParameterName.LOGIN);
-        String firstName = request.getParameter(ParameterName.FIRST_NAME);
-        String lastName = request.getParameter(ParameterName.LAST_NAME);
-        String email = request.getParameter(ParameterName.EMAIL);
-        String password = request.getParameter(ParameterName.PASSWORD);
-        String passwordConfirm = request.getParameter(ParameterName.PASSWORD_REPEAT);
-        String birthdate = request.getParameter(ParameterName.BIRTHDATE);
-        boolean isValid = true;
-        if (!validator.isValidLogin(login)) {
-            isValid = false;
-            invalids.add(ParameterName.SIGN_UP_LOGIN_IS_INVALID);
-            //todo add boolean isValidLogin for jsp and show message in different lang
-        }
-        if (!validator.isValidFirstName(firstName)) {
-            invalids.add(ParameterName.SIGN_UP_FIRSTNAME_IS_INVALID);
-            isValid = false;
-        }
-        if (!validator.isValidLastName(lastName)) {
-            invalids.add(ParameterName.SIGN_UP_LASTNAME_IS_INVALID);
-            isValid = false;
-        }
-        if (!validator.isValidEmail(email)) {
-            invalids.add(ParameterName.SIGN_UP_EMAIL_IS_INVALID);
-            isValid = false;
-        }
-        if (!validator.isValidPassword(password)) {
-            invalids.add(ParameterName.SIGN_UP_PASSWORD_IS_INVALID);
-            isValid = false;
-        } else {
-            if (!password.equals(passwordConfirm)) {
-                invalids.add(ParameterName.SIGN_UP_PASSWORD_CONFIRM_IS_INVALID);
-                isValid = false;
-            }
-        }
-        if (!validator.isValidBirthDate(birthdate)) {
-            invalids.add(ParameterName.SIGN_UP_BIRTHDATE_IS_INVALID);
-            isValid = false;
-        }
-
-        if (isValid) {
+        if (isValidUser(mapUser, invalids)) {
             String passwordEncryptor; //todo
             User user = new User.Builder(-1). //todo is it normal? I think not ;(
-                    withLogin(login).
-                    withFirstName(firstName).
-                    withLastName(lastName).
-                    withEmail(email).
-                    withPassword(password).
-                    withBirthdate(LocalDate.parse(birthdate)).
+                    withLogin(mapUser.get(ParameterName.LOGIN)).
+                    withFirstName(mapUser.get(ParameterName.FIRST_NAME)).
+                    withLastName(mapUser.get(ParameterName.LAST_NAME)).
+                    withEmail(mapUser.get(ParameterName.EMAIL)).
+                    withPassword(mapUser.get(ParameterName.PASSWORD)).
+                    withBirthdate(LocalDate.parse(mapUser.get(ParameterName.BIRTHDATE))).
                     build();
             try {
                 UserDao userDao = UserDaoImpl.getInstance();
-                if (userDao.emailExists(email)) {
+                if (userDao.emailExists(mapUser.get(ParameterName.EMAIL))) {
                     invalids.add(ParameterName.SIGN_UP_EMAIL_IS_INVALID);
                 }
                 else{
-                    if(userDao.loginExists(login)){
+                    if(userDao.loginExists(mapUser.get(ParameterName.LOGIN))){
                         invalids.add(ParameterName.SIGN_UP_LOGIN_IS_INVALID);
                     }
                     else{
-                        optionalUser = Optional.of(user);
                         userDao.insert(user);
+                        user.setId(userDao.getIdByLogin(user.getLogin()));
+                        optionalUser = Optional.of(user);
                     }
                 }
             } catch (DaoException e) {
@@ -118,5 +76,64 @@ public class UserServiceImpl implements UserService {
             }
         }
         return optionalUser;
+    }
+
+    @Override
+    public Optional<User> getUserById(long id) throws ServiceException {
+        Optional<User> optionalUser;
+        try {
+            UserDao userDao = UserDaoImpl.getInstance();
+            optionalUser = userDao.getUserById(id);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return optionalUser;
+    }
+
+    @Override
+    public List<User> findAll() throws ServiceException {
+        List<User> users;
+        try {
+            UserDao userDao = UserDaoImpl.getInstance();
+            users = userDao.findAll();
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return users;
+    }
+
+    private boolean isValidUser(Map<String, String> mapUser, Set<String> invalids){
+        boolean isValid = true;
+        UserValidator validator = UserValidatorImpl.getInstance();
+        if (!validator.isValidLogin(mapUser.get(ParameterName.LOGIN))) {
+            isValid = false;
+            invalids.add(ParameterName.SIGN_UP_LOGIN_IS_INVALID);
+        }
+        if (!validator.isValidFirstName(mapUser.get(ParameterName.FIRST_NAME))) {
+            invalids.add(ParameterName.SIGN_UP_FIRSTNAME_IS_INVALID);
+            isValid = false;
+        }
+        if (!validator.isValidLastName(mapUser.get(ParameterName.LAST_NAME))) {
+            invalids.add(ParameterName.SIGN_UP_LASTNAME_IS_INVALID);
+            isValid = false;
+        }
+        if (!validator.isValidEmail(mapUser.get(ParameterName.EMAIL))) {
+            invalids.add(ParameterName.SIGN_UP_EMAIL_IS_INVALID);
+            isValid = false;
+        }
+        if (!validator.isValidPassword(mapUser.get(ParameterName.PASSWORD))) {
+            invalids.add(ParameterName.SIGN_UP_PASSWORD_IS_INVALID);
+            isValid = false;
+        } else {
+            if (!mapUser.get(ParameterName.PASSWORD).equals(mapUser.get(ParameterName.PASSWORD_REPEAT))) {
+                invalids.add(ParameterName.SIGN_UP_PASSWORD_CONFIRM_IS_INVALID);
+                isValid = false;
+            }
+        }
+        if (!validator.isValidBirthDate(mapUser.get(ParameterName.BIRTHDATE))) {
+            invalids.add(ParameterName.SIGN_UP_BIRTHDATE_IS_INVALID);
+            isValid = false;
+        }
+        return isValid;
     }
 }

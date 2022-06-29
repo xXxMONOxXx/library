@@ -18,13 +18,14 @@ public class SignInCommand implements Command {
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         UserService userService = UserServiceImpl.getInstance();
         Router router = new Router();
-        HttpSession session = request.getSession();
         String login = request.getParameter(ParameterName.LOGIN);
         String password = request.getParameter(ParameterName.PASSWORD);
         try {
-            Optional<User> optionalUser = userService.signIn(login, password);
-            if(optionalUser.isPresent()){
-                // todo session create
+            Optional<User> user = userService.signIn(login, password);
+            if(user.isPresent()){
+                HttpSession session = request.getSession();
+                session.setAttribute(AttributeName.ID, user.get().getId());
+                session.setAttribute(AttributeName.ROLE, user.get().getRole().toString());
                 router.setPage(PagesPath.HOME);
             }
             else{

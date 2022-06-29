@@ -7,6 +7,7 @@ import by.mishastoma.libraryweb.model.entity.User;
 import by.mishastoma.libraryweb.model.entity.UserRole;
 import by.mishastoma.libraryweb.exception.DaoException;
 import by.mishastoma.libraryweb.controller.pool.ConnectionPool;
+import by.mishastoma.libraryweb.model.mapper.CustomRowMapper;
 import by.mishastoma.libraryweb.model.mapper.impl.UserMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,14 +28,18 @@ public class UserDaoImpl implements UserDao {
             SELECT id, login, password, first_name, last_name, birthdate, is_blocked, email, role
             FROM users WHERE login = ? AND password = ? """;
 
+    private static final String SELECT_USER_BY_ID = """
+            SELECT id, login, password, first_name, last_name, birthdate, is_blocked, email, role
+            FROM users WHERE id = ?""";
+
+    private static final String SELECT_USER_ID_BY_LOGIN = """
+            SELECT id FROM users WHERE login = ? """;
+
     private String SELECT_USER_BY_LOGIN = """
             SELECT id FROM users WHERE login=?""";
 
     private String SELECT_USER_BY_EMAIL = """
             SELECT id FROM users WHERE email=?""";
-
-    private static final String SELECT_PASSWORD_BY_EMAIL = """
-            SELECT password FROM users WHERE email = ? """;
 
     private static final String SELECT_ALL_USERS = """
             SELECT * FROM users """; // todo remove "*"
@@ -78,7 +83,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean delete(User user) throws DaoException {
-        return false;
+        throw new UnsupportedOperationException(); //todo
     }
 
     @Override
@@ -88,13 +93,9 @@ public class UserDaoImpl implements UserDao {
              PreparedStatement statement = connection.prepareStatement(SELECT_ALL_USERS)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                UserRole role = UserRole.valueOf(resultSet.getString(TableColumn.ROLE));
-                User user = new User.Builder(resultSet.getLong(TableColumn.ID)).
-                        withLogin(resultSet.getString(TableColumn.LOGIN)).
-                        withRole(role).
-                        withStatus(resultSet.getBoolean(TableColumn.IS_BLOCKED)).
-                        build();
-                users.add(user);
+                CustomRowMapper<User> mapper = UserMapper.getInstance();
+                Optional<User> user = mapper.map(resultSet);
+                user.ifPresent(users::add);
             }
         } catch (SQLException e) {
             logger.error(e);
@@ -105,7 +106,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User update(User user) throws DaoException {
-        return null;
+        throw new UnsupportedOperationException(); //todo
     }
 
     @Override
@@ -118,7 +119,7 @@ public class UserDaoImpl implements UserDao {
             statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
             if(resultSet.next()){
-                UserMapper mapper = new UserMapper();
+                UserMapper mapper = UserMapper.getInstance();
                 optionalUser = mapper.map(resultSet);
             }
         }
@@ -152,5 +153,36 @@ public class UserDaoImpl implements UserDao {
             logger.error(e);
             throw new DaoException(e);
         }
+    }
+
+    @Override
+    public long getIdByLogin(String login) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_USER_ID_BY_LOGIN)) {
+            statement.setString(1, login);
+            ResultSet resultSet = statement.executeQuery();
+            return resultSet.next() ? resultSet.getLong(TableColumn.ID) : -1;
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public Optional<User> getUserById(long id) throws DaoException {
+        Optional<User> optionalUser = Optional.empty();
+        try(Connection connection = ConnectionPool.getInstance().getConnection();
+            PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_ID)){
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next()){
+                UserMapper mapper = UserMapper.getInstance();
+                optionalUser = mapper.map(resultSet);
+            }
+        }
+        catch (SQLException e){
+            throw new DaoException(e);
+        }
+        return optionalUser;
     }
 }

@@ -8,7 +8,14 @@ public enum CommandType {
     SIGN_UP(new SignUpCommand()),
     SIGN_OUT(new SignOutCommand()),
     DEFAULT(new DefaultCommand()),
-    GET_ALL_USERS(new GetAllUsers());
+    GET_ALL_USERS(new GetAllUsersCommand()),
+    GO_TO_ADD_BOOK_PAGE(new GoToAddBookPageCommand()),
+    ADD_BOOK(new AddBookCommand()),
+    GET_USER_INFO_BY_ID(new GetUserInfoByIdCommand()),
+    ADD_AUTHOR (new AddAuthorCommand()),
+    ADD_GENRE(new AddGenreCommand()),
+    GET_ALL_GENRES (new GetAllGenresCommand()),
+    GET_ALL_AUTHORS(new GetAllAuthorsCommand());
 
     private Command command;
 

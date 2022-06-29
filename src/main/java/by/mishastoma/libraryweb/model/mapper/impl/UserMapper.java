@@ -1,5 +1,6 @@
 package by.mishastoma.libraryweb.model.mapper.impl;
 
+import by.mishastoma.libraryweb.model.entity.UserRole;
 import by.mishastoma.libraryweb.model.mapper.CustomRowMapper;
 import by.mishastoma.libraryweb.model.dao.TableColumn;
 import by.mishastoma.libraryweb.model.entity.User;
@@ -11,6 +12,20 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public class UserMapper implements CustomRowMapper<User> {
+
+    private static UserMapper instance;
+
+    private UserMapper(){
+
+    }
+
+    public static UserMapper getInstance(){
+        if(instance==null){
+            instance = new UserMapper();
+        }
+        return instance;
+    }
+
     @Override
     public Optional<User> map(ResultSet resultSet) throws DaoException {
         User user;
@@ -22,6 +37,7 @@ public class UserMapper implements CustomRowMapper<User> {
                     withPassword(resultSet.getString(TableColumn.PASSWORD)).
                     withFirstName(resultSet.getString(TableColumn.FIRST_NAME)).
                     withLastName(resultSet.getString(TableColumn.LAST_NAME)).
+                    withRole(UserRole.valueOf(resultSet.getString(TableColumn.ROLE))).
                     withEmail(resultSet.getString(TableColumn.EMAIL)).
                     withBirthdate(birthdate).
                     withStatus(resultSet.getBoolean(TableColumn.IS_BLOCKED)).
@@ -31,7 +47,6 @@ public class UserMapper implements CustomRowMapper<User> {
         catch (SQLException e){
             throw new DaoException(e);
         }
-
         return optionalUser;
     }
 }

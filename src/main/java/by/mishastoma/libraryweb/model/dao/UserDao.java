@@ -10,4 +10,6 @@ public interface UserDao extends BaseDao<User>{
     Optional<User> signIn(String login, String password) throws DaoException;
     boolean loginExists(String login) throws DaoException;
     boolean emailExists(String email) throws DaoException;
+    long getIdByLogin(String login) throws DaoException;
+    Optional<User> getUserById(long id) throws DaoException;
 }

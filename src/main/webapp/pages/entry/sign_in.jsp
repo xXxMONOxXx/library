@@ -42,7 +42,7 @@
 
                                 <p class="text-center text-muted mt-5 mb-0"><fmt:message
                                         key="entry.do_not_have_account"/> <a
-                                        href="${pageContext.request.contextPath}/pages/entry/sign_in.jsp"
+                                        href="${pageContext.request.contextPath}/pages/entry/sign_up.jsp"
                                         class="fw-bold text-body"><u><fmt:message key="entry.sign_up_here"/></u></a></p>
 
                             </form>
@@ -56,8 +56,7 @@
 </section>
 
 <br/>
-<footer>
-    <jsp:include page="/pages/parts/footer.jsp"/>
-</footer>
+
+<jsp:include page="/pages/parts/footer.jsp"/>
 </body>
 </html>

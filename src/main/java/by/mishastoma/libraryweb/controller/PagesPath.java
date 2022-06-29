@@ -7,5 +7,9 @@ public final class PagesPath {
     public static final String ENTRY_SIGN_IN = "pages/entry/sign_in.jsp";
     public static final String ENTRY_SIGN_UP = "pages/entry/sign_up.jsp";
     public static final String LIBRARIAN_ADD_BOOK = "pages/librarian/add_book.jsp";
+    public static final String LIBRARIAN_ADD_GENRE = "pages/librarian/add_genre.jsp";
+    public static final String LIBRARIAN_ADD_AUTHOR = "pages/librarian/add_author.jsp";
     public static final String USER_PROFILE = "pages/user/profile.jsp";
+    public static final String LIBRARIAN_GENRES = "pages/librarian/genres.jsp";
+    public static final String LIBRARIAN_AUTHORS = "pages/librarian/authors.jsp";
 }

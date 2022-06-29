@@ -17,20 +17,15 @@
 <table class="table table-dark">
     <thead>
     <tr>
-        <th scope="col"><fmt:message key="users.user"/></th>
-        <th scope="col"><fmt:message key="users.role"/></th>
-        <th scope="col"><fmt:message key="users.is_blocked"/></th>
+        <th scope="col"><fmt:message key="authors.name"/></th>
     </tr>
     </thead>
     <tbody>
 
-    <c:forEach items="${users_list}" var="user">
+    <c:forEach items="${authors_list}" var="author">
         <tr>
-            <th><a class="nav-link"
-                   href="${pageContext.request.contextPath}/controller?command=get_user_info_by_id&user_id=${sessionScope.user_id}">${user.getLogin()}</a>
-            </th>
-            <th>${user.getRole()}</th>
-            <th>${user.isBlocked()}</th>
+            <th>${author.getFirstname()} ${author.getLastname()}</th>
+<%--            todo add link to authors page    --%>
         </tr>
     </c:forEach>
     </tbody>

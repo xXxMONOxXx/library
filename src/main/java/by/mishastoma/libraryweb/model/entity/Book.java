@@ -1,13 +1,15 @@
 package by.mishastoma.libraryweb.model.entity;
 
 import java.util.Date;
+import java.util.List;
 
-public class Book extends AbstractEntity{
+public class Book extends AbstractEntity {
     private String name;
     private String info = null;
     private int price;
     private Date releaseDate;
-    private String[] genres;
+    private List<Genre> genres;
+    private List<Author> authors;
     private Integer ageLimitation = null;
 
     public Book(long id) {
@@ -46,12 +48,20 @@ public class Book extends AbstractEntity{
         this.releaseDate = releaseDate;
     }
 
-    public String[] getGenres() {
+    public List<Genre> getGenres() {
         return genres;
     }
 
-    public void setGenres(String[] genres) {
+    public void setGenres(List<Genre> genres) {
         this.genres = genres;
+    }
+
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
     }
 
     public Integer getAgeLimitation() {

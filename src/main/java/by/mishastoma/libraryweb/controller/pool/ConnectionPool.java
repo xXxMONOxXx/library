@@ -1,84 +1,120 @@
 package by.mishastoma.libraryweb.controller.pool;
 
+import com.mysql.cj.jdbc.Driver;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ConnectionPool {
+
+    private static final Logger logger = LogManager.getLogger();
+    public static final String CONFIG_FILE_NAME = "pool_config.properties";
     private static final int DEFAULT_POOL_SIZE = 8;
+    private static final AtomicBoolean isCreated = new AtomicBoolean(false);
+    private static final ReentrantLock lock = new ReentrantLock(true);
+    private static final Properties properties;
+    private static final String URL_KEY = "url";
     private static ConnectionPool instance;
-    private BlockingQueue<Connection> free = new LinkedBlockingDeque<>(DEFAULT_POOL_SIZE);
-    private BlockingQueue<Connection> used = new LinkedBlockingDeque<>(DEFAULT_POOL_SIZE);
+    private BlockingQueue<ProxyConnection> free = new LinkedBlockingDeque<>(DEFAULT_POOL_SIZE);
+    private BlockingQueue<ProxyConnection> used = new LinkedBlockingDeque<>(DEFAULT_POOL_SIZE);
 
 
     static {
-        try {
-            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver()); // TODO: 11.04.2022  Only once
-        } catch (SQLException e) {
-            throw new ExceptionInInitializerError(e);
+        properties = new Properties();
+        try (InputStream inputStream = ConnectionPool.class.getClassLoader().getResourceAsStream(CONFIG_FILE_NAME)) {
+            properties.load(inputStream);
+            DriverManager.registerDriver(new Driver());
+        } catch (IOException | SQLException e) {
+            throw new ExceptionInInitializerError(e.getMessage());
         }
     }
 
     private ConnectionPool() {
-        String url = "jdbc:mysql://localhost:3306/final_project";
-        Properties properties = new Properties();
-        properties.put("user", "root");
-        properties.put("password", "qwerty4");
-        properties.put("autoReconnect", "true");
-        properties.put("useUnicode", "true");
-        properties.put("characterEncoding", "UTF-8");
-        properties.put("useJDBCCompliantTimezoneShift", "true");
-        properties.put("useLegacyDateTimeCode", "false");
-        properties.put("serverTimezone", "UTC");
-        properties.put("ServerSslCert", "classpath:server.crt");
         for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
-            Connection connection = null;
             try {
-                connection = DriverManager.getConnection(url, properties);
+                Connection connection = DriverManager.getConnection(properties.getProperty(URL_KEY), properties);
+                free.add(new ProxyConnection(connection));
             } catch (SQLException e) {
-                //log todo
+                logger.error(e.getMessage());
                 Thread.currentThread().interrupt();
             }
-            free.add(connection);
         }
     }
-    // deregisterDriver todo
+
     public static ConnectionPool getInstance() {
-        //lock
-        instance = new ConnectionPool();
-        //unlock
+        if (!isCreated.get()) {
+            lock.lock();
+            try {
+                if (instance == null) {
+                    instance = new ConnectionPool();
+                    isCreated.set(true);
+                }
+            } finally {
+                lock.unlock();
+            }
+        }
         return instance;
     }
-    public Connection getConnection(){
-        Connection connection = null;
+
+    public Connection getConnection() {
+        ProxyConnection connection = null;
         try {
             connection = free.take();
             used.put(connection);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
+            Thread.currentThread().interrupt();
         }
         return connection;
     }
 
-    public void releaseConnection(Connection connection){
-        try {
-            used.remove(connection);
-            free.put(connection);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+    public boolean releaseConnection(Connection connection) {
+        boolean isRemoved = false;
+        if (connection.getClass() == ProxyConnection.class) {
+            ProxyConnection proxyConnection = (ProxyConnection) connection;
+            isRemoved = used.remove(proxyConnection);
+            if (isRemoved) {
+                try {
+                    free.put(proxyConnection);
 
-    public void destroyPool(){
-        for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
-            try {
-                free.take().close();
-            } catch (SQLException | InterruptedException e) {
-                // log e.printStackTrace(); todo
+                } catch (InterruptedException e) {
+                    logger.error(e.getMessage());
+                    Thread.currentThread().interrupt();
+                }
             }
         }
+        return isRemoved;
+    }
+
+    public void destroyPool() {
+        for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
+            try {
+                free.take().actualClose();
+            } catch (SQLException | InterruptedException e) {
+                logger.error(e.getMessage());
+                Thread.currentThread().interrupt();
+            }
+        }
+        deregisterDrivers();
+    }
+
+    private void deregisterDrivers() {
+        DriverManager.getDrivers().asIterator().forEachRemaining(driver -> {
+            try {
+                DriverManager.deregisterDriver(driver);
+            } catch (SQLException e) {
+                logger.error(e.getMessage());
+            }
+        });
     }
 }

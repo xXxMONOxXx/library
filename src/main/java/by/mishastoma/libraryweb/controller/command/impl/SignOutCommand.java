@@ -1,5 +1,6 @@
 package by.mishastoma.libraryweb.controller.command.impl;
 
+import by.mishastoma.libraryweb.controller.PagesPath;
 import by.mishastoma.libraryweb.controller.Router;
 import by.mishastoma.libraryweb.controller.command.Command;
 import by.mishastoma.libraryweb.exception.CommandException;
@@ -10,6 +11,6 @@ public class SignOutCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         request.getSession().invalidate();
-        return new Router("index.jsp", Router.Type.FORWARD);
+        return new Router(PagesPath.INDEX, Router.Type.FORWARD);
     }
 }

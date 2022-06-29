@@ -1,18 +1,18 @@
 package by.mishastoma.libraryweb.model.entity;
 
 public class Genre extends AbstractEntity{
-    private String genre;
+    private String name;
 
     public Genre(long id, String genre) {
         super(id);
-        this.genre = genre;
+        this.name = genre;
     }
 
-    public String getGenre() {
-        return genre;
+    public String getName() {
+        return name;
     }
 
     public void setGenre(String genre) {
-        this.genre = genre;
+        this.name = genre;
     }
 }

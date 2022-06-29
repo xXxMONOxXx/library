@@ -13,10 +13,10 @@
     <script src="${pageContext.request.contextPath}/stylesheets/bootstrap/js/bootstrap.js"></script>
 </head>
 <body class="d-flex flex-column min-vh-100">
-<footer class="bg-light text-center text-lg-start">
+<footer class="text-center text-white fixed-bottom" style="background-color: gray;">
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
         <fmt:message key="footer.copyright"/>
-        <a class="text-dark" href="${pageContext.request.contextPath}/pages/home/index.jsp"><fmt:message key="footer.company_name"/></a>
+        <a class="text-white" href="${pageContext.request.contextPath}/pages/home/index.jsp"><fmt:message key="footer.company_name"/></a>
     </div>
 </footer>
 </body>
