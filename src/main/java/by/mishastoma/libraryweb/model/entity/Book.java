@@ -1,23 +1,41 @@
 package by.mishastoma.libraryweb.model.entity;
 
-import java.util.Date;
+import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.List;
 
 public class Book extends AbstractEntity {
     private String name;
     private String info = null;
-    private int price;
-    private Date releaseDate;
+    private LocalDate releaseDate;
     private List<Genre> genres;
     private List<Author> authors;
     private Integer ageLimitation = null;
+    private InputStream coverPhoto;
+    private int quantity;
 
     public Book(long id) {
-        super(id); //todo builder, getters and setters
+        super(id);
     }
 
     public String getName() {
         return name;
+    }
+
+    public InputStream getCoverPhoto() {
+        return coverPhoto;
+    }
+
+    public void setCoverPhoto(InputStream coverPhoto) {
+        this.coverPhoto = coverPhoto;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public void setName(String name) {
@@ -32,19 +50,11 @@ public class Book extends AbstractEntity {
         this.info = info;
     }
 
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public Date getReleaseDate() {
+    public LocalDate getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(Date releaseDate) {
+    public void setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
     }
 
@@ -70,5 +80,58 @@ public class Book extends AbstractEntity {
 
     public void setAgeLimitation(Integer ageLimitation) {
         this.ageLimitation = ageLimitation;
+    }
+
+    public static class Builder {
+
+        private Book newBook;
+
+        public Builder(long id) {
+            newBook = new Book(id);
+        }
+
+        public Book.Builder withName(String name) {
+            newBook.name = name;
+            return this;
+        }
+
+        public Book.Builder withInfo(String info) {
+            newBook.info = info;
+            return this;
+        }
+
+        public Book.Builder withReleaseDate(LocalDate releaseDate) {
+            newBook.releaseDate = releaseDate;
+            return this;
+        }
+
+        public Book.Builder withGenres(List<Genre> genres) {
+            newBook.genres = genres;
+            return this;
+        }
+
+        public Book.Builder withAuthors(List<Author> authors) {
+            newBook.authors = authors;
+            return this;
+        }
+
+        public Book.Builder withAgeLimitations(Integer ageLimitations) {
+            newBook.ageLimitation = ageLimitations;
+            return this;
+        }
+
+        public Book.Builder withCoverPhoto(InputStream coverPhoto) {
+            newBook.coverPhoto = coverPhoto;
+            return this;
+        }
+
+        public Book.Builder withQuantity(int quantity) {
+            newBook.quantity = quantity;
+            return this;
+        }
+
+        public Book build() {
+            return newBook;
+        }
     }
 }

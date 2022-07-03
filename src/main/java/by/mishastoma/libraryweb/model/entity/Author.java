@@ -12,6 +12,9 @@ public class Author extends AbstractEntity {
         this.biography = biography;
     }
 
+    public Author(long id) {
+        super(id);}
+
     public String getFirstname() {
         return firstname;
     }

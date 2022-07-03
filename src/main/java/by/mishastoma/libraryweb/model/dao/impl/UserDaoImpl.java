@@ -12,10 +12,7 @@ import by.mishastoma.libraryweb.model.mapper.impl.UserMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -70,7 +67,7 @@ public class UserDaoImpl implements UserDao {
             statement.setString(3, user.getFirstname());
             statement.setString(4, user.getLastname());
             statement.setString(5, user.getEmail());
-            statement.setString(6, user.getBirthdate().toString());
+            statement.setDate(6, Date.valueOf(user.getBirthdate()));
             if(statement.executeUpdate()==0){
                 return false;
             }

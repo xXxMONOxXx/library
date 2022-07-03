@@ -4,21 +4,23 @@ import by.mishastoma.libraryweb.validator.UserValidator;
 import com.mysql.cj.util.StringUtils;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
 public class UserValidatorImpl implements UserValidator {
 
-    public static final String LOGIN_REGEX = "^[A-Za-zА-Яа-я]{3,20}$";
-    public static final String NAME_REGEX ="^[A-Za-zА-Яа-я]{2,25}$";
-    public static final String PASSWORD_REGEX="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&-+=()])(?=\\S+$).{8,20}$";
-    public static final String EMAIL_REGEX="^([a-z0-9-]+.)*[a-z0-9-]+@[a-z0-9-]+(.[a-z0-9-]+)*.[a-z]{2,6}$";
-    public static final String BIRTHDATE_REGEX="^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$";
-
-    public static UserValidatorImpl instance;
+    private static final String LOGIN_REGEX = "^[A-Za-zА-Яа-я]{3,20}$";
+    private static final String NAME_REGEX ="^[A-Za-zА-Яа-я]{2,25}$";
+    private static final String PASSWORD_REGEX="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&-+=()])(?=\\S+$).{8,20}$";
+    private static final String EMAIL_REGEX="^([a-z0-9-]+.)*[a-z0-9-]+@[a-z0-9-]+(.[a-z0-9-]+)*.[a-z]{2,6}$";
+    private static final String BIRTHDATE_REGEX="^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$";
 
     private UserValidatorImpl(){
 
     }
+
+    public static UserValidatorImpl instance;
+
 
     public static UserValidatorImpl getInstance(){
         if(instance==null){
@@ -74,8 +76,6 @@ public class UserValidatorImpl implements UserValidator {
 
     @Override
     public boolean isValidBirthDate(String birthdate) {
-
-        // todo what about leap year? (yyyy-02-29)
        if(StringUtils.isEmptyOrWhitespaceOnly(birthdate)){
            return false;
        }
@@ -83,10 +83,12 @@ public class UserValidatorImpl implements UserValidator {
        if(!pattern.matcher(birthdate).matches()){
            return false;
        }
-       LocalDate date = LocalDate.parse(birthdate);
-
-       return !date.isAfter(LocalDate.now());
+       try {
+           LocalDate date = LocalDate.parse(birthdate);
+           return !date.isAfter(LocalDate.now());
+       }
+       catch (DateTimeParseException e){
+           return false;
+       }
     }
-
-
 }

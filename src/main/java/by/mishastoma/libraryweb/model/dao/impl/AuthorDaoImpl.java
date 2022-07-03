@@ -7,6 +7,7 @@ import by.mishastoma.libraryweb.model.dao.BaseDao;
 import by.mishastoma.libraryweb.model.dao.TableColumn;
 import by.mishastoma.libraryweb.model.entity.Author;
 import by.mishastoma.libraryweb.model.mapper.impl.AuthorMapper;
+import by.mishastoma.libraryweb.model.mapper.impl.UserMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,6 +25,9 @@ public class AuthorDaoImpl implements AuthorDao {
 
     private static final String SELECT_AUTHOR_BY_FIRSTNAME_AND_LASTNAME = """
             SELECT id FROM authors WHERE first_name= ? AND last_name=?""";
+
+    private static final String SELECT_AUTHOR_BY_ID = """
+            SELECT id, first_name, last_name, bio from authors WHERE id = ?""";
 
     private static final String ADD_NEW_AUTHOR = """
             INSERT INTO authors (first_name, last_name, bio)
@@ -104,5 +108,24 @@ public class AuthorDaoImpl implements AuthorDao {
             logger.error(e);
             throw new DaoException(e);
         }
+    }
+
+    @Override
+    public Optional<Author> getAuthorById(long id) throws DaoException {
+        Optional<Author> optionalAuthor = Optional.empty();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_AUTHOR_BY_ID)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next()){
+                AuthorMapper mapper = AuthorMapper.getInstance();
+                optionalAuthor = mapper.map(resultSet);
+            }
+
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return optionalAuthor;
     }
 }

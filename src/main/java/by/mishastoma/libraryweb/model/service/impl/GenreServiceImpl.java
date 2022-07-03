@@ -31,7 +31,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public List<Genre> findAll() throws ServiceException {
+    public List<Genre> getAll() throws ServiceException {
         List<Genre> genres;
         try {
             BaseDao<Genre> genreDao = GenreDaoImpl.getInstance();
@@ -43,7 +43,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Optional<Genre> insert(String name) throws ServiceException {
+    public Optional<Genre> addGenre(String name) throws ServiceException {
         Optional<Genre> optionalGenre = Optional.empty();
         GenreValidator validator = GenreValidatorImpl.getInstance();
         if (validator.isValidName(name)) {

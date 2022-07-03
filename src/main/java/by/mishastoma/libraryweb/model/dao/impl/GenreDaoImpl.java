@@ -3,9 +3,11 @@ package by.mishastoma.libraryweb.model.dao.impl;
 import by.mishastoma.libraryweb.controller.pool.ConnectionPool;
 import by.mishastoma.libraryweb.model.dao.GenreDao;
 import by.mishastoma.libraryweb.model.dao.TableColumn;
+import by.mishastoma.libraryweb.model.entity.Author;
 import by.mishastoma.libraryweb.model.entity.Genre;
 import by.mishastoma.libraryweb.exception.DaoException;
 import by.mishastoma.libraryweb.model.mapper.CustomRowMapper;
+import by.mishastoma.libraryweb.model.mapper.impl.AuthorMapper;
 import by.mishastoma.libraryweb.model.mapper.impl.GenreMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,8 +32,11 @@ public class GenreDaoImpl implements GenreDao {
             SELECT * FROM genres """;
     //todo add pagination
 
-    public static final String SELECT_GENRE_BY_NAME = """
+    private static final String SELECT_GENRE_BY_NAME = """
             SELECT id FROM genres WHERE name = ? """;
+
+    private static final String SELECT_GENRE_BY_ID = """
+            SElECT id, name FROM genres WHERE id = ? """;
 
     private static GenreDaoImpl instance = new GenreDaoImpl();
 
@@ -97,5 +102,23 @@ public class GenreDaoImpl implements GenreDao {
             logger.error(e);
             throw new DaoException(e);
         }
+    }
+
+    @Override
+    public Optional<Genre> getGenreById(long id) throws DaoException {
+        Optional<Genre> optionalGenre = Optional.empty();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_GENRE_BY_ID)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next()){
+                optionalGenre = Optional.of(new Genre(id, resultSet.getString(TableColumn.NAME)));
+            }
+
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return optionalGenre;
     }
 }

@@ -30,7 +30,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Optional<Author> insert(Map<String, String> authorMap, Set<String> invalids) throws ServiceException {
+    public Optional<Author> addAuthor(Map<String, String> authorMap, Set<String> invalids) throws ServiceException {
         Optional<Author> optionalAuthor = Optional.empty();
 
         if (isValidAuthor(authorMap, invalids)) {
@@ -55,7 +55,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<Author> findAll() throws ServiceException {
+    public List<Author> getAll() throws ServiceException {
         List<Author> authors;
         try {
             BaseDao<Author> authorDao = AuthorDaoImpl.getInstance();
@@ -67,20 +67,16 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     private boolean isValidAuthor(Map<String, String> authorMap, Set<String> invalids) {
-        boolean isValid = true;
         AuthorValidator validator = AuthorValidatorImpl.getInstance();
         if (!validator.isValidFirstName(authorMap.get(ParameterName.FIRST_NAME))) {
-            isValid = false;
             invalids.add(ParameterName.AUTHOR_FIRSTNAME_IS_INVALID);
         }
         if (!validator.isValidLastName(authorMap.get(ParameterName.LAST_NAME))) {
             invalids.add(ParameterName.AUTHOR_LASTNAME_IS_INVALID);
-            isValid = false;
         }
         if (!validator.isValidBiography(authorMap.get(ParameterName.BIOGRAPHY))) {
             invalids.add(ParameterName.AUTHOR_BIOGRAPHY_IS_INVALID);
-            isValid = false;
         }
-        return isValid;
+        return invalids.isEmpty();
     }
 }

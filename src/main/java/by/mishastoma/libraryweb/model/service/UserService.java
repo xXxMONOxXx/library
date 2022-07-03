@@ -12,5 +12,5 @@ public interface UserService {
     Optional<User> signIn (String signInLogin, String password) throws ServiceException;
     Optional<User> signUp(Map<String, String> userMap, Set<String> invalids) throws ServiceException;
     Optional<User> getUserById(long id) throws ServiceException;
-    List<User> findAll() throws ServiceException;
+    List<User> getAll() throws ServiceException;
 }

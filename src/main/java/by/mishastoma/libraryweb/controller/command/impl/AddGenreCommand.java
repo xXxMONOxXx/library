@@ -21,7 +21,7 @@ public class AddGenreCommand implements Command {
         Router router = new Router(PagesPath.LIBRARIAN_ADD_GENRE);
         GenreService service = GenreServiceImpl.getInstance();
         try{
-            Optional<Genre> genre = service.insert(request.getParameter(ParameterName.GENRE_NAME));
+            Optional<Genre> genre = service.addGenre(request.getParameter(ParameterName.GENRE_NAME));
             if(genre.isPresent()){
                 request.setAttribute(AttributeName.ADD_GENRE_SUCCESS, true);
             }

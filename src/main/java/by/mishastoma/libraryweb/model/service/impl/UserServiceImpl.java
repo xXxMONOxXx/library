@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAll() throws ServiceException {
+    public List<User> getAll() throws ServiceException {
         List<User> users;
         try {
             UserDao userDao = UserDaoImpl.getInstance();
@@ -103,37 +103,29 @@ public class UserServiceImpl implements UserService {
     }
 
     private boolean isValidUser(Map<String, String> mapUser, Set<String> invalids){
-        boolean isValid = true;
         UserValidator validator = UserValidatorImpl.getInstance();
         if (!validator.isValidLogin(mapUser.get(ParameterName.LOGIN))) {
-            isValid = false;
             invalids.add(ParameterName.SIGN_UP_LOGIN_IS_INVALID);
         }
         if (!validator.isValidFirstName(mapUser.get(ParameterName.FIRST_NAME))) {
             invalids.add(ParameterName.SIGN_UP_FIRSTNAME_IS_INVALID);
-            isValid = false;
         }
         if (!validator.isValidLastName(mapUser.get(ParameterName.LAST_NAME))) {
             invalids.add(ParameterName.SIGN_UP_LASTNAME_IS_INVALID);
-            isValid = false;
         }
         if (!validator.isValidEmail(mapUser.get(ParameterName.EMAIL))) {
             invalids.add(ParameterName.SIGN_UP_EMAIL_IS_INVALID);
-            isValid = false;
         }
         if (!validator.isValidPassword(mapUser.get(ParameterName.PASSWORD))) {
             invalids.add(ParameterName.SIGN_UP_PASSWORD_IS_INVALID);
-            isValid = false;
         } else {
             if (!mapUser.get(ParameterName.PASSWORD).equals(mapUser.get(ParameterName.PASSWORD_REPEAT))) {
                 invalids.add(ParameterName.SIGN_UP_PASSWORD_CONFIRM_IS_INVALID);
-                isValid = false;
             }
         }
         if (!validator.isValidBirthDate(mapUser.get(ParameterName.BIRTHDATE))) {
             invalids.add(ParameterName.SIGN_UP_BIRTHDATE_IS_INVALID);
-            isValid = false;
         }
-        return isValid;
+        return invalids.isEmpty();
     }
 }

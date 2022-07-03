@@ -23,7 +23,7 @@ public class AddAuthorCommand implements Command {
         AuthorService service = AuthorServiceImpl.getInstance();
         try{
             Map<String, String> authorMap = createAuthorMap(request);
-            Optional<Author> author = service.insert(authorMap, invalids);
+            Optional<Author> author = service.addAuthor(authorMap, invalids);
             if(author.isPresent()){
                 request.setAttribute(AttributeName.ADD_AUTHOR_SUCCESS, true);
             }

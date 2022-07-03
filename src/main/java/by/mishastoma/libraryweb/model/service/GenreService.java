@@ -7,6 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface GenreService {
-    List<Genre> findAll() throws ServiceException;
-    Optional<Genre> insert(String name) throws ServiceException;
+    List<Genre> getAll() throws ServiceException;
+    Optional<Genre> addGenre(String name) throws ServiceException;
 }

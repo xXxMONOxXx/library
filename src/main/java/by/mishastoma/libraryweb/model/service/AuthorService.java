@@ -9,6 +9,6 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface AuthorService {
-    Optional<Author> insert(Map<String, String> authorMap, Set<String> invalids) throws ServiceException;
-    List<Author> findAll() throws ServiceException;
+    Optional<Author> addAuthor(Map<String, String> authorMap, Set<String> invalids) throws ServiceException;
+    List<Author> getAll() throws ServiceException;
 }

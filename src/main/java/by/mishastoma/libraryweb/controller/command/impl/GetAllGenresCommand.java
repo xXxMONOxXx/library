@@ -2,7 +2,6 @@ package by.mishastoma.libraryweb.controller.command.impl;
 
 import by.mishastoma.libraryweb.controller.AttributeName;
 import by.mishastoma.libraryweb.controller.PagesPath;
-import by.mishastoma.libraryweb.controller.ParameterName;
 import by.mishastoma.libraryweb.controller.Router;
 import by.mishastoma.libraryweb.controller.command.Command;
 import by.mishastoma.libraryweb.exception.CommandException;
@@ -24,7 +23,7 @@ public class GetAllGenresCommand implements Command {
         //todo validate session
         GenreService service = GenreServiceImpl.getInstance();
         try {
-            List<Genre> genres = service.findAll();
+            List<Genre> genres = service.getAll();
             request.setAttribute(AttributeName.GENRES_LIST, genres);
             router.setPage(PagesPath.LIBRARIAN_GENRES);
         } catch (ServiceException e) {

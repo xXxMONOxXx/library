@@ -19,8 +19,8 @@ public class GoToAddBookPageCommand implements Command {
         try {
             AuthorService authorService = AuthorServiceImpl.getInstance();
             GenreService genreService = GenreServiceImpl.getInstance();
-            request.setAttribute(AttributeName.AUTHORS_LIST, authorService.findAll());
-            request.setAttribute(AttributeName.GENRES_LIST, genreService.findAll());
+            request.setAttribute(AttributeName.AUTHORS_LIST, authorService.getAll());
+            request.setAttribute(AttributeName.GENRES_LIST, genreService.getAll());
         } catch (ServiceException e) {
             throw new CommandException(e);
         }

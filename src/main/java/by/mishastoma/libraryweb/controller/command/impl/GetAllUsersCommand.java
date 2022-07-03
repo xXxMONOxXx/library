@@ -2,7 +2,6 @@ package by.mishastoma.libraryweb.controller.command.impl;
 
 import by.mishastoma.libraryweb.controller.AttributeName;
 import by.mishastoma.libraryweb.controller.PagesPath;
-import by.mishastoma.libraryweb.controller.ParameterName;
 import by.mishastoma.libraryweb.controller.Router;
 import by.mishastoma.libraryweb.controller.command.Command;
 import by.mishastoma.libraryweb.exception.ServiceException;
@@ -25,7 +24,7 @@ public class GetAllUsersCommand implements Command {
         //todo validate session
         UserService userService = UserServiceImpl.getInstance();
         try {
-            List<User> users = userService.findAll();
+            List<User> users = userService.getAll();
             request.setAttribute(AttributeName.USERS_LIST, users);
             router.setPage(PagesPath.ADMIN_USERS);
         } catch (ServiceException e) {

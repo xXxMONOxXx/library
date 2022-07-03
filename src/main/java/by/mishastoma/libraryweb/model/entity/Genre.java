@@ -8,6 +8,11 @@ public class Genre extends AbstractEntity{
         this.name = genre;
     }
 
+    public Genre(long id) {
+        super(id);
+        this.name = null;
+    }
+
     public String getName() {
         return name;
     }

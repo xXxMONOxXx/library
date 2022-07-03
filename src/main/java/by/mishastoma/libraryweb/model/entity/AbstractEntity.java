@@ -1,6 +1,6 @@
 package by.mishastoma.libraryweb.model.entity;
 
-public class AbstractEntity {
+public abstract class AbstractEntity {
     protected long id;
     public AbstractEntity(long id){
         this.id = id;

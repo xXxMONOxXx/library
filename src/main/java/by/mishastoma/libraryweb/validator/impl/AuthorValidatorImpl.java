@@ -7,11 +7,14 @@ import java.util.regex.Pattern;
 
 public class AuthorValidatorImpl implements AuthorValidator {
 
-    public static AuthorValidatorImpl instance;
+    private static final String NAME_REGEX ="^[A-Za-zА-Яа-я]{2,25}$";
+    private static final int BIOGRAPHY_MAX_LENGTH = 1000;
 
     private AuthorValidatorImpl(){
 
     }
+
+    public static AuthorValidatorImpl instance;
 
     public static AuthorValidatorImpl getInstance(){
         if(instance==null){
@@ -19,10 +22,6 @@ public class AuthorValidatorImpl implements AuthorValidator {
         }
         return instance;
     }
-
-
-    public static final String NAME_REGEX ="^[A-Za-zА-Яа-я]{2,25}$";
-    public static final int BIOGRAPHY_MAX_LENGTH = 1000;
 
     @Override
     public boolean isValidFirstName(String firstname) {

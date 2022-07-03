@@ -9,11 +9,11 @@ public class GenreValidatorImpl implements GenreValidator {
 
     private static final String GENRE_NAME_REGEX = "^[A-Za-zА-Яа-я]{3,20}$";
 
-    public static GenreValidatorImpl instance;
-
     private GenreValidatorImpl(){
 
     }
+
+    public static GenreValidatorImpl instance;
 
     public static GenreValidatorImpl getInstance(){
         if(instance==null){

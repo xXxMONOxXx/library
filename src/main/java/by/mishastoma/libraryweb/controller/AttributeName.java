@@ -34,4 +34,5 @@ public final class AttributeName {
     public static final String ADD_GENRE_INVALID_NAME = "add_genre_invalid_or_exists";
     public static final String ADD_GENRE_SUCCESS = "added_genre_successfully";
     public static final String ADD_AUTHOR_SUCCESS = "added_author_successfully";
+    public static final String ADD_BOOK_SUCCESS = "added_book_successfully";
 }

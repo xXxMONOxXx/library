@@ -2,7 +2,6 @@ package by.mishastoma.libraryweb.controller.command.impl;
 
 import by.mishastoma.libraryweb.controller.AttributeName;
 import by.mishastoma.libraryweb.controller.PagesPath;
-import by.mishastoma.libraryweb.controller.ParameterName;
 import by.mishastoma.libraryweb.controller.Router;
 import by.mishastoma.libraryweb.controller.command.Command;
 import by.mishastoma.libraryweb.exception.CommandException;
@@ -24,7 +23,7 @@ public class GetAllAuthorsCommand implements Command {
         //todo validate session
         AuthorService service = AuthorServiceImpl.getInstance();
         try {
-            List<Author> authors = service.findAll();
+            List<Author> authors = service.getAll();
             request.setAttribute(AttributeName.AUTHORS_LIST, authors);
             router.setPage(PagesPath.LIBRARIAN_AUTHORS);
         } catch (ServiceException e) {

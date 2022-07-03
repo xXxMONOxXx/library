@@ -18,17 +18,34 @@ public final class ParameterName {
     public static final String GENRE_NAME = "genre_name";
     public static final String BIOGRAPHY = "biography";
 
-    public static final String SIGN_UP_LOGIN_IS_INVALID = "sign_up_login_is_valid";
-    public static final String SIGN_UP_FIRSTNAME_IS_INVALID = "sign_up_firstname_is_valid";
-    public static final String SIGN_UP_LASTNAME_IS_INVALID = "sign_up_lastname_is_valid";
-    public static final String SIGN_UP_EMAIL_IS_INVALID = "sign_up_email_is_valid";
-    public static final String SIGN_UP_BIRTHDATE_IS_INVALID = "sign_up_birthdate_is_valid";
-    public static final String SIGN_UP_PASSWORD_IS_INVALID = "sign_up_password_is_valid";
-    public static final String SIGN_UP_PASSWORD_CONFIRM_IS_INVALID = "sign_up_password_repeat_is_valid";
+    public static final String SIGN_UP_LOGIN_IS_INVALID = "sign_up_login_is_invalid";
+    public static final String SIGN_UP_FIRSTNAME_IS_INVALID = "sign_up_firstname_is_invalid";
+    public static final String SIGN_UP_LASTNAME_IS_INVALID = "sign_up_lastname_is_invalid";
+    public static final String SIGN_UP_EMAIL_IS_INVALID = "sign_up_email_is_invalid";
+    public static final String SIGN_UP_BIRTHDATE_IS_INVALID = "sign_up_birthdate_is_invalid";
+    public static final String SIGN_UP_PASSWORD_IS_INVALID = "sign_up_password_is_invalid";
+    public static final String SIGN_UP_PASSWORD_CONFIRM_IS_INVALID = "sign_up_password_repeat_is_invalid";
 
     public static final String AUTHOR_FIRSTNAME_IS_INVALID = "author_firstname_invalid";
     public static final String AUTHOR_LASTNAME_IS_INVALID = "author_lastname_invalid";
     public static final String AUTHOR_BIOGRAPHY_IS_INVALID = "author_biography_invalid";
     public static final String AUTHOR_ALREADY_EXISTS = "author_exists";
 
+    public static final String BOOK_NAME = "book_name";
+    public static final String BOOK_RELEASE_DATE = "release_date";
+    public static final String BOOK_GENRES = "book_genres";
+    public static final String BOOK_AUTHORS = "book_authors";
+    public static final String BOOK_AGE_LIMITATIONS = "age_limitations";
+    public static final String BOOK_QUANTITY = "quantity";
+    public static final String BOOK_INFO = "book_info";
+    public static final String BOOK_COVER_PHOTO = "cover_photo";
+
+    public static final String INVALID_BOOK_NAME = "invalid_book_name";
+    public static final String INVALID_BOOK_RELEASE_DATE = "invalid_release_date";
+    public static final String INVALID_BOOK_GENRES = "invalid_book_genres";
+    public static final String INVALID_BOOK_AUTHORS = "invalid_book_authors";
+    public static final String INVALID_BOOK_AGE_LIMITATIONS = "invalid_age_limitations";
+    public static final String INVALID_BOOK_QUANTITY = "invalid_quantity";
+    public static final String INVALID_BOOK_INFO = "invalid_book_info";
+    public static final String INVALID_BOOK_COVER_PHOTO = "invalid_book_cover_photo";
 }

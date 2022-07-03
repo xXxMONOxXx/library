@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 
 @WebServlet(name = "Controller", value = {"/controller"})
+@MultipartConfig(maxFileSize = 16177215) // upload file's size up to 16MB
 public class Controller extends HttpServlet {
 
     private static final Logger logger = LogManager.getLogger();

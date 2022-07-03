@@ -43,34 +43,8 @@ public class SignUpCommand implements Command {
     }
 
     private void addInvalidsToRequest(HttpServletRequest request, Set<String> invalids){
-        // todo not the best approach request.setAttribute(AttributeName.SIGN_UP_LOGIN_IS_INVALID, invalids.contains(ParameterName.SIGN_UP_LOGIN_IS_VALID);
-        // or use loop
-
-//        for(String invalid : invalids){
-//            request.setAttribute(invalid, true);
-//        }
-
-        // but harder to read, if using ↑
-        if(invalids.contains(ParameterName.SIGN_UP_LOGIN_IS_INVALID)){
-            request.setAttribute(AttributeName.SIGN_UP_LOGIN_IS_INVALID, true);
-        }
-        if(invalids.contains(ParameterName.SIGN_UP_FIRSTNAME_IS_INVALID)){
-            request.setAttribute(AttributeName.SIGN_UP_FIRSTNAME_IS_INVALID, true);
-        }
-        if(invalids.contains(ParameterName.SIGN_UP_LASTNAME_IS_INVALID)){
-            request.setAttribute(AttributeName.SIGN_UP_LASTNAME_IS_INVALID, true);
-        }
-        if(invalids.contains(ParameterName.SIGN_UP_EMAIL_IS_INVALID)){
-            request.setAttribute(AttributeName.SIGN_UP_EMAIL_IS_INVALID, true);
-        }
-        if(invalids.contains(ParameterName.SIGN_UP_BIRTHDATE_IS_INVALID)){
-            request.setAttribute(AttributeName.SIGN_UP_BIRTHDATE_IS_INVALID, true);
-        }
-        if(invalids.contains(ParameterName.SIGN_UP_PASSWORD_IS_INVALID)){
-            request.setAttribute(AttributeName.SIGN_UP_PASSWORD_IS_INVALID, true);
-        }
-        if(invalids.contains(ParameterName.SIGN_UP_PASSWORD_CONFIRM_IS_INVALID)){
-            request.setAttribute(AttributeName.SIGN_UP_PASSWORD_CONFIRM_IS_INVALID, true);
+        for(String invalid : invalids){
+            request.setAttribute(invalid, true);
         }
     }
 
