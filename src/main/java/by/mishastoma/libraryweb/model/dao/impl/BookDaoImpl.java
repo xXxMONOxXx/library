@@ -6,11 +6,17 @@ import by.mishastoma.libraryweb.model.dao.BookDao;
 import by.mishastoma.libraryweb.model.entity.Author;
 import by.mishastoma.libraryweb.model.entity.Book;
 import by.mishastoma.libraryweb.model.entity.Genre;
+import by.mishastoma.libraryweb.model.entity.User;
+import by.mishastoma.libraryweb.model.mapper.CustomRowMapper;
+import by.mishastoma.libraryweb.model.mapper.impl.BookMapper;
+import by.mishastoma.libraryweb.model.mapper.impl.UserMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class BookDaoImpl implements BookDao {
 
@@ -37,6 +43,9 @@ public class BookDaoImpl implements BookDao {
     private static final String ADD_BOOKS_GENRE = """
             INSERT INTO books_genres (genre_id, book_id)
             VALUES (?, ?)""";
+
+    private static final String SELECT_ALL_BOOKS = """
+            SELECT * FROM books """; // todo remove "*"
 
     public static BookDaoImpl getInstance() {
         return instance;
@@ -83,7 +92,20 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public List<Book> findAll() throws DaoException {
-        return null;
+        List<Book> books = new ArrayList<>();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_ALL_BOOKS)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                CustomRowMapper<Book> mapper = BookMapper.getInstance();
+                Optional<Book> book = mapper.map(resultSet);
+                book.ifPresent(books::add);
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return books;
     }
 
     @Override

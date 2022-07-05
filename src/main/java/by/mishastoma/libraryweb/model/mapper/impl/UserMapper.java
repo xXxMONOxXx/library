@@ -15,15 +15,15 @@ public class UserMapper implements CustomRowMapper<User> {
 
     private static UserMapper instance;
 
-    private UserMapper(){
-
-    }
-
     public static UserMapper getInstance(){
         if(instance==null){
             instance = new UserMapper();
         }
         return instance;
+    }
+
+    private UserMapper(){
+
     }
 
     @Override

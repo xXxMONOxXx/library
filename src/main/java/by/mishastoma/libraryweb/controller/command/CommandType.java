@@ -15,7 +15,8 @@ public enum CommandType {
     ADD_AUTHOR (new AddAuthorCommand()),
     ADD_GENRE(new AddGenreCommand()),
     GET_ALL_GENRES (new GetAllGenresCommand()),
-    GET_ALL_AUTHORS(new GetAllAuthorsCommand());
+    GET_ALL_AUTHORS(new GetAllAuthorsCommand()),
+    GO_TO_BOOKS_PAGE(new GoToBooksPage());
 
     private Command command;
 

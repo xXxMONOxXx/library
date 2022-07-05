@@ -1,5 +1,9 @@
 package by.mishastoma.libraryweb.model.entity;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.IOUtils;
+
+import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.List;
@@ -80,6 +84,15 @@ public class Book extends AbstractEntity {
 
     public void setAgeLimitation(Integer ageLimitation) {
         this.ageLimitation = ageLimitation;
+    }
+
+    public String getPhotoCoverAsBase64(){
+        try {
+            byte[] bytes = IOUtils.toByteArray(coverPhoto);
+            return Base64.encodeBase64String(bytes);
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     public static class Builder {

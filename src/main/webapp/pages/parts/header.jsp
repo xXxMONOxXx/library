@@ -22,7 +22,7 @@
         <ul class="navbar-nav mr-auto">
 
             <li class="nav-item">
-                <a class="nav-link" href="#"><fmt:message key="header.books"/></a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/controller?command=go_to_books_page"><fmt:message key="header.books"/></a>
             </li>
 
             <c:if test="${sessionScope.user_id != null}">

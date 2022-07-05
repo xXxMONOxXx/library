@@ -18,7 +18,6 @@ import by.mishastoma.libraryweb.validator.impl.BookValidatorImpl;
 import jakarta.servlet.http.Part;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -37,7 +36,12 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getAll() throws ServiceException {
-        return null;
+        try {
+            BookDao bookDao = BookDaoImpl.getInstance();
+            return bookDao.findAll();
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
     }
 
     @Override

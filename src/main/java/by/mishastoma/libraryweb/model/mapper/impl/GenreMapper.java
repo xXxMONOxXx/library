@@ -13,15 +13,15 @@ public class GenreMapper implements CustomRowMapper<Genre> {
 
     private static GenreMapper instance;
 
-    private GenreMapper(){
-
-    }
-
     public static GenreMapper getInstance(){
         if(instance==null){
             instance = new GenreMapper();
         }
         return instance;
+    }
+
+    private GenreMapper(){
+
     }
 
     @Override

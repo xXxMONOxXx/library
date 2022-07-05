@@ -13,15 +13,15 @@ public class AuthorMapper implements CustomRowMapper<Author> {
 
     private static AuthorMapper instance;
 
-    private AuthorMapper(){
-
-    }
-
     public static AuthorMapper getInstance(){
         if(instance==null){
             instance = new AuthorMapper();
         }
         return instance;
+    }
+
+    private AuthorMapper(){
+
     }
 
     @Override

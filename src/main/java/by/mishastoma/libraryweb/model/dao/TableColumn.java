@@ -13,6 +13,8 @@ public final class TableColumn {
     public static final String IS_BLOCKED = "is_blocked";
     public static final String BIO = "bio";
     public static final String NAME = "name";
+    public static final String AGE_LIMITATIONS = "age_limitations";
+    public static final String COVER_PHOTO = "cover_photo";
 
 
 }
