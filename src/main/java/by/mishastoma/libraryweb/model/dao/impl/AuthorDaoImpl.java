@@ -6,6 +6,7 @@ import by.mishastoma.libraryweb.model.dao.AuthorDao;
 import by.mishastoma.libraryweb.model.dao.BaseDao;
 import by.mishastoma.libraryweb.model.dao.TableColumn;
 import by.mishastoma.libraryweb.model.entity.Author;
+import by.mishastoma.libraryweb.model.mapper.CustomRowMapper;
 import by.mishastoma.libraryweb.model.mapper.impl.AuthorMapper;
 import by.mishastoma.libraryweb.model.mapper.impl.UserMapper;
 import org.apache.logging.log4j.LogManager;
@@ -118,7 +119,7 @@ public class AuthorDaoImpl implements AuthorDao {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if(resultSet.next()){
-                AuthorMapper mapper = AuthorMapper.getInstance();
+                CustomRowMapper<Author> mapper = AuthorMapper.getInstance();
                 optionalAuthor = mapper.map(resultSet);
             }
 

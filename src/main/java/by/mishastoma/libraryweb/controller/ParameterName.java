@@ -31,6 +31,8 @@ public final class ParameterName {
     public static final String AUTHOR_BIOGRAPHY_IS_INVALID = "author_biography_invalid";
     public static final String AUTHOR_ALREADY_EXISTS = "author_exists";
 
+    public static final String BOOK = "book";
+    public static final String BOOK_ID = "book_id";
     public static final String BOOK_NAME = "book_name";
     public static final String BOOK_RELEASE_DATE = "release_date";
     public static final String BOOK_GENRES = "book_genres";

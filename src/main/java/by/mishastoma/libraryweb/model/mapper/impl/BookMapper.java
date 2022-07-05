@@ -5,7 +5,6 @@ import by.mishastoma.libraryweb.model.dao.TableColumn;
 import by.mishastoma.libraryweb.model.entity.Book;
 import by.mishastoma.libraryweb.model.mapper.CustomRowMapper;
 
-import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -31,10 +30,13 @@ public class BookMapper implements CustomRowMapper<Book> {
         Book book;
         Optional<Book> optionalBook;
         try {
+            LocalDate releaseDate = LocalDate.parse(resultSet.getString(TableColumn.RELEASE_DATE));
             book = new Book.Builder(resultSet.getLong(TableColumn.ID)).
                     withName(resultSet.getString(TableColumn.NAME)).
-                    withAgeLimitations(resultSet.getInt(TableColumn.AGE_LIMITATIONS)). //todo check null
-                            withCoverPhoto(resultSet.getBinaryStream(TableColumn.COVER_PHOTO)).
+                    withInfo(resultSet.getString(TableColumn.INFO)).
+                    withReleaseDate(releaseDate).
+                    withAgeLimitations(resultSet.getInt(TableColumn.AGE_LIMITATIONS)).
+                    withCoverPhoto(resultSet.getBinaryStream(TableColumn.COVER_PHOTO)).
                     build();
             optionalBook = Optional.of(book);
         } catch (SQLException e) {

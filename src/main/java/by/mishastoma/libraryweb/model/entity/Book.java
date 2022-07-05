@@ -16,7 +16,7 @@ public class Book extends AbstractEntity {
     private List<Author> authors;
     private Integer ageLimitation = null;
     private InputStream coverPhoto;
-    private int quantity;
+    private int freeQuantity;
 
     public Book(long id) {
         super(id);
@@ -35,11 +35,11 @@ public class Book extends AbstractEntity {
     }
 
     public int getQuantity() {
-        return quantity;
+        return freeQuantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setQuantity(int freeQuantity) {
+        this.freeQuantity = freeQuantity;
     }
 
     public void setName(String name) {
@@ -88,11 +88,14 @@ public class Book extends AbstractEntity {
 
     public String getPhotoCoverAsBase64(){
         try {
-            byte[] bytes = IOUtils.toByteArray(coverPhoto);
-            return Base64.encodeBase64String(bytes);
+            if(coverPhoto!=null) {
+                byte[] bytes = IOUtils.toByteArray(coverPhoto);
+                return Base64.encodeBase64String(bytes);
+            }
         } catch (IOException e) {
             return null;
         }
+        return null;
     }
 
     public static class Builder {
@@ -138,8 +141,8 @@ public class Book extends AbstractEntity {
             return this;
         }
 
-        public Book.Builder withQuantity(int quantity) {
-            newBook.quantity = quantity;
+        public Book.Builder withQuantity(int freeQuantity) {
+            newBook.freeQuantity = freeQuantity;
             return this;
         }
 

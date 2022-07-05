@@ -12,4 +12,6 @@ public final class PagesPath {
     public static final String USER_PROFILE = "pages/user/profile.jsp";
     public static final String LIBRARIAN_GENRES = "pages/librarian/genres.jsp";
     public static final String LIBRARIAN_AUTHORS = "pages/librarian/authors.jsp";
+    public static final String BOOK = "pages/home/book.jsp";
+    public static final String NOT_FOUND = "pages/error/404.jsp";
 }

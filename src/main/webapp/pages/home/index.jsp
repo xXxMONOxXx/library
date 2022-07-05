@@ -13,6 +13,9 @@
 
 
 <br/>
+<br/>
+
+
 <footer>
     <jsp:include page="/pages/parts/footer.jsp"/>
 </footer>

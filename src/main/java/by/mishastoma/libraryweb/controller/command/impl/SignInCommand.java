@@ -26,7 +26,7 @@ public class SignInCommand implements Command {
                 HttpSession session = request.getSession();
                 session.setAttribute(AttributeName.ID, user.get().getId());
                 session.setAttribute(AttributeName.ROLE, user.get().getRole().toString());
-                return new GoToBooksPage().execute(request, response);
+                return new GoToAllBooksPageCommand().execute(request, response);
             }
             else{
                 request.setAttribute(AttributeName.SIGN_IN_MESSAGE, Messages.INCORRECT_LOGIN_OR_PASSWORD);

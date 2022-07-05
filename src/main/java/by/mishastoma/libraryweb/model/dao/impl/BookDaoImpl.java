@@ -6,10 +6,9 @@ import by.mishastoma.libraryweb.model.dao.BookDao;
 import by.mishastoma.libraryweb.model.entity.Author;
 import by.mishastoma.libraryweb.model.entity.Book;
 import by.mishastoma.libraryweb.model.entity.Genre;
-import by.mishastoma.libraryweb.model.entity.User;
 import by.mishastoma.libraryweb.model.mapper.CustomRowMapper;
+import by.mishastoma.libraryweb.model.mapper.impl.AuthorMapper;
 import by.mishastoma.libraryweb.model.mapper.impl.BookMapper;
-import by.mishastoma.libraryweb.model.mapper.impl.UserMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -44,6 +43,18 @@ public class BookDaoImpl implements BookDao {
             INSERT INTO books_genres (genre_id, book_id)
             VALUES (?, ?)""";
 
+    private static final String COUNT_FREE_LIBRARY_ITEMS_BY_ID = """
+            SELECT COUNT(id) FROM library_items WHERE book_id = ? AND user_id IS NULL """;
+
+    private static final String SELECT_BOOK_BY_ID = """
+            SELECT id, name, info, release_date, age_limitations, cover_photo FROM books WHERE id = ?""";
+
+    private static final String SELECT_AUTHORS_IDS_BY_BOOK_ID = """
+            SELECT author_id FROM books_authors WHERE book_id = ?""";
+
+    private static final String SELECT_GENRES_IDS_BY_BOOK_ID = """
+            SELECT genre_id FROM books_genres WHERE book_id = ?""";
+
     private static final String SELECT_ALL_BOOKS = """
             SELECT * FROM books """; // todo remove "*"
 
@@ -75,8 +86,8 @@ public class BookDaoImpl implements BookDao {
             for (Author author : book.getAuthors()) {
                 associateBookWithAuthor(bookId, author.getId());
             }
-            for(Genre genre : book.getGenres()){
-                associateBookWithGenre(bookId,genre.getId());
+            for (Genre genre : book.getGenres()) {
+                associateBookWithGenre(bookId, genre.getId());
             }
         } catch (SQLException e) {
             logger.error(e);
@@ -163,5 +174,76 @@ public class BookDaoImpl implements BookDao {
             throw new DaoException(e);
         }
         return true;
+    }
+
+    @Override
+    public Optional<Book> getBookById(long bookId) throws DaoException {
+        Optional<Book> optionalBook = Optional.empty();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_BOOK_BY_ID)) {
+            statement.setLong(1, bookId);
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next()){
+                CustomRowMapper<Book> mapper = BookMapper.getInstance();
+                optionalBook = mapper.map(resultSet);
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return optionalBook;
+    }
+
+    @Override
+    public Integer getBooksQuantity(long bookId) throws DaoException {
+        int quantity = 0;
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(COUNT_FREE_LIBRARY_ITEMS_BY_ID)) {
+            statement.setLong(1, bookId);
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next()){
+                quantity = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return quantity;
+    }
+
+    @Override
+    public List<Long> getBooksAuthorsIds(long bookId) throws DaoException {
+        List<Long> ids = new ArrayList<>();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_AUTHORS_IDS_BY_BOOK_ID)) {
+            statement.setLong(1, bookId);
+            ResultSet resultSet = statement.executeQuery();
+            int index = 1;
+            while (resultSet.next()){
+                ids.add(resultSet.getLong(index));
+                index++;
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return ids;
+    }
+
+    @Override
+    public List<Long> getBooksGenresIds(long bookId) throws DaoException {
+        List<Long> ids = new ArrayList<>();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_GENRES_IDS_BY_BOOK_ID)) {
+            statement.setLong(1, bookId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                ids.add(resultSet.getLong(1));
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return ids;
     }
 }

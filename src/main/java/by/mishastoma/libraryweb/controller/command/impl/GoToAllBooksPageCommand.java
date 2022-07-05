@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
 
-public class GoToBooksPage implements Command {
+public class GoToAllBooksPageCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {

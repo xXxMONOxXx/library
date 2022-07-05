@@ -20,6 +20,8 @@ import jakarta.servlet.http.Part;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class BookServiceImpl implements BookService {
 
@@ -48,8 +50,14 @@ public class BookServiceImpl implements BookService {
     public Optional<Book> addBook(Map<String, Object> bookMap, Set<String> invalids) throws ServiceException {
         Optional<Book> optionalBook = Optional.empty();
         if (isValidBook(bookMap, invalids)) {
-            List<Author> authors = getAuthorsByIds((String[]) bookMap.get(ParameterName.BOOK_AUTHORS));
-            List<Genre> genres = getGenresByIds((String[]) bookMap.get(ParameterName.BOOK_GENRES));
+            String [] authorsIds = (String[]) bookMap.get(ParameterName.BOOK_AUTHORS);
+            List<Long> authorsIdsLong = Stream.of(authorsIds).map(Long::valueOf).collect(Collectors.toList());
+            List<Author> authors = getAuthorsByIds(authorsIdsLong);
+
+            String [] genresIds = (String[]) bookMap.get(ParameterName.BOOK_GENRES);
+            List<Long> genresIdsLong = Stream.of(genresIds).map(Long::valueOf).collect(Collectors.toList());
+            List<Genre> genres = getGenresByIds(genresIdsLong);
+
             Part coverPhoto = (Part) bookMap.get(ParameterName.BOOK_COVER_PHOTO);
             try {
                 Book book = new Book.Builder(-1).  //todo is it normal? I think not ;(
@@ -73,12 +81,32 @@ public class BookServiceImpl implements BookService {
         return optionalBook;
     }
 
-    private List<Author> getAuthorsByIds(String[] ids) throws ServiceException {
+    @Override
+    public Optional<Book> getBookById(long id) throws ServiceException {
+        Optional<Book> optionalBook = Optional.empty();
+        try{
+            BookDao dao = BookDaoImpl.getInstance();
+            optionalBook = dao.getBookById(id);
+            if(optionalBook.isPresent()){
+                long bookId = optionalBook.get().getId();
+                int quantity = dao.getBooksQuantity(bookId);
+                optionalBook.get().setQuantity(quantity);
+                optionalBook.get().setAuthors(getAuthorsByIds(dao.getBooksAuthorsIds(bookId)));
+                optionalBook.get().setGenres(getGenresByIds(dao.getBooksGenresIds(bookId)));
+            }
+        }
+        catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return optionalBook;
+    }
+
+    private List<Author> getAuthorsByIds(List<Long> ids) throws ServiceException {
         List<Author> authors = new ArrayList<>();
         try {
             AuthorDao authorDao = AuthorDaoImpl.getInstance();
-            for (String id : ids) {
-                Optional<Author> author = authorDao.getAuthorById(Long.parseLong(id));
+            for (Long id : ids) {
+                Optional<Author> author = authorDao.getAuthorById(id);
                 if (author.isEmpty()) {
                     throw new ServiceException("No author with such id: " + id);
                 }
@@ -91,12 +119,12 @@ public class BookServiceImpl implements BookService {
         return authors;
     }
 
-    private List<Genre> getGenresByIds(String[] ids) throws ServiceException {
+    private List<Genre> getGenresByIds(List<Long> ids) throws ServiceException {
         List<Genre> genres = new ArrayList<>();
         try {
             GenreDao genreDao = GenreDaoImpl.getInstance();
-            for (String id : ids) {
-                Optional<Genre> genre = genreDao.getGenreById(Long.parseLong(id));
+            for (Long id : ids) {
+                Optional<Genre> genre = genreDao.getGenreById(id);
                 if (genre.isEmpty()) {
                     throw new ServiceException("No such genre with id: " + id);
                 }
