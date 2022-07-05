@@ -14,7 +14,7 @@
 <br/>
 <br/>
 
-<table class="table table-dark">
+<table class="table">
     <thead>
     <tr>
         <th scope="col"><fmt:message key="authors.name"/></th>
@@ -24,8 +24,9 @@
 
     <c:forEach items="${authors_list}" var="author">
         <tr>
-            <th>${author.getFirstname()} ${author.getLastname()}</th>
-<%--            todo add link to authors page    --%>
+            <th><a class="nav-link"
+                   href="${pageContext.request.contextPath}/controller?command=go_to_author_page&author_id=${author.getId()}">
+                    ${author.getFirstname()} ${author.getLastname()}</a></th>
         </tr>
     </c:forEach>
     </tbody>

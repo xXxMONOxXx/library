@@ -16,6 +16,8 @@ import by.mishastoma.libraryweb.model.service.BookService;
 import by.mishastoma.libraryweb.validator.BookValidator;
 import by.mishastoma.libraryweb.validator.impl.BookValidatorImpl;
 import jakarta.servlet.http.Part;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -99,6 +101,27 @@ public class BookServiceImpl implements BookService {
             throw new ServiceException(e);
         }
         return optionalBook;
+    }
+
+    @Override
+    public List<Book> getBooksByAuthorsId(long authorId) throws ServiceException {
+        List<Book> books = new ArrayList<>();
+        BookDao bookDao = BookDaoImpl.getInstance();
+        try {
+            List<Long> booksIds = bookDao.getAllBooksIdsWithAuthor(authorId);
+            for(Long bookId : booksIds){
+                Optional<Book> optionalBook = bookDao.getBookById(bookId);
+                if(optionalBook.isPresent()){
+                    books.add(optionalBook.get());
+                }
+                else{
+                    throw new ServiceException("Invalid book id: " + bookId);
+                }
+            }
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return books;
     }
 
     private List<Author> getAuthorsByIds(List<Long> ids) throws ServiceException {

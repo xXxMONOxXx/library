@@ -12,4 +12,5 @@ public interface BookService {
     List<Book> getAll() throws ServiceException;
     Optional<Book> addBook(Map<String, Object> bookMap, Set<String> invalids) throws ServiceException;
     Optional<Book> getBookById(long id) throws ServiceException;
+    List<Book> getBooksByAuthorsId(long authorId) throws ServiceException;
 }

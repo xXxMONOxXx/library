@@ -14,7 +14,7 @@
 <br/>
 <br/>
 
-<table class="table table-dark">
+<table class="table">
     <thead>
     <tr>
         <th scope="col"><fmt:message key="genres.genre_name"/></th>

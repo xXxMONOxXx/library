@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<table class="table table-dark">
+<table class="table">
     <thead>
     <tr>
         <th scope="col"><fmt:message key="books.name"/></th>

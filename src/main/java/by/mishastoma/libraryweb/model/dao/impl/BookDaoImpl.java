@@ -7,7 +7,6 @@ import by.mishastoma.libraryweb.model.entity.Author;
 import by.mishastoma.libraryweb.model.entity.Book;
 import by.mishastoma.libraryweb.model.entity.Genre;
 import by.mishastoma.libraryweb.model.mapper.CustomRowMapper;
-import by.mishastoma.libraryweb.model.mapper.impl.AuthorMapper;
 import by.mishastoma.libraryweb.model.mapper.impl.BookMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -54,6 +53,9 @@ public class BookDaoImpl implements BookDao {
 
     private static final String SELECT_GENRES_IDS_BY_BOOK_ID = """
             SELECT genre_id FROM books_genres WHERE book_id = ?""";
+
+    private static final String SELECT_BOOKS_ID_WHERE_AUTHOR_ID = """
+            SELECT book_id FROM books_authors WHERE author_id = ?""";
 
     private static final String SELECT_ALL_BOOKS = """
             SELECT * FROM books """; // todo remove "*"
@@ -236,6 +238,23 @@ public class BookDaoImpl implements BookDao {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_GENRES_IDS_BY_BOOK_ID)) {
             statement.setLong(1, bookId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                ids.add(resultSet.getLong(1));
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return ids;
+    }
+
+    @Override
+    public List<Long> getAllBooksIdsWithAuthor(long authorId) throws DaoException {
+        List<Long> ids = new ArrayList<>();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_BOOKS_ID_WHERE_AUTHOR_ID)) {
+            statement.setLong(1, authorId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
                 ids.add(resultSet.getLong(1));

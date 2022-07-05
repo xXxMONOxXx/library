@@ -2,20 +2,22 @@
 <%@include file="/pages/parts/header.jsp" %>
 <html>
 <head>
-    <title>Main</title>
+    <title>${book.getName()}</title>
 </head>
 <body>
 
 <h1><fmt:message key="book.name"/></h1>
 <h2>${book.getName()}</h2>
 <th><img src="data:image/png;base64,${book.getPhotoCoverAsBase64()}" width="240" height="300"
-         alt=<fmt:message key="books.cover_photo"/> /></th>
+         alt=
+         <fmt:message key="books.cover_photo"/>/></th>
 
 <h1><fmt:message key="book.authors"/></h1>
 <h2>
     <c:forEach items="${book.getAuthors()}" var="author">
-        ${author.getFirstname()} ${author.getLastname()}
-        <%--    todo add link to author--%>
+        <a class="nav-link"
+           href="${pageContext.request.contextPath}/controller?command=go_to_author_page&author_id=${author.getId()}">
+                ${author.getFirstname()} ${author.getLastname()}</a>
     </c:forEach>
 </h2>
 

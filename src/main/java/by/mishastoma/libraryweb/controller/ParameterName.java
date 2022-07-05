@@ -17,6 +17,7 @@ public final class ParameterName {
     public static final String PASSWORD_REPEAT = "password_confirm";
     public static final String GENRE_NAME = "genre_name";
     public static final String BIOGRAPHY = "biography";
+    public static final String AUTHOR_ID = "author_id";
 
     public static final String SIGN_UP_LOGIN_IS_INVALID = "sign_up_login_is_invalid";
     public static final String SIGN_UP_FIRSTNAME_IS_INVALID = "sign_up_firstname_is_invalid";

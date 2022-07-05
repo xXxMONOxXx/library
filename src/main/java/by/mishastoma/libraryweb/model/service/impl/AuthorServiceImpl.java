@@ -66,6 +66,18 @@ public class AuthorServiceImpl implements AuthorService {
         return authors;
     }
 
+    @Override
+    public Optional<Author> getById(long id) throws ServiceException {
+        Optional<Author> optionalAuthor = Optional.empty();
+        AuthorDao dao = AuthorDaoImpl.getInstance();
+        try {
+            optionalAuthor = dao.getAuthorById(id);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return optionalAuthor;
+    }
+
     private boolean isValidAuthor(Map<String, String> authorMap, Set<String> invalids) {
         AuthorValidator validator = AuthorValidatorImpl.getInstance();
         if (!validator.isValidFirstName(authorMap.get(ParameterName.FIRST_NAME))) {

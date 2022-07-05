@@ -21,6 +21,7 @@ public final class AttributeName {
     public static final String GENRES_LIST = "genres_list";
     public static final String AUTHORS_LIST = "authors_list";
     public static final String BOOKS_LIST = "books_list";
+    public static final String AUTHOR = "author";
 
     public static final String SIGN_IN_MESSAGE = "sign_in_msg";
     public static final String SIGN_UP_LOGIN_IS_INVALID = "sign_up_login_is_invalid";
