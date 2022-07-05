@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
 
-public class GoToAuthorPage implements Command {
+public class GoToAuthorPageCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {

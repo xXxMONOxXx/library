@@ -52,11 +52,11 @@ public class BookServiceImpl implements BookService {
     public Optional<Book> addBook(Map<String, Object> bookMap, Set<String> invalids) throws ServiceException {
         Optional<Book> optionalBook = Optional.empty();
         if (isValidBook(bookMap, invalids)) {
-            String [] authorsIds = (String[]) bookMap.get(ParameterName.BOOK_AUTHORS);
+            String[] authorsIds = (String[]) bookMap.get(ParameterName.BOOK_AUTHORS);
             List<Long> authorsIdsLong = Stream.of(authorsIds).map(Long::valueOf).collect(Collectors.toList());
             List<Author> authors = getAuthorsByIds(authorsIdsLong);
 
-            String [] genresIds = (String[]) bookMap.get(ParameterName.BOOK_GENRES);
+            String[] genresIds = (String[]) bookMap.get(ParameterName.BOOK_GENRES);
             List<Long> genresIdsLong = Stream.of(genresIds).map(Long::valueOf).collect(Collectors.toList());
             List<Genre> genres = getGenresByIds(genresIdsLong);
 
@@ -86,18 +86,17 @@ public class BookServiceImpl implements BookService {
     @Override
     public Optional<Book> getBookById(long id) throws ServiceException {
         Optional<Book> optionalBook = Optional.empty();
-        try{
+        try {
             BookDao dao = BookDaoImpl.getInstance();
             optionalBook = dao.getBookById(id);
-            if(optionalBook.isPresent()){
+            if (optionalBook.isPresent()) {
                 long bookId = optionalBook.get().getId();
                 int quantity = dao.getBooksQuantity(bookId);
                 optionalBook.get().setQuantity(quantity);
                 optionalBook.get().setAuthors(getAuthorsByIds(dao.getBooksAuthorsIds(bookId)));
                 optionalBook.get().setGenres(getGenresByIds(dao.getBooksGenresIds(bookId)));
             }
-        }
-        catch (DaoException e) {
+        } catch (DaoException e) {
             throw new ServiceException(e);
         }
         return optionalBook;
@@ -105,16 +104,34 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getBooksByAuthorsId(long authorId) throws ServiceException {
+        BookDao bookDao = BookDaoImpl.getInstance();
+        try {
+            return getBooksByIds(bookDao.getAllBooksIdsWithAuthor(authorId));
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public List<Book> getBooksUserHas(long userId) throws ServiceException {
+        BookDao bookDao = BookDaoImpl.getInstance();
+        try {
+            return getBooksByIds(bookDao.getUsersBooksIds(userId));
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+
+    }
+
+    private List<Book> getBooksByIds(List<Long> ids) throws ServiceException{
         List<Book> books = new ArrayList<>();
         BookDao bookDao = BookDaoImpl.getInstance();
         try {
-            List<Long> booksIds = bookDao.getAllBooksIdsWithAuthor(authorId);
-            for(Long bookId : booksIds){
+            for(Long bookId : ids){
                 Optional<Book> optionalBook = bookDao.getBookById(bookId);
-                if(optionalBook.isPresent()){
+                if (optionalBook.isPresent()) {
                     books.add(optionalBook.get());
-                }
-                else{
+                } else {
                     throw new ServiceException("Invalid book id: " + bookId);
                 }
             }

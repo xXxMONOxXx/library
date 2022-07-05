@@ -3,6 +3,7 @@ package by.mishastoma.libraryweb.model.entity;
 import java.time.LocalDate;
 
 public class User extends AbstractEntity {
+
     private String login;
     private String password;
     private String firstname;
@@ -11,6 +12,16 @@ public class User extends AbstractEntity {
     private LocalDate birthdate;
     private UserRole role;
     private boolean isBlocked;
+    private int daysBalance;
+
+
+    public int getDaysBalance() {
+        return daysBalance;
+    }
+
+    public void setDaysBalance(int daysBalance) {
+        this.daysBalance = daysBalance;
+    }
 
     public User(long id) {
         super(id);
@@ -115,6 +126,11 @@ public class User extends AbstractEntity {
 
         public Builder withBirthdate(LocalDate birthdate) {
             newUser.birthdate = birthdate;
+            return this;
+        }
+
+        public Builder withBalance(int daysBalance){
+            newUser.daysBalance = daysBalance;
             return this;
         }
 

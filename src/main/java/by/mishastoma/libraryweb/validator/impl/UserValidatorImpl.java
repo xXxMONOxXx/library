@@ -14,6 +14,7 @@ public class UserValidatorImpl implements UserValidator {
     private static final String PASSWORD_REGEX="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&-+=()])(?=\\S+$).{8,20}$";
     private static final String EMAIL_REGEX="^([a-z0-9-]+.)*[a-z0-9-]+@[a-z0-9-]+(.[a-z0-9-]+)*.[a-z]{2,6}$";
     private static final String BIRTHDATE_REGEX="^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$";
+    private static final String NUMBER_REGEX = "^[0-9]{1,4}$";
 
     private UserValidatorImpl(){
 
@@ -90,5 +91,14 @@ public class UserValidatorImpl implements UserValidator {
        catch (DateTimeParseException e){
            return false;
        }
+    }
+
+    @Override
+    public boolean isValidBalance(String balance) {
+        if(StringUtils.isEmptyOrWhitespaceOnly(balance)){
+            return false;
+        }
+        Pattern pattern = Pattern.compile(NUMBER_REGEX);
+        return pattern.matcher(balance).matches();
     }
 }

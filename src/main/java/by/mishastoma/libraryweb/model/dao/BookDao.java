@@ -18,4 +18,5 @@ public interface BookDao extends BaseDao<Book> {
     List<Long> getBooksAuthorsIds(long bookId) throws DaoException;
     List<Long> getBooksGenresIds(long bookId) throws DaoException;
     List<Long> getAllBooksIdsWithAuthor(long authorId) throws DaoException;
+    List<Long> getUsersBooksIds (long userId) throws DaoException;
 }

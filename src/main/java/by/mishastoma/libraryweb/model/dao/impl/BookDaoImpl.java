@@ -57,6 +57,9 @@ public class BookDaoImpl implements BookDao {
     private static final String SELECT_BOOKS_ID_WHERE_AUTHOR_ID = """
             SELECT book_id FROM books_authors WHERE author_id = ?""";
 
+    private static final String SELECT_BOOKS_ID_WHERE_USER_ID = """
+            SELECT book_id FROM library_items WHERE user_id = ?""";
+
     private static final String SELECT_ALL_BOOKS = """
             SELECT * FROM books """; // todo remove "*"
 
@@ -255,6 +258,23 @@ public class BookDaoImpl implements BookDao {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BOOKS_ID_WHERE_AUTHOR_ID)) {
             statement.setLong(1, authorId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                ids.add(resultSet.getLong(1));
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return ids;
+    }
+
+    @Override
+    public List<Long> getUsersBooksIds(long userId) throws DaoException {
+        List<Long> ids = new ArrayList<>();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_BOOKS_ID_WHERE_USER_ID)) {
+            statement.setLong(1, userId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
                 ids.add(resultSet.getLong(1));

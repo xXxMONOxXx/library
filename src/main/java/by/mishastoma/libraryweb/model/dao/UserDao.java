@@ -12,4 +12,7 @@ public interface UserDao extends BaseDao<User>{
     boolean emailExists(String email) throws DaoException;
     long getIdByLogin(String login) throws DaoException;
     Optional<User> getUserById(long id) throws DaoException;
+    int getUsersBalance (long id) throws DaoException;
+    boolean updateUsersBalance (long id, int balance) throws DaoException;
+    boolean changeUserState(long id, boolean isBlocked) throws DaoException;
 }

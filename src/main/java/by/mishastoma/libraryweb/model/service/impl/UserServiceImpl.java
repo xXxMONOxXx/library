@@ -6,6 +6,7 @@ import by.mishastoma.libraryweb.model.dao.impl.UserDaoImpl;
 import by.mishastoma.libraryweb.model.entity.User;
 import by.mishastoma.libraryweb.exception.DaoException;
 import by.mishastoma.libraryweb.exception.ServiceException;
+import by.mishastoma.libraryweb.model.entity.UserRole;
 import by.mishastoma.libraryweb.model.service.UserService;
 import by.mishastoma.libraryweb.validator.UserValidator;
 import by.mishastoma.libraryweb.validator.impl.UserValidatorImpl;
@@ -55,6 +56,7 @@ public class UserServiceImpl implements UserService {
                     withEmail(mapUser.get(ParameterName.EMAIL)).
                     withPassword(mapUser.get(ParameterName.PASSWORD)).
                     withBirthdate(LocalDate.parse(mapUser.get(ParameterName.BIRTHDATE))).
+                    withRole(UserRole.USER).
                     build();
             try {
                 UserDao userDao = UserDaoImpl.getInstance();
@@ -100,6 +102,31 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException(e);
         }
         return users;
+    }
+
+    @Override
+    public boolean changeUsersBalance(long id, String balance) throws ServiceException {
+        UserValidator validator = UserValidatorImpl.getInstance();
+        if(!validator.isValidBalance(balance)){
+            return false;
+        }
+        UserDao userDao = UserDaoImpl.getInstance();
+        try {
+            int currentBalance = userDao.getUsersBalance(id);
+            return userDao.updateUsersBalance(id, currentBalance + Integer.parseInt(balance));
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public boolean changeUserState(long id, boolean isBlocked) throws ServiceException {
+        UserDao userDao = UserDaoImpl.getInstance();
+        try {
+            return userDao.changeUserState(id, isBlocked);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
     }
 
     private boolean isValidUser(Map<String, String> mapUser, Set<String> invalids){

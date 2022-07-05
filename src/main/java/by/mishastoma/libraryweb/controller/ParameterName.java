@@ -51,4 +51,8 @@ public final class ParameterName {
     public static final String INVALID_BOOK_QUANTITY = "invalid_quantity";
     public static final String INVALID_BOOK_INFO = "invalid_book_info";
     public static final String INVALID_BOOK_COVER_PHOTO = "invalid_book_cover_photo";
+
+    public static final String CHANGE_BALANCE = "change_balance";
+
+    public static final String USER_ID = "user_id";
 }

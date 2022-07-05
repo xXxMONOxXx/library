@@ -7,7 +7,9 @@ import by.mishastoma.libraryweb.controller.command.Command;
 import by.mishastoma.libraryweb.exception.CommandException;
 import by.mishastoma.libraryweb.exception.ServiceException;
 import by.mishastoma.libraryweb.model.entity.User;
+import by.mishastoma.libraryweb.model.service.BookService;
 import by.mishastoma.libraryweb.model.service.UserService;
+import by.mishastoma.libraryweb.model.service.impl.BookServiceImpl;
 import by.mishastoma.libraryweb.model.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,6 +28,8 @@ public class GetUserInfoByIdCommand implements Command {
             if(optionalUser.isEmpty()){
                 throw new CommandException("No user with id " + id);
             }
+            BookService bookService = BookServiceImpl.getInstance();
+            request.setAttribute(AttributeName.BOOKS_LIST, bookService.getBooksUserHas(id));
             request.setAttribute(AttributeName.USER, optionalUser.get());
             router.setPage(PagesPath.USER_PROFILE);
         } catch (ServiceException e) {

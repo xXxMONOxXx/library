@@ -17,6 +17,7 @@ public final class TableColumn {
     public static final String COVER_PHOTO = "cover_photo";
     public static final String INFO = "info";
     public static final String RELEASE_DATE = "release_date";
+    public static final String BALANCE = "days_balance";
 
 
 }

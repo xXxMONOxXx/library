@@ -36,4 +36,7 @@ public final class AttributeName {
     public static final String ADD_GENRE_SUCCESS = "added_genre_successfully";
     public static final String ADD_AUTHOR_SUCCESS = "added_author_successfully";
     public static final String ADD_BOOK_SUCCESS = "added_book_successfully";
+
+    public static final String BALANCE_CHANGE_FAILED = ""; //todo remove?
+    public static final String BALANCE_CHANGE_SUCCESS = "balance_changed_successfully";
 }

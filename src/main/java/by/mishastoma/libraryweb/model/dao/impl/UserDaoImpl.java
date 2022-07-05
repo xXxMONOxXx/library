@@ -22,11 +22,11 @@ public class UserDaoImpl implements UserDao {
     private static final Logger logger = LogManager.getLogger();
 
     private static final String SELECT_USER_BY_LOGIN_AND_PASSWORD = """
-            SELECT id, login, password, first_name, last_name, birthdate, is_blocked, email, role
+            SELECT id, login, password, first_name, last_name, birthdate, is_blocked, email, role, days_balance
             FROM users WHERE login = ? AND password = ? """;
 
     private static final String SELECT_USER_BY_ID = """
-            SELECT id, login, password, first_name, last_name, birthdate, is_blocked, email, role
+            SELECT id, login, password, first_name, last_name, birthdate, is_blocked, email, role, days_balance
             FROM users WHERE id = ?""";
 
     private static final String SELECT_USER_ID_BY_LOGIN = """
@@ -44,6 +44,16 @@ public class UserDaoImpl implements UserDao {
     private static final String ADD_NEW_USER = """
             INSERT INTO users (login, password, first_name, last_name, email, birthdate)
             VALUES(?, ?, ?, ?, ?, ?)""";
+
+    private static final String UPDATE_BALANCE_BY_USERS_ID = """
+           UPDATE users SET days_balance = ? WHERE id = ?""";
+
+    private static final String SELECT_USERS_BALANCE_BY_ID = """
+            SELECT days_balance FROM users WHERE id = ?""";
+
+    private static final String UPDATE_USER_STATE_BY_ID = """
+        UPDATE users SET is_blocked = ? WHERE id = ?
+        """;
 
     private static UserDaoImpl instance = new UserDaoImpl();
 
@@ -181,5 +191,53 @@ public class UserDaoImpl implements UserDao {
             throw new DaoException(e);
         }
         return optionalUser;
+    }
+
+    @Override
+    public int getUsersBalance(long id) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_USERS_BALANCE_BY_ID)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next()){
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return -1;
+    }
+
+    @Override
+    public boolean updateUsersBalance(long id, int balance) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_BALANCE_BY_USERS_ID)) {
+            statement.setInt(1, balance);
+            statement.setLong(2, id);
+            if(statement.executeUpdate() == 1){
+                return true;
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean changeUserState(long id, boolean isBlocked) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_USER_STATE_BY_ID)) {
+            statement.setLong(1, id);
+            statement.setBoolean(2, isBlocked);
+            if(statement.executeUpdate() == 1){
+                return true;
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return false;
     }
 }

@@ -8,4 +8,5 @@ public interface UserValidator {
     boolean isValidPassword(String password);
     boolean isValidEmail(String email);
     boolean isValidBirthDate(String birthdate);
+    boolean isValidBalance (String balance);
 }

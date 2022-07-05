@@ -41,6 +41,7 @@ public class UserMapper implements CustomRowMapper<User> {
                     withEmail(resultSet.getString(TableColumn.EMAIL)).
                     withBirthdate(birthdate).
                     withStatus(resultSet.getBoolean(TableColumn.IS_BLOCKED)).
+                    withBalance(resultSet.getInt(TableColumn.BALANCE)).
                     build();
             optionalUser = Optional.of(user);
         }

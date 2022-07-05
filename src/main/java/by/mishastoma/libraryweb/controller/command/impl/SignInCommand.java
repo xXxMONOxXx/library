@@ -23,6 +23,9 @@ public class SignInCommand implements Command {
         try {
             Optional<User> user = userService.signIn(login, password);
             if(user.isPresent()){
+                if(user.get().isBlocked()){
+                    return new Router(PagesPath.BLOCKED_USER);
+                }
                 HttpSession session = request.getSession();
                 session.setAttribute(AttributeName.ID, user.get().getId());
                 session.setAttribute(AttributeName.ROLE, user.get().getRole().toString());
