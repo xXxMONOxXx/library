@@ -2,6 +2,7 @@ package by.mishastoma.libraryweb.controller.command.impl;
 
 import by.mishastoma.libraryweb.controller.AttributeName;
 import by.mishastoma.libraryweb.controller.PagesPath;
+import by.mishastoma.libraryweb.controller.ParameterName;
 import by.mishastoma.libraryweb.controller.Router;
 import by.mishastoma.libraryweb.controller.command.Command;
 import by.mishastoma.libraryweb.exception.CommandException;
@@ -23,7 +24,7 @@ public class GetUserInfoByIdCommand implements Command {
         Router router = new Router();
         UserService userService = UserServiceImpl.getInstance();
         try {
-            long id = Long.parseLong(request.getParameter(AttributeName.ID));
+            long id = Long.parseLong(request.getParameter(ParameterName.USER_ID));
             Optional<User> optionalUser = userService.getUserById(id);
             if(optionalUser.isEmpty()){
                 throw new CommandException("No user with id " + id);

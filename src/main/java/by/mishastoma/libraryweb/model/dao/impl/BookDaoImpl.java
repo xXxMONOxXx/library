@@ -42,6 +42,9 @@ public class BookDaoImpl implements BookDao {
             INSERT INTO books_genres (genre_id, book_id)
             VALUES (?, ?)""";
 
+    private static final String FREE_LIB_ITEM = """
+            UPDATE library_items SET user_id = NULL WHERE id = """;
+
     private static final String COUNT_FREE_LIBRARY_ITEMS_BY_ID = """
             SELECT COUNT(id) FROM library_items WHERE book_id = ? AND user_id IS NULL """;
 
@@ -59,6 +62,15 @@ public class BookDaoImpl implements BookDao {
 
     private static final String SELECT_BOOKS_ID_WHERE_USER_ID = """
             SELECT book_id FROM library_items WHERE user_id = ?""";
+
+    private static final String SELECT_FREE_LIB_ITEMS_WITH_BOOK_ID = """
+            SELECT id FROM library_items WHERE book_id = ? AND user_id IS NULL""";
+
+    private static final String SET_LIB_ITEM_TO_USER = """
+            UPDATE library_items SET user_id = ? WHERE id = ?""";
+
+    private static final String SELECT_FREE_LIB_ITEMS_WITH_BOOK_ID_AND_USER_ID = """
+            SELECT id FROM library_items WHERE book_id = ? AND user_id = ?""";
 
     private static final String SELECT_ALL_BOOKS = """
             SELECT * FROM books """; // todo remove "*"
@@ -145,8 +157,18 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public boolean updateLibraryItem(long itemId, Long userId) throws DaoException {
-        return false;
+    public boolean freeLibraryItem(long itemId) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(FREE_LIB_ITEM)) {
+            statement.setLong(1, itemId);
+            if (statement.executeUpdate() == 0) {
+                return false;
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return true;
     }
 
     @Override
@@ -188,7 +210,7 @@ public class BookDaoImpl implements BookDao {
              PreparedStatement statement = connection.prepareStatement(SELECT_BOOK_BY_ID)) {
             statement.setLong(1, bookId);
             ResultSet resultSet = statement.executeQuery();
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 CustomRowMapper<Book> mapper = BookMapper.getInstance();
                 optionalBook = mapper.map(resultSet);
             }
@@ -206,7 +228,7 @@ public class BookDaoImpl implements BookDao {
              PreparedStatement statement = connection.prepareStatement(COUNT_FREE_LIBRARY_ITEMS_BY_ID)) {
             statement.setLong(1, bookId);
             ResultSet resultSet = statement.executeQuery();
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 quantity = resultSet.getInt(1);
             }
         } catch (SQLException e) {
@@ -224,7 +246,7 @@ public class BookDaoImpl implements BookDao {
             statement.setLong(1, bookId);
             ResultSet resultSet = statement.executeQuery();
             int index = 1;
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 ids.add(resultSet.getLong(index));
                 index++;
             }
@@ -242,7 +264,7 @@ public class BookDaoImpl implements BookDao {
              PreparedStatement statement = connection.prepareStatement(SELECT_GENRES_IDS_BY_BOOK_ID)) {
             statement.setLong(1, bookId);
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 ids.add(resultSet.getLong(1));
             }
         } catch (SQLException e) {
@@ -259,7 +281,7 @@ public class BookDaoImpl implements BookDao {
              PreparedStatement statement = connection.prepareStatement(SELECT_BOOKS_ID_WHERE_AUTHOR_ID)) {
             statement.setLong(1, authorId);
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 ids.add(resultSet.getLong(1));
             }
         } catch (SQLException e) {
@@ -276,7 +298,7 @@ public class BookDaoImpl implements BookDao {
              PreparedStatement statement = connection.prepareStatement(SELECT_BOOKS_ID_WHERE_USER_ID)) {
             statement.setLong(1, userId);
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 ids.add(resultSet.getLong(1));
             }
         } catch (SQLException e) {
@@ -284,5 +306,54 @@ public class BookDaoImpl implements BookDao {
             throw new DaoException(e);
         }
         return ids;
+    }
+
+    @Override
+    public long getFreeLibItem(long bookId) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_FREE_LIB_ITEMS_WITH_BOOK_ID)) {
+            statement.setLong(1, bookId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getLong(1);
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return -1;
+    }
+
+    @Override
+    public boolean setLibItemToUser(long libItemId, long userId) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SET_LIB_ITEM_TO_USER)) {
+            statement.setLong(1, userId);
+            statement.setLong(2, libItemId);
+            if (statement.executeUpdate() == 0) {
+                return false;
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return true;
+    }
+
+    @Override
+    public long getItemId(long bookId, long userId) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_FREE_LIB_ITEMS_WITH_BOOK_ID_AND_USER_ID)) {
+            statement.setLong(1, bookId);
+            statement.setLong(2, userId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getLong(1);
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return -1;
     }
 }

@@ -19,7 +19,7 @@ public class AddBalanceToUserCommand implements Command {
             long userId = Long.parseLong(request.getParameter(ParameterName.USER_ID));
             String changeBalance = request.getParameter(ParameterName.CHANGE_BALANCE);
             request.setAttribute(AttributeName.BALANCE_CHANGE_SUCCESS,
-                    userService.changeUsersBalance(userId, changeBalance));
+                    userService.addToUsersBalance(userId, changeBalance));
         } catch (ServiceException e) {
             throw new CommandException(e);
         }

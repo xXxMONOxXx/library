@@ -16,8 +16,6 @@ import by.mishastoma.libraryweb.model.service.BookService;
 import by.mishastoma.libraryweb.validator.BookValidator;
 import by.mishastoma.libraryweb.validator.impl.BookValidatorImpl;
 import jakarta.servlet.http.Part;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -117,6 +115,35 @@ public class BookServiceImpl implements BookService {
         BookDao bookDao = BookDaoImpl.getInstance();
         try {
             return getBooksByIds(bookDao.getUsersBooksIds(userId));
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+
+    }
+
+    @Override
+    public boolean addBookToUser(long userId, long bookId) throws ServiceException {
+        BookDao bookDao = BookDaoImpl.getInstance();
+        try {
+            long freeBookId = bookDao.getFreeLibItem(bookId);
+            if(freeBookId == -1){
+                return false;
+            }
+            return bookDao.setLibItemToUser(freeBookId, userId);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public boolean freeBookFromUser(long userId, long bookId) throws ServiceException {
+        BookDao bookDao = BookDaoImpl.getInstance();
+        try {
+            long itemId = bookDao.getItemId(bookId, userId);
+            if(itemId == -1){
+                return false;
+            }
+            return bookDao.freeLibraryItem(itemId);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

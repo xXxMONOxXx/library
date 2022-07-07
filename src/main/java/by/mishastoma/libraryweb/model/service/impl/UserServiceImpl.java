@@ -105,15 +105,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean changeUsersBalance(long id, String balance) throws ServiceException {
+    public boolean addToUsersBalance(long id, String amount) throws ServiceException {
         UserValidator validator = UserValidatorImpl.getInstance();
-        if(!validator.isValidBalance(balance)){
+        if(!validator.isValidBalance(amount)){
             return false;
         }
         UserDao userDao = UserDaoImpl.getInstance();
         try {
             int currentBalance = userDao.getUsersBalance(id);
-            return userDao.updateUsersBalance(id, currentBalance + Integer.parseInt(balance));
+            return userDao.updateUsersBalance(id, currentBalance + Integer.parseInt(amount));
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public boolean subtractFromUsersBalance(long id, int amount) throws ServiceException {
+        UserDao userDao = UserDaoImpl.getInstance();
+        try {
+            int currentBalance = userDao.getUsersBalance(id);
+            if(currentBalance < amount){
+                return false;
+            }
+            return userDao.updateUsersBalance(id, currentBalance - amount);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -124,6 +138,16 @@ public class UserServiceImpl implements UserService {
         UserDao userDao = UserDaoImpl.getInstance();
         try {
             return userDao.changeUserState(id, isBlocked);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public int getUserBalance(long id) throws ServiceException {
+        UserDao userDao = UserDaoImpl.getInstance();
+        try {
+            return userDao.getUsersBalance(id);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

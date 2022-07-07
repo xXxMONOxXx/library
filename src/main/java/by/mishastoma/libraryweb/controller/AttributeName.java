@@ -39,4 +39,7 @@ public final class AttributeName {
 
     public static final String BALANCE_CHANGE_FAILED = ""; //todo remove?
     public static final String BALANCE_CHANGE_SUCCESS = "balance_changed_successfully";
+
+    public static final String GOT_BOOK_FAILED = "got_book_failed";
+    public static final String GOT_BOOK_SUCCESS = "got_book_successfully";
 }

@@ -14,4 +14,6 @@ public interface BookService {
     Optional<Book> getBookById(long id) throws ServiceException;
     List<Book> getBooksByAuthorsId(long authorId) throws ServiceException;
     List<Book> getBooksUserHas(long userId) throws ServiceException;
+    boolean addBookToUser (long userId, long bookId) throws ServiceException;
+    boolean freeBookFromUser(long userId, long bookId) throws ServiceException;
 }

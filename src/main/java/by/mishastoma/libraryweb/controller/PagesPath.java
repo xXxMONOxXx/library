@@ -16,4 +16,5 @@ public final class PagesPath {
     public static final String NOT_FOUND = "pages/error/404.jsp";
     public static final String AUTHOR = "pages/home/author.jsp";
     public static final String BLOCKED_USER = "pages/errors/user_blocked.jsp";
+    public static final String SERVER_ERROR = "pages/errors/500.jsp";
 }
