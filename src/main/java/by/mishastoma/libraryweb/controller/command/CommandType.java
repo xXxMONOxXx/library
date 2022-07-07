@@ -20,6 +20,7 @@ public enum CommandType {
     GO_TO_AUTHOR_PAGE (new GoToAuthorPageCommand()),
     ADD_BALANCE_TO_USER(new AddBalanceToUserCommand()),
     ADD_BOOK_TO_USER (new AddBookToUserCommand()),
+    RETURN_BOOK (new ReturnBookCommand()),
     GO_TO_ALL_BOOKS_PAGE(new GoToAllBooksPageCommand());
 
     private Command command;

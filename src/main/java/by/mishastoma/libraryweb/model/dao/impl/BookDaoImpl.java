@@ -43,7 +43,7 @@ public class BookDaoImpl implements BookDao {
             VALUES (?, ?)""";
 
     private static final String FREE_LIB_ITEM = """
-            UPDATE library_items SET user_id = NULL WHERE id = """;
+            UPDATE library_items SET user_id = NULL WHERE id = ? """;
 
     private static final String COUNT_FREE_LIBRARY_ITEMS_BY_ID = """
             SELECT COUNT(id) FROM library_items WHERE book_id = ? AND user_id IS NULL """;

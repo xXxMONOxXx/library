@@ -7,7 +7,8 @@ public final class AttributeName {
     }
 
     public static final String USER = "user";
-    public static final String ID = "user_id";
+    public static final String ID = "user_id"; //todo ???
+    public static final String USER_ID = "user_id";
     public static final String LOGIN = "user_login";
     public static final String PASSWORD = "user_password";
     public static final String EMAIL = "user_email";
@@ -37,9 +38,11 @@ public final class AttributeName {
     public static final String ADD_AUTHOR_SUCCESS = "added_author_successfully";
     public static final String ADD_BOOK_SUCCESS = "added_book_successfully";
 
-    public static final String BALANCE_CHANGE_FAILED = ""; //todo remove?
+    public static final String BALANCE_CHANGE_FAILED = "balance_changed_failed";
     public static final String BALANCE_CHANGE_SUCCESS = "balance_changed_successfully";
 
     public static final String GOT_BOOK_FAILED = "got_book_failed";
     public static final String GOT_BOOK_SUCCESS = "got_book_successfully";
+    public static final String RETURNED_BOOK_SUCCESS = "returned_book_successfully";
+    public static final String RETURN_BOOK_FAILED = "returned_book_failed";
 }

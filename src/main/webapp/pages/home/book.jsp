@@ -6,6 +6,14 @@
 </head>
 <body>
 
+<c:if test="${requestScope.got_book_successfully}">
+    <p class="text-success"><fmt:message key="book.got_successfully"/></p>
+</c:if>
+
+<c:if test="${requestScope.got_book_failed}">
+    <p class="text-danger"><fmt:message key="book.got_failed"/></p>
+</c:if>
+
 <h1><fmt:message key="book.name"/></h1>
 <h2>${book.getName()}</h2>
 <th><img src="data:image/png;base64,${book.getPhotoCoverAsBase64()}" width="240" height="300"
@@ -50,14 +58,6 @@
         <input type="hidden" name="user_id" value="${sessionScope.user_id}"/>
 
         <input type="hidden" name="book_id" value="${book.getId()}"/>
-
-        <c:if test="${requestScope.got_book_successfully}">
-            <p class="text-success"><fmt:message key="book.got_successfully"/></p>
-        </c:if>
-
-        <c:if test="${requestScope.got_book_failed}">
-            <p class="text-danger"><fmt:message key="book.got_failed"/></p>
-        </c:if>
 
         <br/>
 
