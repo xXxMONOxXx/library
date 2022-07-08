@@ -21,6 +21,8 @@ public enum CommandType {
     ADD_BALANCE_TO_USER(new AddBalanceToUserCommand()),
     ADD_BOOK_TO_USER (new AddBookToUserCommand()),
     RETURN_BOOK (new ReturnBookCommand()),
+    BLOCK_USER (new BlockUserCommand()),
+    UNBLOCK_USER (new UnblockUserCommand()),
     GO_TO_ALL_BOOKS_PAGE(new GoToAllBooksPageCommand());
 
     private Command command;

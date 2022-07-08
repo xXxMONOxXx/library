@@ -29,12 +29,12 @@
 
         <c:forEach items="${books_list}" var="book">
             <tr>
-                <th><a class="nav-link"
+                <td><a class="nav-link"
                        href="${pageContext.request.contextPath}/controller?command=go_to_book_page&book_id=${book.getId()}">${book.getName()}</a>
-                </th>
+                </td>
 
-                <th><img src="data:image/png;base64,${book.getPhotoCoverAsBase64()}" width="240" height="300"
-                         alt=<fmt:message key="books.cover_photo"/> /></th>
+                <td><img src="data:image/png;base64,${book.getPhotoCoverAsBase64()}" width="240" height="300"
+                         alt=<fmt:message key="books.cover_photo"/> /></td>
             </tr>
         </c:forEach>
         </tbody>

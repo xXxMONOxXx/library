@@ -229,8 +229,8 @@ public class UserDaoImpl implements UserDao {
     public boolean changeUserState(long id, boolean isBlocked) throws DaoException {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_USER_STATE_BY_ID)) {
-            statement.setLong(1, id);
-            statement.setBoolean(2, isBlocked);
+            statement.setBoolean(1, isBlocked);
+            statement.setLong(2, id);
             if(statement.executeUpdate() == 1){
                 return true;
             }

@@ -45,4 +45,7 @@ public final class AttributeName {
     public static final String GOT_BOOK_SUCCESS = "got_book_successfully";
     public static final String RETURNED_BOOK_SUCCESS = "returned_book_successfully";
     public static final String RETURN_BOOK_FAILED = "returned_book_failed";
+
+    public static final String BLOCKED_OR_UNBLOCKED_USER_SUCCESS = "blocked_unblocked_success";
+    public static final String BLOCKED_OR_UNBLOCKED_USER_FAILED = "blocked_unblocked_failed";
 }

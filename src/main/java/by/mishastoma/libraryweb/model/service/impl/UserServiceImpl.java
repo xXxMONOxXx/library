@@ -153,6 +153,16 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public boolean setIsBlockState(long id, boolean isBlocked) throws ServiceException {
+        UserDao userDao = UserDaoImpl.getInstance();
+        try {
+            return userDao.changeUserState(id, isBlocked);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
     private boolean isValidUser(Map<String, String> mapUser, Set<String> invalids){
         UserValidator validator = UserValidatorImpl.getInstance();
         if (!validator.isValidLogin(mapUser.get(ParameterName.LOGIN))) {

@@ -17,4 +17,5 @@ public interface UserService {
     boolean subtractFromUsersBalance(long id, int amount) throws ServiceException;
     boolean changeUserState (long id, boolean isBlocked) throws ServiceException;
     int getUserBalance (long id) throws ServiceException;
+    boolean setIsBlockState(long id, boolean isBlocked) throws ServiceException;
 }
