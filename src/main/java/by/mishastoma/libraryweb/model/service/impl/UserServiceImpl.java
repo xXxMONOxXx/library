@@ -134,16 +134,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean changeUserState(long id, boolean isBlocked) throws ServiceException {
-        UserDao userDao = UserDaoImpl.getInstance();
-        try {
-            return userDao.changeUserState(id, isBlocked);
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
     public int getUserBalance(long id) throws ServiceException {
         UserDao userDao = UserDaoImpl.getInstance();
         try {
@@ -158,6 +148,28 @@ public class UserServiceImpl implements UserService {
         UserDao userDao = UserDaoImpl.getInstance();
         try {
             return userDao.changeUserState(id, isBlocked);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public boolean changeUsersPassword(long id, String oldPassword, String newPassword) throws ServiceException {
+        UserDao userDao = UserDaoImpl.getInstance();
+        try{
+            UserValidator validator = UserValidatorImpl.getInstance();
+            if(!validator.isValidPassword(newPassword)){
+                return false;
+            }
+            String passwordFromDb = userDao.getUsersPassword(id);
+            if(passwordFromDb == null){
+                return false;
+            }
+            if(!passwordFromDb.equals(oldPassword)){
+                return false;
+            }
+            return userDao.changeUsersPassword(id, newPassword);
+
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

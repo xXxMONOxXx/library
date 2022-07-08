@@ -15,4 +15,6 @@ public interface UserDao extends BaseDao<User>{
     int getUsersBalance (long id) throws DaoException;
     boolean updateUsersBalance (long id, int balance) throws DaoException;
     boolean changeUserState(long id, boolean isBlocked) throws DaoException;
+    boolean changeUsersPassword(long id, String password) throws DaoException;
+    String getUsersPassword(long id) throws DaoException;
 }

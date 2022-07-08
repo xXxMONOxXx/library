@@ -25,6 +25,7 @@ public enum CommandType {
     UNBLOCK_USER (new UnblockUserCommand()),
     GO_TO_UPDATE_AUTHOR_PAGE (new GoToUpdateAuthorPageCommand()),
     UPDATE_AUTHOR (new UpdateAuthorCommand()),
+    CHANGE_USERS_PASSWORD(new ChangeUsersPasswordCommand()),
     GO_TO_ALL_BOOKS_PAGE(new GoToAllBooksPageCommand());
 
     private Command command;

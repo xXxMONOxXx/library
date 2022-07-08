@@ -7,6 +7,7 @@ public final class ParameterName {
     }
 
     public static final String ID = "id";
+    public static final String USER_ID = "user_id";
     public static final String LOGIN = "login";
     public static final String PASSWORD = "password";
     public static final String EMAIL = "email";
@@ -15,6 +16,8 @@ public final class ParameterName {
     public static final String BIRTHDATE = "birthdate";
     public static final String COMMAND = "command";
     public static final String PASSWORD_REPEAT = "password_confirm";
+    public static final String OLD_PASSWORD = "old_password";
+    public static final String NEW_PASSWORD = "new_password";
     public static final String GENRE_NAME = "genre_name";
     public static final String BIOGRAPHY = "biography";
     public static final String AUTHOR_ID = "author_id";
@@ -53,6 +56,4 @@ public final class ParameterName {
     public static final String INVALID_BOOK_COVER_PHOTO = "invalid_book_cover_photo";
 
     public static final String CHANGE_BALANCE = "change_balance";
-
-    public static final String USER_ID = "user_id";
 }

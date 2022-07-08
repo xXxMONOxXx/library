@@ -53,6 +53,12 @@ public class UserDaoImpl implements UserDao {
         UPDATE users SET is_blocked = ? WHERE id = ?
         """;
 
+    private static final String UPDATE_PASSWORD = """
+            UPDATE users SET password = ? WHERE id = ?""";
+
+    private static final String SELECT_USERS_PASSWORD = """
+            SELECT password FROM users WHERE id = ?""";
+
     private static UserDaoImpl instance = new UserDaoImpl();
 
     private UserDaoImpl() {
@@ -237,5 +243,34 @@ public class UserDaoImpl implements UserDao {
             throw new DaoException(e);
         }
         return false;
+    }
+
+    @Override
+    public boolean changeUsersPassword(long id, String password) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_PASSWORD)) {
+            statement.setString(1, password);
+            statement.setLong(2, id);
+            if(statement.executeUpdate() == 1){
+                return true;
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return false;
+    }
+
+    @Override
+    public String getUsersPassword(long id) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_USERS_PASSWORD)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            return resultSet.next() ? resultSet.getString(TableColumn.PASSWORD) : null;
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
     }
 }

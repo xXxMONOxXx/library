@@ -36,6 +36,9 @@ public class GenreDaoImpl implements GenreDao {
     private static final String SELECT_GENRE_BY_ID = """
             SElECT id, name FROM genres WHERE id = ? """;
 
+    private static final String UPDATE_GENRE = """
+            UPDATE genres SET name = ? WHERE id = ?""";
+
     private static GenreDaoImpl instance = new GenreDaoImpl();
 
     private GenreDaoImpl() {
@@ -86,7 +89,18 @@ public class GenreDaoImpl implements GenreDao {
 
     @Override
     public boolean update(Genre genre) throws DaoException {
-        throw new UnsupportedOperationException(); //todo
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_GENRE)) {
+            statement.setString(1, genre.getName());
+            statement.setLong(2, genre.getId());
+            if(statement.executeUpdate() == 1){
+                return true;
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return false;
     }
 
     @Override

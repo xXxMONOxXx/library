@@ -54,4 +54,7 @@ public final class AttributeName {
 
     public static final String UPDATE_AUTHOR_SUCCESS = "updated_author_successfully";
     public static final String UPDATE_AUTHOR_FAILED = "author_update_failed";
+
+    public static final String UPDATE_PASSWORD_SUCCESS = "updated_users_password_successfully";
+    public static final String UPDATE_PASSWORD_FAILED = "update_users_password_failed";
 }

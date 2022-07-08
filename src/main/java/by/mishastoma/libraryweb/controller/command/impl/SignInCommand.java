@@ -14,6 +14,9 @@ import jakarta.servlet.http.HttpSession;
 import java.util.Optional;
 
 public class SignInCommand implements Command {
+
+    //todo check for minus balance -> block
+
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         UserService userService = UserServiceImpl.getInstance();

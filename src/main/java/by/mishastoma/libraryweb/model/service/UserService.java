@@ -15,7 +15,7 @@ public interface UserService {
     List<User> getAll() throws ServiceException;
     boolean addToUsersBalance(long id, String amount) throws ServiceException;
     boolean subtractFromUsersBalance(long id, int amount) throws ServiceException;
-    boolean changeUserState (long id, boolean isBlocked) throws ServiceException;
     int getUserBalance (long id) throws ServiceException;
     boolean setIsBlockState(long id, boolean isBlocked) throws ServiceException;
+    boolean changeUsersPassword(long id, String oldPassword, String newPassword) throws ServiceException;
 }
