@@ -23,6 +23,8 @@ public enum CommandType {
     RETURN_BOOK (new ReturnBookCommand()),
     BLOCK_USER (new BlockUserCommand()),
     UNBLOCK_USER (new UnblockUserCommand()),
+    GO_TO_UPDATE_AUTHOR_PAGE (new GoToUpdateAuthorPageCommand()),
+    UPDATE_AUTHOR (new UpdateAuthorCommand()),
     GO_TO_ALL_BOOKS_PAGE(new GoToAllBooksPageCommand());
 
     private Command command;

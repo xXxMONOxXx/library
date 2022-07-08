@@ -3,12 +3,10 @@ package by.mishastoma.libraryweb.model.dao.impl;
 import by.mishastoma.libraryweb.controller.pool.ConnectionPool;
 import by.mishastoma.libraryweb.exception.DaoException;
 import by.mishastoma.libraryweb.model.dao.AuthorDao;
-import by.mishastoma.libraryweb.model.dao.BaseDao;
 import by.mishastoma.libraryweb.model.dao.TableColumn;
 import by.mishastoma.libraryweb.model.entity.Author;
 import by.mishastoma.libraryweb.model.mapper.CustomRowMapper;
 import by.mishastoma.libraryweb.model.mapper.impl.AuthorMapper;
-import by.mishastoma.libraryweb.model.mapper.impl.UserMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,6 +31,9 @@ public class AuthorDaoImpl implements AuthorDao {
     private static final String ADD_NEW_AUTHOR = """
             INSERT INTO authors (first_name, last_name, bio)
             VALUES(?, ?, ?)""";
+
+    private static final String UPDATE_AUTHOR = """
+            UPDATE authors SET first_name = ?, last_name = ?, bio = ?  WHERE id = ?""";
 
     private static final String SELECT_ALL_AUTHORS = """
             SELECT * FROM authors """;
@@ -93,8 +94,21 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public Author update(Author author) throws DaoException {
-        throw new UnsupportedOperationException(); //todo
+    public boolean update(Author author) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_AUTHOR)) {
+            statement.setString(1, author.getFirstname());
+            statement.setString(2, author.getLastname());
+            statement.setString(3, author.getBiography());
+            statement.setLong(4, author.getId());
+            if(statement.executeUpdate() == 1){
+                return true;
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return false;
     }
 
     @Override

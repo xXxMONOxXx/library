@@ -23,49 +23,50 @@ public class AddBookToUserCommand implements Command {
 
     private static final Logger logger = LogManager.getLogger();
 
+    private static final int MAX_NUMBER_OF_USERS_BOOKS = 10;
+
     private static final int BOOK_PRICE = 3;
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         long userId = Long.parseLong(request.getParameter(ParameterName.USER_ID));
-        if(userIsBlocked(userId)){
+        if (userIsBlocked(userId)) {
             return new Router(PagesPath.BLOCKED_USER);
         }
         long bookId = Long.parseLong(request.getParameter(ParameterName.BOOK_ID));
-        if(userHasEnoughBalance(userId)){
+        if(!numberOfBooksUserHasWithinALimit(userId)){
+            request.setAttribute(AttributeName.GOT_BOOK_FAILED, true);
+        }
+        else if (userHasEnoughBalance(userId)) {
             BookService bookService = BookServiceImpl.getInstance();
             try {
-                if(!bookService.addBookToUser(userId, bookId)){
-                    request.setAttribute(AttributeName.GOT_BOOK_FAILED,true);
-                }
-                else{
-                    if(!changeUsersBalance(userId)){
-                        if(!rollBackBook(userId,bookId)){
+                if (!bookService.addBookToUser(userId, bookId)) {
+                    request.setAttribute(AttributeName.GOT_BOOK_FAILED, true);
+                } else {
+                    if (!changeUsersBalance(userId)) {
+                        if (!rollBackBook(userId, bookId)) {
                             return new Router(PagesPath.SERVER_ERROR);
                         }
-                    }
-                    else{
-                        request.setAttribute(AttributeName.GOT_BOOK_SUCCESS,true);
+                    } else {
+                        request.setAttribute(AttributeName.GOT_BOOK_SUCCESS, true);
                     }
                 }
             } catch (ServiceException e) {
                 throw new CommandException(e);
             }
-        }
-        else{
-            request.setAttribute(AttributeName.GOT_BOOK_FAILED,true);
+        } else {
+            request.setAttribute(AttributeName.GOT_BOOK_FAILED, true);
         }
         return new GoToBookPageCommand().execute(request, response);
     }
 
-    private boolean userIsBlocked(long userId){
+    private boolean userIsBlocked(long userId) {
         UserService service = UserServiceImpl.getInstance();
         try {
             Optional<User> optionalUser = service.getUserById(userId);
-            if(optionalUser.isEmpty()){
+            if (optionalUser.isEmpty()) {
                 return true;
-            }
-            else{
+            } else {
                 return optionalUser.get().isBlocked();
             }
         } catch (ServiceException e) {
@@ -73,7 +74,7 @@ public class AddBookToUserCommand implements Command {
         }
     }
 
-    private boolean userHasEnoughBalance(long userId){
+    private boolean userHasEnoughBalance(long userId) {
         UserService service = UserServiceImpl.getInstance();
         int usersBalance = 0;
         try {
@@ -84,7 +85,7 @@ public class AddBookToUserCommand implements Command {
         return usersBalance >= BOOK_PRICE;
     }
 
-    private boolean changeUsersBalance(long userId){
+    private boolean changeUsersBalance(long userId) {
         UserService service = UserServiceImpl.getInstance();
         try {
             return service.subtractFromUsersBalance(userId, BOOK_PRICE);
@@ -93,10 +94,10 @@ public class AddBookToUserCommand implements Command {
         }
     }
 
-    private boolean rollBackBook(long userId, long bookId) throws CommandException{
+    private boolean rollBackBook(long userId, long bookId) throws CommandException {
         BookService bookService = BookServiceImpl.getInstance();
         try {
-            if(!bookService.freeBookFromUser(userId,bookId)){
+            if (!bookService.freeBookFromUser(userId, bookId)) {
                 logger.error("Failed to rollback book.");
                 return false;
             }
@@ -105,5 +106,14 @@ public class AddBookToUserCommand implements Command {
             throw new CommandException(e);
         }
         return true;
+    }
+
+    private boolean numberOfBooksUserHasWithinALimit(long userId) throws CommandException {
+        BookService bookService = BookServiceImpl.getInstance();
+        try {
+            return bookService.getBooksUserHas(userId).size() < MAX_NUMBER_OF_USERS_BOOKS;
+        } catch (ServiceException e) {
+            throw new CommandException(e);
+        }
     }
 }

@@ -137,8 +137,8 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Book update(Book book) throws DaoException {
-        return null;
+    public boolean update(Book book) throws DaoException {
+        return false;
     }
 
     @Override

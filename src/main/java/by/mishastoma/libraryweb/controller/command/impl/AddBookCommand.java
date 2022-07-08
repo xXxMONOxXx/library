@@ -60,10 +60,4 @@ public class AddBookCommand implements Command {
         }
         return bookMap;
     }
-
-    private void addInvalidsToRequest(HttpServletRequest request, Set<String> invalids) {
-        for (String invalid : invalids) {
-            request.setAttribute(invalid, true);
-        }
-    }
 }

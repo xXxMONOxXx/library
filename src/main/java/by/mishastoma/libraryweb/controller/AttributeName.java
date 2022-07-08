@@ -23,6 +23,7 @@ public final class AttributeName {
     public static final String AUTHORS_LIST = "authors_list";
     public static final String BOOKS_LIST = "books_list";
     public static final String AUTHOR = "author";
+    public static final String AUTHOR_ID = "author_id";
 
     public static final String SIGN_IN_MESSAGE = "sign_in_msg";
     public static final String SIGN_UP_LOGIN_IS_INVALID = "sign_up_login_is_invalid";
@@ -48,4 +49,9 @@ public final class AttributeName {
 
     public static final String BLOCKED_OR_UNBLOCKED_USER_SUCCESS = "blocked_unblocked_success";
     public static final String BLOCKED_OR_UNBLOCKED_USER_FAILED = "blocked_unblocked_failed";
+
+    public static final String FAILED_TO_GET_AUTHOR = "failed_to_get_author";
+
+    public static final String UPDATE_AUTHOR_SUCCESS = "updated_author_successfully";
+    public static final String UPDATE_AUTHOR_FAILED = "author_update_failed";
 }

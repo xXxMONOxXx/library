@@ -3,11 +3,9 @@ package by.mishastoma.libraryweb.model.dao.impl;
 import by.mishastoma.libraryweb.controller.pool.ConnectionPool;
 import by.mishastoma.libraryweb.model.dao.GenreDao;
 import by.mishastoma.libraryweb.model.dao.TableColumn;
-import by.mishastoma.libraryweb.model.entity.Author;
 import by.mishastoma.libraryweb.model.entity.Genre;
 import by.mishastoma.libraryweb.exception.DaoException;
 import by.mishastoma.libraryweb.model.mapper.CustomRowMapper;
-import by.mishastoma.libraryweb.model.mapper.impl.AuthorMapper;
 import by.mishastoma.libraryweb.model.mapper.impl.GenreMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -87,7 +85,7 @@ public class GenreDaoImpl implements GenreDao {
     }
 
     @Override
-    public Genre update(Genre genre) throws DaoException {
+    public boolean update(Genre genre) throws DaoException {
         throw new UnsupportedOperationException(); //todo
     }
 

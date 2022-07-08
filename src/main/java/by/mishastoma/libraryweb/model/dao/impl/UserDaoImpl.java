@@ -1,10 +1,8 @@
 package by.mishastoma.libraryweb.model.dao.impl;
 
-import by.mishastoma.libraryweb.model.dao.BaseDao;
 import by.mishastoma.libraryweb.model.dao.TableColumn;
 import by.mishastoma.libraryweb.model.dao.UserDao;
 import by.mishastoma.libraryweb.model.entity.User;
-import by.mishastoma.libraryweb.model.entity.UserRole;
 import by.mishastoma.libraryweb.exception.DaoException;
 import by.mishastoma.libraryweb.controller.pool.ConnectionPool;
 import by.mishastoma.libraryweb.model.mapper.CustomRowMapper;
@@ -112,7 +110,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User update(User user) throws DaoException {
+    public boolean update(User user) throws DaoException {
         throw new UnsupportedOperationException(); //todo
     }
 

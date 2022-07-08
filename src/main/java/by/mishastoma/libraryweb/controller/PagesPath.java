@@ -18,4 +18,5 @@ public final class PagesPath {
     public static final String BLOCKED_USER = "pages/errors/user_blocked.jsp";
     public static final String SERVER_ERROR = "pages/errors/500.jsp";
     public static final String USERS = "pages/admin/users.jsp";
+    public static final String UPDATE_AUTHOR = "pages/librarian/update_author.jsp";
 }

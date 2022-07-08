@@ -79,7 +79,6 @@
 
                             <button type="submit" class="btn btn-primary"><fmt:message key="books.return"/></button>
 
-
                         </td>
                     </tr>
                 </c:forEach>

@@ -12,4 +12,5 @@ public interface AuthorService {
     Optional<Author> addAuthor(Map<String, String> authorMap, Set<String> invalids) throws ServiceException;
     List<Author> getAll() throws ServiceException;
     Optional<Author> getById(long id) throws ServiceException;
+    boolean updateAuthor(Map<String, String> authorMap, Set<String> invalids) throws ServiceException;
 }

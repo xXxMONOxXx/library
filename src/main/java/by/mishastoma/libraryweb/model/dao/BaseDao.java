@@ -11,5 +11,5 @@ public interface BaseDao<T> {
 
     List<T> findAll() throws DaoException;
 
-    T update(T t) throws DaoException;
+    boolean update(T t) throws DaoException;
 }

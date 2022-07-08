@@ -9,7 +9,12 @@
 
 <h1>${author.getFirstname()} ${author.getLastname()}</h1>
 
-
+<c:if test="${sessionScope.user_role eq 'ADMIN' || sessionScope.user_role eq 'LIBRARIAN'}">
+    <a class="nav-link"
+       href="${pageContext.request.contextPath}/controller?command=go_to_update_author_page&author_id=${author.getId()}">
+        <button class="btn btn-primary"><fmt:message key="edit"/></button>
+    </a>
+</c:if>
 
 <c:if test="${author.getBiography() != null}">
     <h1><fmt:message key="author.bio"/></h1>
@@ -34,7 +39,8 @@
                 </td>
 
                 <td><img src="data:image/png;base64,${book.getPhotoCoverAsBase64()}" width="240" height="300"
-                         alt=<fmt:message key="books.cover_photo"/> /></td>
+                         alt=
+                             <fmt:message key="books.cover_photo"/>/></td>
             </tr>
         </c:forEach>
         </tbody>

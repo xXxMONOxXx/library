@@ -42,12 +42,6 @@ public class SignUpCommand implements Command {
         return router;
     }
 
-    private void addInvalidsToRequest(HttpServletRequest request, Set<String> invalids){
-        for(String invalid : invalids){
-            request.setAttribute(invalid, true);
-        }
-    }
-
     private Map<String, String> createUserMap(HttpServletRequest request){
         Map<String, String> userMap = new HashMap<>();
         userMap.put(ParameterName.LOGIN, request.getParameter(ParameterName.LOGIN));

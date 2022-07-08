@@ -32,7 +32,6 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Optional<Author> addAuthor(Map<String, String> authorMap, Set<String> invalids) throws ServiceException {
         Optional<Author> optionalAuthor = Optional.empty();
-
         if (isValidAuthor(authorMap, invalids)) {
             Author author = new Author(-1,
                     authorMap.get(ParameterName.FIRST_NAME),
@@ -43,8 +42,7 @@ public class AuthorServiceImpl implements AuthorService {
                 if (dao.insert(author)) {
                     author.setId(dao.getIdByAuthorsName(author.getFirstname(), author.getLastname()));
                     optionalAuthor = Optional.of(author);
-                }
-                else{
+                } else {
                     invalids.add(ParameterName.AUTHOR_ALREADY_EXISTS);
                 }
             } catch (DaoException e) {
@@ -76,6 +74,29 @@ public class AuthorServiceImpl implements AuthorService {
             throw new ServiceException(e);
         }
         return optionalAuthor;
+    }
+
+    @Override
+    public boolean updateAuthor(Map<String, String> authorMap, Set<String> invalids) throws ServiceException {
+        if (!isValidAuthor(authorMap, invalids)) {
+            return false;
+        }
+
+        Author author = new Author(Long.parseLong(authorMap.get(ParameterName.AUTHOR_ID)),
+                authorMap.get(ParameterName.FIRST_NAME),
+                authorMap.get(ParameterName.LAST_NAME),
+                authorMap.get(ParameterName.BIOGRAPHY));
+        AuthorDao dao = AuthorDaoImpl.getInstance();
+        try {
+            if (dao.update(author)) {
+                return true;
+            } else {
+                invalids.add(ParameterName.AUTHOR_ALREADY_EXISTS);
+                return false;
+            }
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
     }
 
     private boolean isValidAuthor(Map<String, String> authorMap, Set<String> invalids) {
