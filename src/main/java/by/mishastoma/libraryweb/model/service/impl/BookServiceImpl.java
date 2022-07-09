@@ -126,7 +126,7 @@ public class BookServiceImpl implements BookService {
         BookDao bookDao = BookDaoImpl.getInstance();
         try {
             long freeBookId = bookDao.getFreeLibItem(bookId);
-            if(freeBookId == -1){
+            if (freeBookId == -1) {
                 return false;
             }
             return bookDao.setLibItemToUser(freeBookId, userId);
@@ -140,7 +140,7 @@ public class BookServiceImpl implements BookService {
         BookDao bookDao = BookDaoImpl.getInstance();
         try {
             long itemId = bookDao.getItemId(bookId, userId);
-            if(itemId == -1){
+            if (itemId == -1) {
                 return false;
             }
             return bookDao.freeLibraryItem(itemId);
@@ -153,17 +153,16 @@ public class BookServiceImpl implements BookService {
     @Override
     public int getActualBooksQuantity(long id) throws ServiceException {
         BookDao bookDao = BookDaoImpl.getInstance();
-        try{
+        try {
             return bookDao.getBooksQuantity(id);
-        }
-        catch (DaoException e){
+        } catch (DaoException e) {
             throw new ServiceException(e);
         }
     }
 
     @Override
     public boolean updateBook(Map<String, Object> bookMap, Set<String> invalids) throws ServiceException {
-        Optional<Book> optionalBook = Optional.empty();
+
         if (isValidBook(bookMap, invalids)) {
             String[] authorsIds = (String[]) bookMap.get(ParameterName.BOOK_AUTHORS);
             List<Long> authorsIdsLong = Stream.of(authorsIds).map(Long::valueOf).collect(Collectors.toList());
@@ -184,15 +183,13 @@ public class BookServiceImpl implements BookService {
                         withAgeLimitations(Integer.valueOf((String) bookMap.get(ParameterName.BOOK_AGE_LIMITATIONS))).
                         withQuantity(Integer.parseInt((String) bookMap.get(ParameterName.BOOK_QUANTITY)))
                         .build();
-                if(!bookMap.containsKey(ParameterName.BOOK_COVER_PHOTO)){
+                if (!bookMap.containsKey(ParameterName.BOOK_COVER_PHOTO)) {
                     return bookDao.updateWithoutCoverPhoto(book);
-                }
-                else{
+                } else {
                     Part coverPhoto = (Part) bookMap.get(ParameterName.BOOK_COVER_PHOTO);
-                    if(coverPhoto!=null) {
+                    if (coverPhoto != null) {
                         book.setCoverPhoto(coverPhoto.getInputStream());
-                    }
-                    else{
+                    } else {
                         book.setCoverPhoto(null);
                     }
                     return bookDao.update(book);
@@ -205,11 +202,27 @@ public class BookServiceImpl implements BookService {
         return false;
     }
 
-    private List<Book> getBooksByIds(List<Long> ids) throws ServiceException{
+    @Override
+    public boolean deleteBook(long bookId) throws ServiceException {
+        BookDao bookDao = BookDaoImpl.getInstance();
+        try {
+            int actualQuantity = bookDao.getBooksQuantity(bookId);
+            int quantity = bookDao.getBooksFreeQuantity(bookId);
+            if (actualQuantity != quantity) {
+                return false;
+            } else {
+                return bookDao.delete(bookId);
+            }
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    private List<Book> getBooksByIds(List<Long> ids) throws ServiceException {
         List<Book> books = new ArrayList<>();
         BookDao bookDao = BookDaoImpl.getInstance();
         try {
-            for(Long bookId : ids){
+            for (Long bookId : ids) {
                 Optional<Book> optionalBook = bookDao.getBookById(bookId);
                 if (optionalBook.isPresent()) {
                     books.add(optionalBook.get());
@@ -270,7 +283,7 @@ public class BookServiceImpl implements BookService {
         if (!validator.isValidQuantity((String) mapBook.get(ParameterName.BOOK_QUANTITY))) {
             invalids.add(ParameterName.INVALID_BOOK_QUANTITY);
         }
-        if(mapBook.containsKey(ParameterName.BOOK_COVER_PHOTO)) {
+        if (mapBook.containsKey(ParameterName.BOOK_COVER_PHOTO)) {
             if (!validator.isValidPicture((Part) mapBook.get(ParameterName.BOOK_COVER_PHOTO))) {
                 invalids.add(ParameterName.INVALID_BOOK_COVER_PHOTO);
             }

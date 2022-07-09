@@ -98,7 +98,7 @@ public class BookValidatorImpl implements BookValidator {
     @Override
     public boolean isValidIdsArray(String[] ids) {
         if (ids == null) {
-            return false;
+            return true;
         }
         if (ids.length <= 0) {
             return false;

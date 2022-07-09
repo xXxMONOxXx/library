@@ -26,6 +26,15 @@ public class BookDaoImpl implements BookDao {
 
     }
 
+    private static final String DELETE_BOOK_BY_ID = """
+            DELETE FROM books WHERE id = ?""";
+
+    private static final String DELETE_GENRE_FROM_BOOKS = """
+            DELETE FROM books_genres WHERE genre_id = ?""";
+
+    private static final String DELETE_AUTHOR_FROM_BOOKS = """
+            DELETE FROM books_authors WHERE author_id = ?""";
+
     private static final String ADD_NEW_BOOK = """
             INSERT INTO books (name, info, release_date, age_limitations, cover_photo)
             VALUES(?, ?, ?, ?, ?)""";
@@ -117,15 +126,7 @@ public class BookDaoImpl implements BookDao {
             long bookId = results.getLong(1);
             //
             book.setId(bookId);
-            for (int i = 0; i < book.getQuantity(); i++) {
-                addNewLibraryItem(bookId);
-            }
-            for (Author author : book.getAuthors()) {
-                associateBookWithAuthor(bookId, author.getId());
-            }
-            for (Genre genre : book.getGenres()) {
-                associateBookWithGenre(bookId, genre.getId());
-            }
+            setBookRelations(book);
         } catch (SQLException e) {
             logger.error(e);
             throw new DaoException(e);
@@ -134,8 +135,21 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public boolean delete(Book book) throws DaoException {
-        return false;
+    public boolean delete(long id) throws DaoException {
+
+        deleteBookRelations(id);
+
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE_BOOK_BY_ID)) {
+            statement.setLong(1, id);
+            if(statement.executeUpdate() == 0){
+                return false;
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return true;
     }
 
     @Override
@@ -166,12 +180,8 @@ public class BookDaoImpl implements BookDao {
             statement.setInt(4, book.getAgeLimitation());
             statement.setBlob(5, book.getCoverPhoto());
             statement.setLong(6, book.getId());
-
-            if (statement.executeUpdate() == 0) {
-                return false;
-            }
-
-            // todo add/remove genres, authors, lib_items (quantity)
+            statement.executeUpdate();
+            updateBooksRelations(book);
         } catch (SQLException e) {
             logger.error(e);
             throw new DaoException(e);
@@ -418,28 +428,8 @@ public class BookDaoImpl implements BookDao {
             statement.setDate(3, Date.valueOf(book.getReleaseDate()));
             statement.setInt(4, book.getAgeLimitation());
             statement.setLong(5, book.getId());
-
-            if (statement.executeUpdate() == 0) {
-                return false;
-            }
-
-            long bookId = book.getId();
-            // todo add/remove genres, authors, lib_items (quantity)
-
-            deleteBooksAuthors(bookId);
-            deleteBooksGenres(bookId);
-            deleteBooksLibItems(bookId);
-
-            for (int i = 0; i < book.getQuantity(); i++) {
-                addNewLibraryItem(bookId);
-            }
-            for (Author author : book.getAuthors()) {
-                associateBookWithAuthor(bookId, author.getId());
-            }
-            for (Genre genre : book.getGenres()) {
-                associateBookWithGenre(bookId, genre.getId());
-            }
-
+            statement.executeUpdate();
+            updateBooksRelations(book);
         } catch (SQLException e) {
             logger.error(e);
             throw new DaoException(e);
@@ -452,14 +442,12 @@ public class BookDaoImpl implements BookDao {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_BOOKS_GENRE)) {
             statement.setLong(1, bookId);
-            if (statement.executeUpdate() == 0) {
-                return false;
-            }
+            statement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             logger.error(e);
             throw new DaoException(e);
         }
-        return true;
     }
 
     @Override
@@ -467,14 +455,12 @@ public class BookDaoImpl implements BookDao {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_BOOKS_AUTHOR)) {
             statement.setLong(1, bookId);
-            if (statement.executeUpdate() == 0) {
-                return false;
-            }
+            statement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             logger.error(e);
             throw new DaoException(e);
         }
-        return true;
     }
 
     @Override
@@ -482,13 +468,62 @@ public class BookDaoImpl implements BookDao {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_BOOKS_LIB_ITEMS)) {
             statement.setLong(1, bookId);
-            if (statement.executeUpdate() == 0) {
-                return false;
-            }
+            statement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             logger.error(e);
             throw new DaoException(e);
         }
-        return true;
+    }
+
+    @Override
+    public boolean deleteAuthorFromBooks(long authorId) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE_AUTHOR_FROM_BOOKS)) {
+            statement.setLong(1, authorId);
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public boolean deleteGenreFromBooks(long genreId) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE_GENRE_FROM_BOOKS)) {
+            statement.setLong(1, genreId);
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+    }
+
+    private void updateBooksRelations(Book book) throws DaoException {
+        deleteBookRelations(book.getId());
+        setBookRelations(book);
+    }
+
+    private void deleteBookRelations(long bookId) throws DaoException{
+        deleteBooksAuthors(bookId);
+        deleteBooksGenres(bookId);
+        deleteBooksLibItems(bookId);
+    }
+
+    private void setBookRelations(Book book) throws DaoException{
+        long bookId = book.getId();
+
+        for (int i = 0; i < book.getQuantity(); i++) {
+            addNewLibraryItem(bookId);
+        }
+        for (Author author : book.getAuthors()) {
+            associateBookWithAuthor(bookId, author.getId());
+        }
+        for (Genre genre : book.getGenres()) {
+            associateBookWithGenre(bookId, genre.getId());
+        }
     }
 }

@@ -5,13 +5,14 @@ import by.mishastoma.libraryweb.exception.DaoException;
 import by.mishastoma.libraryweb.exception.ServiceException;
 import by.mishastoma.libraryweb.model.dao.AuthorDao;
 import by.mishastoma.libraryweb.model.dao.BaseDao;
+import by.mishastoma.libraryweb.model.dao.BookDao;
 import by.mishastoma.libraryweb.model.dao.impl.AuthorDaoImpl;
+import by.mishastoma.libraryweb.model.dao.impl.BookDaoImpl;
 import by.mishastoma.libraryweb.model.entity.Author;
 import by.mishastoma.libraryweb.model.service.AuthorService;
 import by.mishastoma.libraryweb.validator.AuthorValidator;
 import by.mishastoma.libraryweb.validator.impl.AuthorValidatorImpl;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -92,6 +93,21 @@ public class AuthorServiceImpl implements AuthorService {
                 return true;
             } else {
                 invalids.add(ParameterName.AUTHOR_ALREADY_EXISTS);
+                return false;
+            }
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public boolean deleteAuthor(long id) throws ServiceException {
+        AuthorDao authorDao = AuthorDaoImpl.getInstance();
+        BookDao bookDao = BookDaoImpl.getInstance();
+        try {
+            if (bookDao.deleteAuthorFromBooks(id)) {
+                return authorDao.delete(id);
+            } else {
                 return false;
             }
         } catch (DaoException e) {

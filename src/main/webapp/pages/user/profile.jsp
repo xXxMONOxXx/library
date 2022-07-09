@@ -20,27 +20,27 @@
 
     <input type="hidden" name="user_id" value="${user.getId()}"/>
 
-</form>
-<c:if test="${requestScope.balance_changed_successfully}">
-    <p class="text-success"><fmt:message key="user.balance_changed_successfully"/></p>
-</c:if>
 
-<c:if test="${requestScope.balance_changed_failed}">
-    <p class="text-danger"><fmt:message key="user.balance_change_failed"/></p>
-</c:if>
+    <c:if test="${requestScope.balance_changed_successfully}">
+        <p class="text-success"><fmt:message key="user.balance_changed_successfully"/></p>
+    </c:if>
 
-<div class="col">
-    <div class="form-outline">
-        <label for="change_balance"><fmt:message key="book.quantity"/></label>
-        <input class="form-control" type="number" id="change_balance" name="change_balance"
-               min="1" max="100">
+    <c:if test="${requestScope.balance_changed_failed}">
+        <p class="text-danger"><fmt:message key="user.balance_change_failed"/></p>
+    </c:if>
+
+    <div class="col">
+        <div class="form-outline">
+            <label for="change_balance"><fmt:message key="book.quantity"/></label>
+            <input class="form-control" type="number" id="change_balance" name="change_balance"
+                   min="1" max="100">
+        </div>
     </div>
-</div>
 
-<div class="col text-center">
-    <button type="submit" class="btn btn-primary btn-block mb-4"><fmt:message key="user.change_balance"/></button>
-</div>
-
+    <div class="col text-center">
+        <button type="submit" class="btn btn-primary btn-block mb-4"><fmt:message key="user.change_balance"/></button>
+    </div>
+</form>
 
 <c:if test="${sessionScope.user_role eq 'ADMIN' or sessionScope.user_id == user.getId()}">
 

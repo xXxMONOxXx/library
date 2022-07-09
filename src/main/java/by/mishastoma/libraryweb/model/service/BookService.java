@@ -18,4 +18,5 @@ public interface BookService {
     boolean freeBookFromUser(long userId, long bookId) throws ServiceException;
     int getActualBooksQuantity(long id) throws ServiceException;
     boolean updateBook(Map<String, Object> bookMap, Set<String> invalids) throws ServiceException;
+    boolean deleteBook (long bookId) throws ServiceException;
 }

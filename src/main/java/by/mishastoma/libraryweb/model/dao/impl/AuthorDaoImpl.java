@@ -28,6 +28,9 @@ public class AuthorDaoImpl implements AuthorDao {
     private static final String SELECT_AUTHOR_BY_ID = """
             SELECT id, first_name, last_name, bio from authors WHERE id = ?""";
 
+    private static final String DELETE_AUTHOR_BY_ID = """
+            DELETE FROM authors WHERE id = ?""";
+
     private static final String ADD_NEW_AUTHOR = """
             INSERT INTO authors (first_name, last_name, bio)
             VALUES(?, ?, ?)""";
@@ -71,8 +74,18 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public boolean delete(Author author) throws DaoException {
-        throw new UnsupportedOperationException(); //todo
+    public boolean delete(long id) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE_AUTHOR_BY_ID)) {
+            statement.setLong(1, id);
+            if (statement.executeUpdate() == 0) {
+                return false;
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return true;
     }
 
     @Override

@@ -6,6 +6,9 @@
 </head>
 <body>
 
+<c:if test="${requestScope.delete_book_success}">
+    <p class="text-success"> <fmt:message key="librarian.book.delete_book_success"/></p>
+</c:if>
 <c:if test="${requestScope.failed_to_get_book}">
     <p class="text-danger"> <fmt:message key="librarian.failed_to_get_book"/></p>
 </c:if>

@@ -4,8 +4,10 @@ import by.mishastoma.libraryweb.controller.ParameterName;
 import by.mishastoma.libraryweb.exception.DaoException;
 import by.mishastoma.libraryweb.exception.ServiceException;
 import by.mishastoma.libraryweb.model.dao.BaseDao;
+import by.mishastoma.libraryweb.model.dao.BookDao;
 import by.mishastoma.libraryweb.model.dao.GenreDao;
 import by.mishastoma.libraryweb.model.dao.UserDao;
+import by.mishastoma.libraryweb.model.dao.impl.BookDaoImpl;
 import by.mishastoma.libraryweb.model.dao.impl.GenreDaoImpl;
 import by.mishastoma.libraryweb.model.dao.impl.UserDaoImpl;
 import by.mishastoma.libraryweb.model.entity.Genre;
@@ -84,6 +86,21 @@ public class GenreServiceImpl implements GenreService {
         try {
             return genreDao.update(new Genre(id, name));
         } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public boolean deleteGenre(long id) throws ServiceException {
+        GenreDao genreDao = GenreDaoImpl.getInstance();
+        BookDao bookDao = BookDaoImpl.getInstance();
+        try{
+            if(!bookDao.deleteGenreFromBooks(id)){
+                return false;
+            }
+            return genreDao.delete(id);
+        }
+        catch (DaoException e){
             throw new ServiceException(e);
         }
     }

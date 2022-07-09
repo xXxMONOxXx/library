@@ -15,6 +15,9 @@
 
     <input type="hidden" name="author_id" value="${author.getId()}"/>
 
+    <c:if test="${requestScope.failed_to_delete_author}">
+        <p class="text-danger"> <fmt:message key="librarian.author.failed_to_delete"/></p>
+    </c:if>
     <c:if test="${requestScope.updated_author_successfully}">
         <p class="text-success"> <fmt:message key="librarian.author.updated_successfully"/></p>
     </c:if>
@@ -56,6 +59,17 @@
     </div>
 </form>
 
+<form action="${pageContext.request.contextPath}/controller" method="post">
+
+    <input type="hidden" name="command" value="delete_author"/>
+
+    <input type="hidden" name="author_id" value="${author.getId()}"/>
+
+    <div class="col text-center">
+        <button type="submit" class="btn btn-danger btn-block mb-4"><fmt:message key="delete"/></button>
+    </div>
+
+</form>
 
 <br/>
 <br/>

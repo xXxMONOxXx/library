@@ -16,6 +16,9 @@
 
   <input type="hidden" name="genre_id" value="${genre.getId()}"/>
 
+  <c:if test="${requestScope.failed_to_delete_genre}">
+    <p class="text-danger"> <fmt:message key="librarian.genre.failed_to_delete_genre"/></p>
+  </c:if>
   <c:if test="${requestScope.updated_genre_successfully}">
     <p class="text-success"> <fmt:message key="librarian.genre.updated_successfully"/></p>
   </c:if>
@@ -37,6 +40,18 @@
   <div class="col text-center">
     <button type="submit" class="btn btn-primary btn-block mb-4"><fmt:message key="edit"/></button>
   </div>
+</form>
+
+<form action="${pageContext.request.contextPath}/controller" method="post">
+
+  <input type="hidden" name="command" value="delete_genre"/>
+
+  <input type="hidden" name="genre_id" value="${genre.getId()}"/>
+
+  <div class="col text-center">
+    <button type="submit" class="btn btn-danger btn-block mb-4"><fmt:message key="delete"/></button>
+  </div>
+
 </form>
 
 <br/>

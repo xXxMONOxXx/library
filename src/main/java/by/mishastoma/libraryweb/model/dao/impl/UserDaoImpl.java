@@ -93,7 +93,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean delete(User user) throws DaoException {
+    public boolean delete(long id) throws DaoException {
         throw new UnsupportedOperationException(); //todo
     }
 

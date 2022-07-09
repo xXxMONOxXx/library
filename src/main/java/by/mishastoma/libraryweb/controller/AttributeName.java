@@ -70,4 +70,13 @@ public final class AttributeName {
     public static final String FAILED_TO_GET_GENRE = "failed_to_get_genre";
 
     public static final String FAILED_TO_GET_BOOK = "failed_to_get_book";
+
+    public static final String FAILED_TO_DELETE_AUTHOR = "failed_to_delete_author";
+    public static final String DELETE_AUTHOR_SUCCESS = "delete_author_success";
+
+    public static final String FAILED_TO_DELETE_GENRE = "failed_to_delete_genre";
+    public static final String DELETE_GENRE_SUCCESS = "delete_genre_success";
+
+    public static final String FAILED_TO_DELETE_BOOK = "failed_to_delete_book";
+    public static final String DELETE_BOOK_SUCCESS = "delete_book_success";
 }

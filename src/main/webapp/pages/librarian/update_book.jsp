@@ -9,6 +9,9 @@
 </head>
 <body>
 
+<c:if test="${requestScope.failed_to_delete_book}">
+    <p class="text-danger"> <fmt:message key="librarian.book.failed_to_delete_book"/></p>
+</c:if>
 <c:if test="${requestScope.update_book_success}">
     <p class="text-success"> <fmt:message key="librarian.book.updated_book_successfully"/></p>
 </c:if>
@@ -118,6 +121,17 @@
     </div>
 </form>
 
+<form action="${pageContext.request.contextPath}/controller" method="post">
+
+    <input type="hidden" name="command" value="delete_book"/>
+
+    <input type="hidden" name="book_id" value="${book.getId()}"/>
+
+    <div class="col text-center">
+        <button type="submit" class="btn btn-danger btn-block mb-4"><fmt:message key="delete"/></button>
+    </div>
+
+</form>
 
 <br/>
 <br/>

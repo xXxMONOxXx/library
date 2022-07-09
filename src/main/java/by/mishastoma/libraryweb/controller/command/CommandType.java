@@ -30,6 +30,9 @@ public enum CommandType {
     UPDATE_GENRE(new UpdateGenreCommand()),
     UPDATE_BOOK (new UpdateBookCommand()),
     GO_TO_UPDATE_BOOK_PAGE (new GoToUpdateBookPageCommand()),
+    DELETE_AUTHOR (new DeleteAuthorCommand()),
+    DELETE_BOOK (new DeleteBookCommand()),
+    DELETE_GENRE(new DeleteGenreCommand()),
     GO_TO_ALL_BOOKS_PAGE(new GoToAllBooksPageCommand());
 
     private Command command;

@@ -7,7 +7,7 @@ import java.util.List;
 public interface BaseDao<T> {
     boolean insert(T t) throws DaoException;
 
-    boolean delete(T t) throws DaoException;
+    boolean delete(long id) throws DaoException;
 
     List<T> findAll() throws DaoException;
 

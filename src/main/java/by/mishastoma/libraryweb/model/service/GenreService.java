@@ -11,4 +11,5 @@ public interface GenreService {
     Optional<Genre> addGenre(String name) throws ServiceException;
     Optional<Genre> getById(long id) throws ServiceException;
     boolean updateGenre (long id, String name) throws ServiceException;
+    boolean deleteGenre(long id) throws ServiceException;
 }
