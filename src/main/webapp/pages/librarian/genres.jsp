@@ -18,13 +18,18 @@
     <thead>
     <tr>
         <th scope="col"><fmt:message key="genres.genre_name"/></th>
+        <th scope="col"></th>
     </tr>
     </thead>
     <tbody>
 
     <c:forEach items="${genres_list}" var="genre">
         <tr>
-            <th>${genre.getName()}</th>
+            <td>${genre.getName()}</td>
+            <td><a class="nav-link"
+                   href="${pageContext.request.contextPath}/controller?command=go_to_update_genre_page&genre_id=${genre.getId()}">
+                <button class="btn btn-primary"><fmt:message key="edit"/></button>
+            </a></td>
         </tr>
     </c:forEach>
     </tbody>

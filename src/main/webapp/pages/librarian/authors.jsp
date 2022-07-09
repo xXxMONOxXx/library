@@ -24,9 +24,9 @@
 
     <c:forEach items="${authors_list}" var="author">
         <tr>
-            <th><a class="nav-link"
+            <td><a class="nav-link"
                    href="${pageContext.request.contextPath}/controller?command=go_to_author_page&author_id=${author.getId()}">
-                    ${author.getFirstname()} ${author.getLastname()}</a></th>
+                    ${author.getFirstname()} ${author.getLastname()}</a></td>
         </tr>
     </c:forEach>
     </tbody>

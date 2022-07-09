@@ -61,4 +61,30 @@ public class GenreServiceImpl implements GenreService {
         }
         return optionalGenre;
     }
+
+    @Override
+    public Optional<Genre> getById(long id) throws ServiceException {
+        Optional<Genre> optionalGenre = Optional.empty();
+        GenreDao genreDao = GenreDaoImpl.getInstance();
+        try {
+            optionalGenre = genreDao.getGenreById(id);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return optionalGenre;
+    }
+
+    @Override
+    public boolean updateGenre(long id, String name) throws ServiceException {
+        GenreValidator validator = GenreValidatorImpl.getInstance();
+        if(!validator.isValidName(name)){
+            return false;
+        }
+        GenreDao genreDao = GenreDaoImpl.getInstance();
+        try {
+            return genreDao.update(new Genre(id, name));
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
 }

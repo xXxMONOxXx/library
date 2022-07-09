@@ -24,6 +24,7 @@ public final class AttributeName {
     public static final String BOOKS_LIST = "books_list";
     public static final String AUTHOR = "author";
     public static final String AUTHOR_ID = "author_id";
+    public static final String GENRE = "genre";
 
     public static final String SIGN_IN_MESSAGE = "sign_in_msg";
     public static final String SIGN_UP_LOGIN_IS_INVALID = "sign_up_login_is_invalid";
@@ -57,4 +58,9 @@ public final class AttributeName {
 
     public static final String UPDATE_PASSWORD_SUCCESS = "updated_users_password_successfully";
     public static final String UPDATE_PASSWORD_FAILED = "update_users_password_failed";
+
+    public static final String UPDATE_GENRE_FAILED = "genre_update_failed";
+    public static final String UPDATE_GENRE_SUCCESS = "updated_genre_successfully";
+
+    public static final String FAILED_TO_GET_GENRE = "failed_to_get_genre";
 }

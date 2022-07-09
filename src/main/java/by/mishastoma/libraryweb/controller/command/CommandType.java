@@ -26,6 +26,8 @@ public enum CommandType {
     GO_TO_UPDATE_AUTHOR_PAGE (new GoToUpdateAuthorPageCommand()),
     UPDATE_AUTHOR (new UpdateAuthorCommand()),
     CHANGE_USERS_PASSWORD(new ChangeUsersPasswordCommand()),
+    GO_TO_UPDATE_GENRE_PAGE(new GoToUpdateGenrePageCommand()),
+    UPDATE_GENRE(new UpdateGenreCommand()),
     GO_TO_ALL_BOOKS_PAGE(new GoToAllBooksPageCommand());
 
     private Command command;
