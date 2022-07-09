@@ -1,6 +1,11 @@
 package by.mishastoma.libraryweb.controller;
 
 public final class PagesPath {
+
+    private PagesPath(){
+
+    }
+
     public static final String INDEX = "pages/home/index.jsp";
     public static final String HOME = "pages/home/home.jsp";
     public static final String ADMIN_USERS = "pages/admin/users.jsp";
@@ -20,4 +25,5 @@ public final class PagesPath {
     public static final String USERS = "pages/admin/users.jsp";
     public static final String UPDATE_AUTHOR = "pages/librarian/update_author.jsp";
     public static final String UPDATE_GENRE = "pages/librarian/update_genre.jsp";
+    public static final String UPDATE_BOOK = "pages/librarian/update_book.jsp";
 }

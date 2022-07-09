@@ -86,6 +86,24 @@ public class Book extends AbstractEntity {
         this.ageLimitation = ageLimitation;
     }
 
+    public boolean hasAuthorsId(long id){
+        for(Author author : authors){
+            if(author.getId() == id){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasGenresId(long id){
+        for(Genre genre : genres){
+            if(genre.getId() == id){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public String getPhotoCoverAsBase64(){
         try {
             if(coverPhoto!=null) {

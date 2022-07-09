@@ -6,6 +6,10 @@
 </head>
 <body>
 
+<c:if test="${requestScope.failed_to_get_book}">
+    <p class="text-danger"> <fmt:message key="librarian.failed_to_get_book"/></p>
+</c:if>
+
 <table class="table">
     <thead>
     <tr>

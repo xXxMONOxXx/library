@@ -17,6 +17,8 @@ public interface BookDao extends BaseDao<Book> {
 
     Optional<Book> getBookById(long bookId) throws DaoException;
 
+    Integer getBooksFreeQuantity(long bookId) throws DaoException;
+
     Integer getBooksQuantity(long bookId) throws DaoException;
 
     List<Long> getBooksAuthorsIds(long bookId) throws DaoException;
@@ -32,4 +34,12 @@ public interface BookDao extends BaseDao<Book> {
     boolean setLibItemToUser (long libItemId, long userId) throws DaoException;
 
     long getItemId (long bookId, long userId) throws DaoException;
+
+    boolean updateWithoutCoverPhoto(Book book) throws DaoException;
+
+    boolean deleteBooksGenres(long bookId) throws DaoException;
+
+    boolean deleteBooksAuthors(long bookId) throws DaoException;
+
+    boolean deleteBooksLibItems(long bookId) throws DaoException;
 }

@@ -46,6 +46,7 @@ public final class ParameterName {
     public static final String BOOK_QUANTITY = "quantity";
     public static final String BOOK_INFO = "book_info";
     public static final String BOOK_COVER_PHOTO = "cover_photo";
+    public static final String DELETE_COVER_PHOTO = "delete_cover_photo";
 
     public static final String INVALID_BOOK_NAME = "invalid_book_name";
     public static final String INVALID_BOOK_RELEASE_DATE = "invalid_release_date";

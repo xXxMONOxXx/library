@@ -28,6 +28,8 @@ public enum CommandType {
     CHANGE_USERS_PASSWORD(new ChangeUsersPasswordCommand()),
     GO_TO_UPDATE_GENRE_PAGE(new GoToUpdateGenrePageCommand()),
     UPDATE_GENRE(new UpdateGenreCommand()),
+    UPDATE_BOOK (new UpdateBookCommand()),
+    GO_TO_UPDATE_BOOK_PAGE (new GoToUpdateBookPageCommand()),
     GO_TO_ALL_BOOKS_PAGE(new GoToAllBooksPageCommand());
 
     private Command command;

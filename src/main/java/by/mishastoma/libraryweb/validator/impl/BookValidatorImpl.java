@@ -17,14 +17,14 @@ public class BookValidatorImpl implements BookValidator {
     private static final String IMAGE_TYPE = "image/png";
     private static final int SIXTEEN_MB = 16777216;
 
-    private BookValidatorImpl(){
+    private BookValidatorImpl() {
 
     }
 
     public static BookValidatorImpl instance;
 
-    public static BookValidatorImpl getInstance(){
-        if(instance==null){
+    public static BookValidatorImpl getInstance() {
+        if (instance == null) {
             instance = new BookValidatorImpl();
         }
         return instance;
@@ -32,7 +32,7 @@ public class BookValidatorImpl implements BookValidator {
 
     @Override
     public boolean isValidName(String name) {
-        if(StringUtils.isEmptyOrWhitespaceOnly(name)){
+        if (StringUtils.isEmptyOrWhitespaceOnly(name)) {
             return false;
         }
         Pattern pattern = Pattern.compile(BOOK_NAME_REGEX);
@@ -41,25 +41,24 @@ public class BookValidatorImpl implements BookValidator {
 
     @Override
     public boolean isValidReleaseDate(String releaseDate) {
-        if(StringUtils.isEmptyOrWhitespaceOnly(releaseDate)){
+        if (StringUtils.isEmptyOrWhitespaceOnly(releaseDate)) {
             return false;
         }
         Pattern pattern = Pattern.compile(RELEASE_DATE_REGEX);
-        if(!pattern.matcher(releaseDate).matches()){
+        if (!pattern.matcher(releaseDate).matches()) {
             return false;
         }
         try {
             LocalDate date = LocalDate.parse(releaseDate);
             return true;
-        }
-        catch (DateTimeParseException e){
+        } catch (DateTimeParseException e) {
             return false;
         }
     }
 
     @Override
     public boolean isValidAbout(String about) {
-        if(!StringUtils.isEmptyOrWhitespaceOnly(about)){
+        if (!StringUtils.isEmptyOrWhitespaceOnly(about)) {
             return about.length() < ABOUT_MAX_SIZE;
         }
         return true;
@@ -67,7 +66,7 @@ public class BookValidatorImpl implements BookValidator {
 
     @Override
     public boolean isValidQuantity(String quantity) {
-        if(StringUtils.isEmptyOrWhitespaceOnly(quantity)){
+        if (StringUtils.isEmptyOrWhitespaceOnly(quantity)) {
             return false;
         }
         Pattern pattern = Pattern.compile(NUMBER_REGEX);
@@ -76,7 +75,7 @@ public class BookValidatorImpl implements BookValidator {
 
     @Override
     public boolean isValidAgeLimitations(String ageLimitations) {
-        if(StringUtils.isEmptyOrWhitespaceOnly(ageLimitations)){
+        if (StringUtils.isEmptyOrWhitespaceOnly(ageLimitations)) {
             return false;
         }
         Pattern pattern = Pattern.compile(NUMBER_REGEX);
@@ -85,25 +84,27 @@ public class BookValidatorImpl implements BookValidator {
 
     @Override
     public boolean isValidPicture(Part file) {
-        if(file != null){
-            if(!IMAGE_TYPE.equals(file.getContentType())){
-                return false;
+        if (file != null) {
+            if (file.getSize() != -1) {
+                if (!IMAGE_TYPE.equals(file.getContentType())) {
+                    return false;
+                }
+                return file.getSize() <= SIXTEEN_MB;
             }
-            return file.getSize() <= SIXTEEN_MB;
         }
         return true;
     }
 
     @Override
     public boolean isValidIdsArray(String[] ids) {
-        if(ids == null){
+        if (ids == null) {
             return false;
         }
-        if(ids.length <=0){
+        if (ids.length <= 0) {
             return false;
         }
-        for(String id : ids){
-            if(!StringUtils.isStrictlyNumeric(id)){
+        for (String id : ids) {
+            if (!StringUtils.isStrictlyNumeric(id)) {
                 return false;
             }
         }
