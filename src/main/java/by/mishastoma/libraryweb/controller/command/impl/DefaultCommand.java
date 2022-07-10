@@ -10,6 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 public class DefaultCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        return new Router(PagesPath.INDEX, Router.Type.FORWARD);
+        return new Router(PagesPath.NOT_FOUND, Router.Type.FORWARD);
     }
 }

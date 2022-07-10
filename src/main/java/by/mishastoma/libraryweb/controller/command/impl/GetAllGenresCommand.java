@@ -19,8 +19,6 @@ public class GetAllGenresCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         Router router = new Router();
-        HttpSession session = request.getSession();
-        //todo validate session
         GenreService service = GenreServiceImpl.getInstance();
         try {
             List<Genre> genres = service.getAll();

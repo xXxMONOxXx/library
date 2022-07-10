@@ -33,6 +33,7 @@ public enum CommandType {
     DELETE_AUTHOR (new DeleteAuthorCommand()),
     DELETE_BOOK (new DeleteBookCommand()),
     DELETE_GENRE(new DeleteGenreCommand()),
+    SET_LOCALIZATION (new SetLocalizationCommand()),
     GO_TO_ALL_BOOKS_PAGE(new GoToAllBooksPageCommand());
 
     private Command command;

@@ -1,14 +1,23 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<fmt:setLocale value="${sessionScope.language}" scope="session"/>
+<c:choose>
+    <c:when test="${not empty sessionScope.locale}"><fmt:setLocale value="${sessionScope.locale}"/></c:when>
+    <c:when test="${empty sessionScope.locale}"><fmt:setLocale value="${sessionScope.locale = 'en_US'}"/></c:when>
+</c:choose>
+
 <fmt:setBundle basename="language"/>
 
 <html>
 <head>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/stylesheets/bootstrap/css/bootstrap.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/stylesheets/bootstrap/css/bootstrap.css"
+          type="text/css">
+    <script src="${pageContext.request.contextPath}/stylesheets/bootstrap/js/bootstrap.bundle.js"></script>
     <script src="${pageContext.request.contextPath}/stylesheets/bootstrap/js/bootstrap.js"></script>
 </head>
+
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="${pageContext.request.contextPath}/pages/home/index.jsp"> <fmt:message
@@ -19,10 +28,34 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
         <ul class="navbar-nav mr-auto">
 
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <fmt:message key="header.language"/>
+                </a>
+
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item"
+                       href="${pageContext.request.contextPath}/controller?command=set_localization&locale=en_US">
+                        <fmt:message key="header.language.english"/></a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item"
+                           href="${pageContext.request.contextPath}/controller?command=set_localization&locale=ru_RU">
+                            <fmt:message key="header.language.russian"/></a>
+                    </li>
+
+                    </li>
+                </ul>
+            </li>
+
             <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/controller?command=go_to_all_books_page"><fmt:message key="header.books"/></a>
+                <a class="nav-link"
+                   href="${pageContext.request.contextPath}/controller?command=go_to_all_books_page"><fmt:message
+                        key="header.books"/></a>
             </li>
 
             <c:if test="${sessionScope.user_id != null}">
@@ -75,7 +108,9 @@
                 </c:if>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/controller?command=sign_out"><fmt:message key="entry.sign_out"/></a>
+                    <a class="nav-link"
+                       href="${pageContext.request.contextPath}/controller?command=sign_out"><fmt:message
+                            key="entry.sign_out"/></a>
                 </li>
 
             </c:if>

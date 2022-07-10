@@ -1,4 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/pages/parts/header.jsp" %>
 
 <html>
@@ -13,36 +12,35 @@
 <h1><fmt:message key="profile.birthdate"/> ${user.getBirthdate()}</h1>
 <h1><fmt:message key="profile.balance"/> ${user.getDaysBalance()}</h1>
 
-
-<form action="${pageContext.request.contextPath}/controller" method="post">
-
-    <input type="hidden" name="command" value="add_balance_to_user"/>
-
-    <input type="hidden" name="user_id" value="${user.getId()}"/>
-
-
-    <c:if test="${requestScope.balance_changed_successfully}">
-        <p class="text-success"><fmt:message key="user.balance_changed_successfully"/></p>
-    </c:if>
-
-    <c:if test="${requestScope.balance_changed_failed}">
-        <p class="text-danger"><fmt:message key="user.balance_change_failed"/></p>
-    </c:if>
-
-    <div class="col">
-        <div class="form-outline">
-            <label for="change_balance"><fmt:message key="book.quantity"/></label>
-            <input class="form-control" type="number" id="change_balance" name="change_balance"
-                   min="1" max="100">
-        </div>
-    </div>
-
-    <div class="col text-center">
-        <button type="submit" class="btn btn-primary btn-block mb-4"><fmt:message key="user.change_balance"/></button>
-    </div>
-</form>
-
 <c:if test="${sessionScope.user_role eq 'ADMIN' or sessionScope.user_id == user.getId()}">
+
+    <form action="${pageContext.request.contextPath}/controller" method="post">
+
+        <input type="hidden" name="command" value="add_balance_to_user"/>
+
+        <input type="hidden" name="user_id" value="${user.getId()}"/>
+
+
+        <c:if test="${requestScope.balance_changed_successfully}">
+            <p class="text-success"><fmt:message key="user.balance_changed_successfully"/></p>
+        </c:if>
+
+        <c:if test="${requestScope.balance_changed_failed}">
+            <p class="text-danger"><fmt:message key="user.balance_change_failed"/></p>
+        </c:if>
+
+        <div class="col">
+            <div class="form-outline">
+                <label for="change_balance"><fmt:message key="profile.balance"/></label>
+                <input class="form-control" type="number" id="change_balance" name="change_balance"
+                       min="1" max="100">
+            </div>
+        </div>
+
+        <div class="col text-center">
+            <button type="submit" class="btn btn-primary btn-block mb-4"><fmt:message key="user.change_balance"/></button>
+        </div>
+    </form>
 
     <c:if test="${requestScope.updated_users_password_successfully}">
         <p class="text-success"><fmt:message key="profile.change_password_success"/></p>
@@ -79,14 +77,15 @@
         </div>
     </form>
 
-    <c:if test="${books_list.size() !=0}">
-        <c:if test="${requestScope.returned_book_successfully}">
-            <p class="text-success"><fmt:message key="user_returned_book_success"/></p>
-        </c:if>
+    <c:if test="${requestScope.returned_book_successfully}">
+        <p class="text-success"><fmt:message key="user_returned_book_success"/></p>
+    </c:if>
 
-        <c:if test="${requestScope.returned_book_failed}">
-            <p class="text-danger"><fmt:message key="user_returned_book_failed"/></p>
-        </c:if>
+    <c:if test="${requestScope.returned_book_failed}">
+        <p class="text-danger"><fmt:message key="user_returned_book_failed"/></p>
+    </c:if>
+
+    <c:if test="${books_list.size() !=0}">
 
         <form action="${pageContext.request.contextPath}/controller" method="post">
             <table class="table">
@@ -126,6 +125,12 @@
         </form>
     </c:if>
 </c:if>
+
+<br/>
+<br/>
+
+
+<jsp:include page="/pages/parts/footer.jsp"/>
 
 </body>
 </html>

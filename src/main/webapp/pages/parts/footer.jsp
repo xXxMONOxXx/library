@@ -5,8 +5,6 @@
 <fmt:setLocale value="${sessionScope.language}" scope="session"/>
 <fmt:setBundle basename="language"/>
 
-<%--todo FIX FOOTER!!!--%>
-
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/stylesheets/bootstrap/css/bootstrap.css">

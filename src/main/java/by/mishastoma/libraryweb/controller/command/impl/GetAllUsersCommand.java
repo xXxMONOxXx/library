@@ -18,10 +18,7 @@ import java.util.List;
 public class GetAllUsersCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-
         Router router = new Router();
-        HttpSession session = request.getSession();
-        //todo validate session
         UserService userService = UserServiceImpl.getInstance();
         try {
             List<User> users = userService.getAll();

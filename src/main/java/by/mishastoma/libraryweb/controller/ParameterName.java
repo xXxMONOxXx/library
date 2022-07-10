@@ -2,10 +2,6 @@ package by.mishastoma.libraryweb.controller;
 
 public final class ParameterName {
 
-    private ParameterName(){
-
-    }
-
     public static final String ID = "id";
     public static final String PAGE = "page";
     public static final String USER_ID = "user_id";
@@ -24,6 +20,7 @@ public final class ParameterName {
     public static final String AUTHOR_ID = "author_id";
     public static final String GENRE_ID = "genre_id";
     public static final String SEARCH_INPUT = "search_input";
+    public static final String LANGUAGE = "locale";
 
     public static final String SIGN_UP_LOGIN_IS_INVALID = "sign_up_login_is_invalid";
     public static final String SIGN_UP_FIRSTNAME_IS_INVALID = "sign_up_firstname_is_invalid";
@@ -60,4 +57,8 @@ public final class ParameterName {
     public static final String INVALID_BOOK_COVER_PHOTO = "invalid_book_cover_photo";
 
     public static final String CHANGE_BALANCE = "change_balance";
+
+    private ParameterName(){
+
+    }
 }

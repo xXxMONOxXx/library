@@ -20,26 +20,24 @@ import java.util.*;
 public class SignUpCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        Router router = new Router();
         Set<String> invalids = new HashSet<>();
         UserService service = UserServiceImpl.getInstance();
         try{
             Optional<User> user = service.signUp(createUserMap(request), invalids);
             if(user.isPresent()){
-                router.setPage(PagesPath.HOME);
                 HttpSession session = request.getSession();
                 session.setAttribute(AttributeName.USER_ID, user.get().getId());
                 session.setAttribute(AttributeName.ROLE, user.get().getRole().toString());
+                return new GoToAllBooksPageCommand().execute(request, response);
             }
             else{
                 addInvalidsToRequest(request, invalids);
-                router.setPage(PagesPath.ENTRY_SIGN_UP);
+                return new Router(PagesPath.ENTRY_SIGN_UP);
             }
         }
         catch (ServiceException e){
             throw new CommandException(e);
         }
-        return router;
     }
 
     private Map<String, String> createUserMap(HttpServletRequest request){

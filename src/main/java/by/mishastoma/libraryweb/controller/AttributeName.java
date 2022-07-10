@@ -2,10 +2,6 @@ package by.mishastoma.libraryweb.controller;
 
 public final class AttributeName {
 
-    private AttributeName(){
-
-    }
-
     public static final String USER = "user";
     public static final String USER_ID = "user_id";
     public static final String LOGIN = "user_login";
@@ -30,6 +26,9 @@ public final class AttributeName {
     public static final String CURRENT_PAGE = "current_page";
     public static final String NUMBER_OF_PAGES = "number_of_pages";
     public static final String SEARCH_INPUT = "search_input";
+    public static final String LANGUAGE = "locale";
+
+    public static final String INVALID_LOCALE = "invalid_locale";
 
     public static final String SIGN_IN_MESSAGE = "sign_in_msg";
     public static final String SIGN_UP_LOGIN_IS_INVALID = "sign_up_login_is_invalid";
@@ -81,4 +80,8 @@ public final class AttributeName {
 
     public static final String FAILED_TO_DELETE_BOOK = "failed_to_delete_book";
     public static final String DELETE_BOOK_SUCCESS = "delete_book_success";
+
+    private AttributeName(){
+
+    }
 }

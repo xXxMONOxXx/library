@@ -19,5 +19,7 @@ public final class TableColumn {
     public static final String RELEASE_DATE = "release_date";
     public static final String BALANCE = "days_balance";
 
+    private TableColumn() {
 
+    }
 }

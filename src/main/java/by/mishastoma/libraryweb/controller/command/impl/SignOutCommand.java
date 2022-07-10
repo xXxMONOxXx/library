@@ -11,6 +11,6 @@ public class SignOutCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         request.getSession().invalidate();
-        return new Router(PagesPath.INDEX, Router.Type.FORWARD);
+        return new Router(PagesPath.INDEX, Router.Type.REDIRECT);
     }
 }

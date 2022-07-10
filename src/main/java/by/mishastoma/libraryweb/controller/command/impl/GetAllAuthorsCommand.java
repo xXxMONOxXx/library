@@ -11,7 +11,6 @@ import by.mishastoma.libraryweb.model.service.AuthorService;
 import by.mishastoma.libraryweb.model.service.impl.AuthorServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
 
@@ -19,8 +18,6 @@ public class GetAllAuthorsCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         Router router = new Router();
-        HttpSession session = request.getSession();
-        //todo validate session
         AuthorService service = AuthorServiceImpl.getInstance();
         try {
             List<Author> authors = service.getAll();

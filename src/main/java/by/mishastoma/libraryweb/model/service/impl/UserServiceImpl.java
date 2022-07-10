@@ -8,6 +8,7 @@ import by.mishastoma.libraryweb.exception.DaoException;
 import by.mishastoma.libraryweb.exception.ServiceException;
 import by.mishastoma.libraryweb.model.entity.UserRole;
 import by.mishastoma.libraryweb.model.service.UserService;
+import by.mishastoma.libraryweb.util.PasswordEncryptor;
 import by.mishastoma.libraryweb.validator.UserValidator;
 import by.mishastoma.libraryweb.validator.impl.UserValidatorImpl;
 
@@ -34,9 +35,10 @@ public class UserServiceImpl implements UserService {
         UserValidator validator = UserValidatorImpl.getInstance();
 
         if (validator.isValidLogin(login) && validator.isValidPassword(password)) {
-            try { // todo add new sign in methods (email) AND check for is_blocked
+            try {
+                String encryptedPassword = PasswordEncryptor.encrypt(password);
                 UserDao dao = UserDaoImpl.getInstance();
-                optionalUser = dao.signIn(login, password);
+                optionalUser = dao.signIn(login, encryptedPassword);
             } catch (DaoException e) {
                 throw new ServiceException(e);
             }
@@ -48,13 +50,13 @@ public class UserServiceImpl implements UserService {
     public Optional<User> signUp(Map<String, String> mapUser, Set<String> invalids) throws ServiceException {
         Optional<User> optionalUser = Optional.empty();
         if (isValidUser(mapUser, invalids)) {
-            String passwordEncryptor; //todo
-            User user = new User.Builder(-1). //todo is it normal? I think not ;(
+            String encryptedPassword = PasswordEncryptor.encrypt(mapUser.get(ParameterName.PASSWORD));
+            User user = new User.Builder(-1).
                     withLogin(mapUser.get(ParameterName.LOGIN)).
                     withFirstName(mapUser.get(ParameterName.FIRST_NAME)).
                     withLastName(mapUser.get(ParameterName.LAST_NAME)).
                     withEmail(mapUser.get(ParameterName.EMAIL)).
-                    withPassword(mapUser.get(ParameterName.PASSWORD)).
+                    withPassword(encryptedPassword).
                     withBirthdate(LocalDate.parse(mapUser.get(ParameterName.BIRTHDATE))).
                     withRole(UserRole.USER).
                     build();
@@ -165,10 +167,10 @@ public class UserServiceImpl implements UserService {
             if(passwordFromDb == null){
                 return false;
             }
-            if(!passwordFromDb.equals(oldPassword)){
+            if(!passwordFromDb.equals(PasswordEncryptor.encrypt(oldPassword))){
                 return false;
             }
-            return userDao.changeUsersPassword(id, newPassword);
+            return userDao.changeUsersPassword(id, PasswordEncryptor.encrypt(newPassword));
 
         } catch (DaoException e) {
             throw new ServiceException(e);
