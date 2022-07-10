@@ -10,8 +10,13 @@ import by.mishastoma.libraryweb.model.service.UserService;
 import by.mishastoma.libraryweb.model.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ChangeUsersPasswordCommand implements Command {
+
+    private static final Logger logger = LogManager.getLogger();
+
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String oldPassword = request.getParameter(ParameterName.OLD_PASSWORD);
@@ -25,6 +30,7 @@ public class ChangeUsersPasswordCommand implements Command {
                 try {
                     if (userService.changeUsersPassword(userId, oldPassword, newPassword)) {
                         request.setAttribute(AttributeName.UPDATE_PASSWORD_SUCCESS, true);
+                        logger.info("Changed users password, user id - {}", userId);
                     } else {
                         request.setAttribute(AttributeName.UPDATE_PASSWORD_FAILED, true);
                     }

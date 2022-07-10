@@ -28,11 +28,10 @@
     <c:forEach items="${authors_list}" var="author">
         <tr>
             <td>
-                <c:if test="${sessionScope.user_role eq 'ADMIN' or sessionScope.user_role eq 'LIBRARIAN'}">
-                    <a class="nav-link"
-                       href="${pageContext.request.contextPath}/controller?command=go_to_author_page&author_id=${author.getId()}">
-                            ${author.getFirstname()} ${author.getLastname()}</a>
-                </c:if></td>
+                <a class="nav-link"
+                   href="${pageContext.request.contextPath}/controller?command=go_to_author_page&author_id=${author.getId()}">
+                        ${author.getFirstname()} ${author.getLastname()}</a>
+            </td>
         </tr>
     </c:forEach>
     </tbody>

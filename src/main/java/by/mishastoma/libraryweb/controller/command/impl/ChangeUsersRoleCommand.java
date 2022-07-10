@@ -10,8 +10,13 @@ import by.mishastoma.libraryweb.model.service.UserService;
 import by.mishastoma.libraryweb.model.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ChangeUsersRoleCommand implements Command {
+
+    private static final Logger logger = LogManager.getLogger();
+
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         long userId = Long.parseLong(request.getParameter(ParameterName.USER_ID));
@@ -23,6 +28,7 @@ public class ChangeUsersRoleCommand implements Command {
             }
             else{
                 request.setAttribute(AttributeName.CHANGE_USERS_ROLE_SUCCESS, true);
+                logger.info("Changed users role, user id - {}, new role - {}", userId , role);
             }
             return new GetUserInfoByIdCommand().execute(request, response);
         }

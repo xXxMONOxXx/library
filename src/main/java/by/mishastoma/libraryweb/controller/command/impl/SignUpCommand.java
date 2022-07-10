@@ -13,11 +13,16 @@ import by.mishastoma.libraryweb.model.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
 
 public class SignUpCommand implements Command {
+
+    private static final Logger logger = LogManager.getLogger();
+
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         Set<String> invalids = new HashSet<>();
@@ -25,6 +30,7 @@ public class SignUpCommand implements Command {
         try{
             Optional<User> user = service.signUp(createUserMap(request), invalids);
             if(user.isPresent()){
+                logger.info("User - {}, have been registered.", user.get().getId());
                 HttpSession session = request.getSession();
                 session.setAttribute(AttributeName.USER_ID, user.get().getId());
                 session.setAttribute(AttributeName.ROLE, user.get().getRole().toString());

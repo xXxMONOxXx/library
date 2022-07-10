@@ -10,8 +10,13 @@ import by.mishastoma.libraryweb.model.service.UserService;
 import by.mishastoma.libraryweb.model.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class UnblockUserCommand implements Command {
+
+    private static final Logger logger = LogManager.getLogger();
+
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         long userId = Long.parseLong(request.getParameter(ParameterName.USER_ID));
@@ -19,6 +24,7 @@ public class UnblockUserCommand implements Command {
         try {
             if(userService.setIsBlockState(userId, false)){
                 request.setAttribute(AttributeName.BLOCKED_OR_UNBLOCKED_USER_SUCCESS, true);
+                logger.info("Changed users state to unblocked, id - {}", userId);
             }
             else{
                 request.setAttribute(AttributeName.BLOCKED_OR_UNBLOCKED_USER_FAILED, true);

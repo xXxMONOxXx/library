@@ -40,7 +40,6 @@ public class AuthorDaoImpl implements AuthorDao {
 
     private static final String SELECT_ALL_AUTHORS = """
             SELECT * FROM authors """;
-    //todo add pagination
 
 
     private static AuthorDaoImpl instance = new AuthorDaoImpl();

@@ -10,12 +10,16 @@ import by.mishastoma.libraryweb.model.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
 
 public class SignInCommand implements Command {
 
     //todo check for minus balance -> block
+
+    private static final Logger logger = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -26,6 +30,7 @@ public class SignInCommand implements Command {
         try {
             Optional<User> user = userService.signIn(login, password);
             if(user.isPresent()){
+                logger.info("User - {}, sign in.", user.get().getId());
                 if(user.get().isBlocked()){
                     return new Router(PagesPath.BLOCKED_USER);
                 }

@@ -10,8 +10,13 @@ import by.mishastoma.libraryweb.model.service.GenreService;
 import by.mishastoma.libraryweb.model.service.impl.GenreServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class DeleteGenreCommand implements Command {
+
+    private static final Logger logger = LogManager.getLogger();
+
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         long genreId = Long.parseLong(request.getParameter(ParameterName.GENRE_ID));
@@ -23,6 +28,7 @@ public class DeleteGenreCommand implements Command {
             }
             else{
                 request.setAttribute(AttributeName.DELETE_GENRE_SUCCESS, true);
+                logger.info("Deleted genre.");
                 return new GetAllGenresCommand().execute(request, response);
             }
         } catch (ServiceException e) {

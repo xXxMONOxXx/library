@@ -10,9 +10,14 @@ import by.mishastoma.libraryweb.model.service.BookService;
 import by.mishastoma.libraryweb.model.service.impl.BookServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class DeleteBookCommand implements Command {
+
+    private static final Logger logger = LogManager.getLogger();
+
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         long bookId = Long.parseLong(request.getParameter(ParameterName.BOOK_ID));
@@ -24,6 +29,7 @@ public class DeleteBookCommand implements Command {
             }
             else{
                 request.setAttribute(AttributeName.DELETE_BOOK_SUCCESS, true);
+                logger.info("Deleted book.");
                 return new GoToAllBooksPageCommand().execute(request, response);
             }
         } catch (ServiceException e) {

@@ -12,10 +12,15 @@ import by.mishastoma.libraryweb.model.service.GenreService;
 import by.mishastoma.libraryweb.model.service.impl.GenreServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
 
 public class AddGenreCommand implements Command {
+
+    private static final Logger logger = LogManager.getLogger();
+
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         Router router = new Router(PagesPath.LIBRARIAN_ADD_GENRE);
@@ -24,6 +29,7 @@ public class AddGenreCommand implements Command {
             Optional<Genre> genre = service.addGenre(request.getParameter(ParameterName.GENRE_NAME));
             if(genre.isPresent()){
                 request.setAttribute(AttributeName.ADD_GENRE_SUCCESS, true);
+                logger.info("Added new genre.");
             }
             else{
                 request.setAttribute(AttributeName.ADD_GENRE_INVALID_NAME, true);

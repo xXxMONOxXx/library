@@ -22,6 +22,7 @@ import java.util.*;
 
 public class AddBookCommand implements Command {
 
+    private static final Logger logger = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -34,6 +35,7 @@ public class AddBookCommand implements Command {
             }
             else{
                 request.setAttribute(AttributeName.ADD_BOOK_SUCCESS, true);
+                logger.info("Created new book.");
             }
         } catch (ServiceException e) {
             throw new CommandException(e);

@@ -10,8 +10,13 @@ import by.mishastoma.libraryweb.model.service.AuthorService;
 import by.mishastoma.libraryweb.model.service.impl.AuthorServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class DeleteAuthorCommand implements Command {
+
+    private static final Logger logger = LogManager.getLogger();
+
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         long authorId = Long.parseLong(request.getParameter(ParameterName.AUTHOR_ID));
@@ -23,6 +28,7 @@ public class DeleteAuthorCommand implements Command {
             }
             else{
                 request.setAttribute(AttributeName.DELETE_AUTHOR_SUCCESS, true);
+                logger.info("Deleted author.");
                 return new GetAllAuthorsCommand().execute(request, response);
             }
         } catch (ServiceException e) {

@@ -49,6 +49,7 @@ public class AddBookToUserCommand implements Command {
                         }
                     } else {
                         request.setAttribute(AttributeName.GOT_BOOK_SUCCESS, true);
+                        logger.info("Added book to user - {}, book id - {}", userId, bookId);
                     }
                 }
             } catch (ServiceException e) {

@@ -10,8 +10,13 @@ import by.mishastoma.libraryweb.model.service.UserService;
 import by.mishastoma.libraryweb.model.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class AddBalanceToUserCommand implements Command {
+
+    private static final Logger logger = LogManager.getLogger();
+
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         UserService userService = UserServiceImpl.getInstance();
@@ -20,6 +25,7 @@ public class AddBalanceToUserCommand implements Command {
             String changeBalance = request.getParameter(ParameterName.CHANGE_BALANCE);
             if (userService.addToUsersBalance(userId, changeBalance)) {
                 request.setAttribute(AttributeName.BALANCE_CHANGE_SUCCESS, true);
+                logger.info("Changed users balance, id - {}", userId);
             }
             else{
                 request.setAttribute(AttributeName.BALANCE_CHANGE_FAILED, true);

@@ -10,10 +10,15 @@ import by.mishastoma.libraryweb.model.service.AuthorService;
 import by.mishastoma.libraryweb.model.service.impl.AuthorServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
 public class UpdateAuthorCommand implements Command {
+
+    private static final Logger logger = LogManager.getLogger();
+
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         Set<String> invalids = new HashSet<>();
@@ -22,6 +27,7 @@ public class UpdateAuthorCommand implements Command {
             Map<String, String> authorMap = createAuthorMap(request);
             if(service.updateAuthor(authorMap, invalids)){
                 request.setAttribute(AttributeName.UPDATE_AUTHOR_SUCCESS, true);
+                logger.info("Author - {}, was updated", authorMap.get(ParameterName.AUTHOR_ID));
             }
             else {
                 request.setAttribute(AttributeName.UPDATE_AUTHOR_FAILED, true);

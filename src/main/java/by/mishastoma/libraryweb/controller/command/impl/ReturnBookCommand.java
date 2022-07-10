@@ -10,8 +10,12 @@ import by.mishastoma.libraryweb.model.service.BookService;
 import by.mishastoma.libraryweb.model.service.impl.BookServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ReturnBookCommand implements Command {
+
+    private static final Logger logger = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -22,6 +26,7 @@ public class ReturnBookCommand implements Command {
         try {
             if(bookService.freeBookFromUser(userId, bookId)){
                 request.setAttribute(AttributeName.RETURNED_BOOK_SUCCESS, true);
+                logger.info("User - {}, have returned book - {}.", userId, bookId);
             }
             else{
                 request.setAttribute(AttributeName.RETURN_BOOK_FAILED, true);

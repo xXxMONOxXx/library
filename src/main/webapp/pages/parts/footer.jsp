@@ -2,7 +2,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<fmt:setLocale value="${sessionScope.language}" scope="session"/>
+<c:choose>
+    <c:when test="${not empty sessionScope.locale}"><fmt:setLocale value="${sessionScope.locale}"/></c:when>
+    <c:when test="${empty sessionScope.locale}"><fmt:setLocale value="${sessionScope.locale = 'en_US'}"/></c:when>
+</c:choose>
+
 <fmt:setBundle basename="language"/>
 
 <html>

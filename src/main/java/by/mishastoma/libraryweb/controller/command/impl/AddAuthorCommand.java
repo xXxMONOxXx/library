@@ -12,10 +12,15 @@ import by.mishastoma.libraryweb.model.service.AuthorService;
 import by.mishastoma.libraryweb.model.service.impl.AuthorServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
 public class AddAuthorCommand implements Command {
+
+    private static final Logger logger = LogManager.getLogger();
+
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         Router router = new Router(PagesPath.LIBRARIAN_ADD_AUTHOR);
@@ -26,6 +31,7 @@ public class AddAuthorCommand implements Command {
             Optional<Author> author = service.addAuthor(authorMap, invalids);
             if(author.isPresent()){
                 request.setAttribute(AttributeName.ADD_AUTHOR_SUCCESS, true);
+                logger.info("Added new author.");
             }
             else {
                 addInvalidsToRequest(request, invalids);

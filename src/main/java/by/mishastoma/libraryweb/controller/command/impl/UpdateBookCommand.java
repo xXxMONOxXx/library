@@ -13,11 +13,16 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.*;
 
 public class UpdateBookCommand implements Command {
+
+    private static final Logger logger = LogManager.getLogger();
+
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         request.setAttribute(AttributeName.BOOK_ID, request.getParameter(ParameterName.BOOK_ID));
@@ -27,6 +32,7 @@ public class UpdateBookCommand implements Command {
             if (!bookService.updateBook(createBookMap(request), invalids)) {
                 addInvalidsToRequest(request, invalids);
             } else {
+                logger.info("Book - {}, was updated.", request.getParameter(ParameterName.BOOK_ID));
                 request.setAttribute(AttributeName.UPDATE_BOOK_SUCCESS, true);
             }
         } catch (ServiceException e) {
