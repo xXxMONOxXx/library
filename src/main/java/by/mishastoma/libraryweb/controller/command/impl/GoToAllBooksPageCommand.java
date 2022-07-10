@@ -17,7 +17,7 @@ import java.util.List;
 
 public class GoToAllBooksPageCommand implements Command {
 
-    private static final int PAGE_SIZE = 2;
+    private static final int PAGE_SIZE = 1;
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -26,9 +26,18 @@ public class GoToAllBooksPageCommand implements Command {
         try {
             String pageStr = request.getParameter(ParameterName.PAGE);
             int page = pageStr == null ? 1 : Integer.parseInt(pageStr);
-            int numberOfBooks = service.countNumberOfBooks();
-            int numberOfPages = (int) Math.ceil(numberOfBooks * 1.0 / PAGE_SIZE);
-            books = service.getAmount((page - 1) * PAGE_SIZE, PAGE_SIZE);
+            String searchInput = request.getParameter(ParameterName.SEARCH_INPUT);
+            int numberOfBooks;
+            int numberOfPages;
+            if (searchInput == null) {
+                numberOfBooks = service.countNumberOfBooks();
+                books = service.getAmount((page - 1) * PAGE_SIZE, PAGE_SIZE);
+            } else {
+                numberOfBooks = service.countBooksWithNameLike(searchInput);
+                books = service.getBooksWithNameLike(searchInput, (page - 1) * PAGE_SIZE, PAGE_SIZE);
+                request.setAttribute(AttributeName.SEARCH_INPUT , searchInput);
+            }
+            numberOfPages = (int) Math.ceil(numberOfBooks * 1.0 / PAGE_SIZE);
             request.setAttribute(AttributeName.CURRENT_PAGE, page);
             request.setAttribute(AttributeName.NUMBER_OF_PAGES, numberOfPages);
             request.setAttribute(AttributeName.BOOKS_LIST, books);

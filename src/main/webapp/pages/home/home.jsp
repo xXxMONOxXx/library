@@ -5,6 +5,20 @@
     <title>Main</title>
 </head>
 <body>
+<form action="${pageContext.request.contextPath}/controller" method="get">
+
+    <input type="hidden" name="command" value="go_to_all_books_page"/>
+
+    <div class="input-group">
+        <div class="form-outline">
+            <input type="search" id="search_form" class="form-control" name="search_input"
+                   value="${search_input}"/>
+        </div>
+        <button type="submit"
+                class="btn btn-success btn-block mb-4"><fmt:message key="search"/></button>
+    </div>
+</form>
+
 
 <c:if test="${requestScope.delete_book_success}">
     <p class="text-success"><fmt:message key="librarian.book.delete_book_success"/></p>
@@ -24,13 +38,13 @@
 
     <c:forEach items="${books_list}" var="book">
         <tr>
-            <th><a class="nav-link"
+            <td><a class="nav-link"
                    href="${pageContext.request.contextPath}/controller?command=go_to_book_page&book_id=${book.getId()}">${book.getName()}</a>
-            </th>
+            </td>
 
-            <th><img src="data:image/png;base64,${book.getPhotoCoverAsBase64()}" width="240" height="300"
+            <td><img src="data:image/png;base64,${book.getPhotoCoverAsBase64()}" width="240" height="300"
                      alt=
-                         <fmt:message key="books.cover_photo"/>/></th>
+                    <fmt:message key="books.cover_photo"/>/></td>
         </tr>
     </c:forEach>
     </tbody>
@@ -39,16 +53,42 @@
 <br/>
 
 <div class="d-flex justify-content-center">
+
     <c:if test="${requestScope.current_page > 1}">
-        <a href="${pageContext.request.contextPath}/controller?command=go_to_all_books_page&page=${requestScope.current_page - 1}">
-            <fmt:message key="books.previous"/></a>
+
+        <form action="${pageContext.request.contextPath}/controller" method="get">
+
+            <input type="hidden" name="command" value="go_to_all_books_page"/>
+
+            <input type="hidden" name="page" value="${requestScope.current_page - 1}"/>
+
+            <c:if test="${requestScope.search_input != null}">
+                <input type="hidden" name="search_input" value="${search_input}"/>
+            </c:if>
+
+            <button type="submit"
+                    class="btn btn-primary btn-block mb-4"><fmt:message key="books.previous"/></button>
+
+        </form>
     </c:if>
 
     ${requestScope.current_page}
 
     <c:if test="${requestScope.current_page < requestScope.number_of_pages}">
-        <a href="${pageContext.request.contextPath}/controller?command=go_to_all_books_page&page=${requestScope.current_page + 1}">
-            <fmt:message key="books.next"/></a>
+
+        <form action="${pageContext.request.contextPath}/controller" method="get">
+
+            <input type="hidden" name="command" value="go_to_all_books_page"/>
+
+            <input type="hidden" name="page" value="${requestScope.current_page + 1}"/>
+
+            <c:if test="${requestScope.search_input != null}">
+                <input type="hidden" name="search_input" value="${search_input}"/>
+            </c:if>
+
+            <button type="submit"
+                    class="btn btn-primary btn-block mb-4"><fmt:message key="books.next"/></button>
+        </form>
     </c:if>
 </div>
 

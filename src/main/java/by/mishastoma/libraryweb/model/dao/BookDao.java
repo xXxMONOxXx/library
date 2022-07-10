@@ -51,4 +51,8 @@ public interface BookDao extends BaseDao<Book> {
     int countNumberOfBooks() throws DaoException;
 
     List<Book> getAll(int offSet, int amount) throws DaoException;
+
+    int countBooksWithNameLike (String name) throws DaoException;
+
+    List<Book> getBooksWithLikeName(String name, int offset, int amount) throws DaoException;
 }

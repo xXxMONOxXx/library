@@ -28,7 +28,7 @@ public class SignUpCommand implements Command {
             if(user.isPresent()){
                 router.setPage(PagesPath.HOME);
                 HttpSession session = request.getSession();
-                session.setAttribute(AttributeName.ID, user.get().getId());
+                session.setAttribute(AttributeName.USER_ID, user.get().getId());
                 session.setAttribute(AttributeName.ROLE, user.get().getRole().toString());
             }
             else{

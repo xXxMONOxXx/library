@@ -28,7 +28,6 @@ public class GenreDaoImpl implements GenreDao {
 
     private static final String SELECT_ALL_GENRES = """
             SELECT * FROM genres """;
-    //todo add pagination
 
     private static final String SELECT_GENRE_BY_NAME = """
             SELECT id FROM genres WHERE name = ? """;

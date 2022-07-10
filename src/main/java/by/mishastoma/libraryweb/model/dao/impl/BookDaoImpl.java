@@ -71,6 +71,9 @@ public class BookDaoImpl implements BookDao {
     private static final String FREE_LIB_ITEM = """
             UPDATE library_items SET user_id = NULL WHERE id = ? """;
 
+    private static final String COUNT_NUMBER_OF_BOOKS_WITH_LIKE_NAME = """
+            SELECT COUNT(id) FROM books WHERE name LIKE ?""";
+
     private static final String COUNT_NUMBER_OF_BOOKS = """
             SELECT COUNT(id) FROM books""";
 
@@ -104,8 +107,11 @@ public class BookDaoImpl implements BookDao {
     private static final String SELECT_FREE_LIB_ITEMS_WITH_BOOK_ID_AND_USER_ID = """
             SELECT id FROM library_items WHERE book_id = ? AND user_id = ?""";
 
-    private static final String SELECT_BOOKS_FROM_TO = """
+    private static final String SELECT_BOOKS_OFFSET_AMOUNT = """
             SELECT * FROM books LIMIT ?, ?""";
+
+    private static final String SELECT_LIKE_BOOKS_OFFSET_AMOUNT = """
+            SELECT * FROM books WHERE name LIKE ? LIMIT ?, ?""";
 
     private static final String SELECT_ALL_BOOKS = """
             SELECT * FROM books """;
@@ -121,10 +127,9 @@ public class BookDaoImpl implements BookDao {
             statement.setString(1, book.getName());
             statement.setString(2, book.getInfo());
             statement.setDate(3, Date.valueOf(book.getReleaseDate()));
-            if(book.getAgeLimitation() == null){
-                statement.setNull(4,Types.INTEGER);
-            }
-            else{
+            if (book.getAgeLimitation() == null) {
+                statement.setNull(4, Types.INTEGER);
+            } else {
                 statement.setInt(4, book.getAgeLimitation());
             }
             statement.setBlob(5, book.getCoverPhoto());
@@ -188,10 +193,9 @@ public class BookDaoImpl implements BookDao {
             statement.setString(1, book.getName());
             statement.setString(2, book.getInfo());
             statement.setDate(3, Date.valueOf(book.getReleaseDate()));
-            if(book.getAgeLimitation() == null){
-                statement.setNull(4,Types.INTEGER);
-            }
-            else{
+            if (book.getAgeLimitation() == null) {
+                statement.setNull(4, Types.INTEGER);
+            } else {
                 statement.setInt(4, book.getAgeLimitation());
             }
             statement.setBlob(5, book.getCoverPhoto());
@@ -537,9 +541,46 @@ public class BookDaoImpl implements BookDao {
     public List<Book> getAll(int offSet, int amount) throws DaoException {
         List<Book> books = new ArrayList<>();
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_BOOKS_FROM_TO)) {
+             PreparedStatement statement = connection.prepareStatement(SELECT_BOOKS_OFFSET_AMOUNT)) {
             statement.setInt(1, offSet);
             statement.setInt(2, amount);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                CustomRowMapper<Book> mapper = BookMapper.getInstance();
+                Optional<Book> book = mapper.map(resultSet);
+                book.ifPresent(books::add);
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return books;
+    }
+
+    @Override
+    public int countBooksWithNameLike(String name) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(COUNT_NUMBER_OF_BOOKS_WITH_LIKE_NAME)) {
+            statement.setString(1, "%" + name + "%");
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return -1;
+    }
+
+    @Override
+    public List<Book> getBooksWithLikeName(String name, int offset, int amount) throws DaoException {
+        List<Book> books = new ArrayList<>();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_LIKE_BOOKS_OFFSET_AMOUNT)) {
+            statement.setString(1, "%" + name + "%");
+            statement.setInt(2, offset);
+            statement.setInt(3, amount);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 CustomRowMapper<Book> mapper = BookMapper.getInstance();

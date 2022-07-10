@@ -30,7 +30,7 @@ public class SignInCommand implements Command {
                     return new Router(PagesPath.BLOCKED_USER);
                 }
                 HttpSession session = request.getSession();
-                session.setAttribute(AttributeName.ID, user.get().getId());
+                session.setAttribute(AttributeName.USER_ID, user.get().getId());
                 session.setAttribute(AttributeName.ROLE, user.get().getRole().toString());
                 return new GoToAllBooksPageCommand().execute(request, response);
             }

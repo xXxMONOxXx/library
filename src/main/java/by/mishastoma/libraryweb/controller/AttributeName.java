@@ -7,7 +7,6 @@ public final class AttributeName {
     }
 
     public static final String USER = "user";
-    public static final String ID = "user_id"; //todo ???
     public static final String USER_ID = "user_id";
     public static final String LOGIN = "user_login";
     public static final String PASSWORD = "user_password";
@@ -30,6 +29,7 @@ public final class AttributeName {
     public static final String ACTUAL_QUANTITY = "actual_quantity";
     public static final String CURRENT_PAGE = "current_page";
     public static final String NUMBER_OF_PAGES = "number_of_pages";
+    public static final String SEARCH_INPUT = "search_input";
 
     public static final String SIGN_IN_MESSAGE = "sign_in_msg";
     public static final String SIGN_UP_LOGIN_IS_INVALID = "sign_up_login_is_invalid";

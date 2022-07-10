@@ -251,6 +251,26 @@ public class BookServiceImpl implements BookService {
         }
     }
 
+    @Override
+    public List<Book> getBooksWithNameLike(String name, int offSet, int amount) throws ServiceException {
+        BookDao bookDao = BookDaoImpl.getInstance();
+        try {
+            return bookDao.getBooksWithLikeName(name, offSet, amount);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public int countBooksWithNameLike(String name) throws ServiceException {
+        BookDao bookDao = BookDaoImpl.getInstance();
+        try {
+            return bookDao.countBooksWithNameLike(name);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
     private List<Book> getBooksByIds(List<Long> ids) throws ServiceException {
         List<Book> books = new ArrayList<>();
         BookDao bookDao = BookDaoImpl.getInstance();
