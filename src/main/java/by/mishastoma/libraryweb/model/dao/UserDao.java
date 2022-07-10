@@ -17,4 +17,5 @@ public interface UserDao extends BaseDao<User>{
     boolean changeUserState(long id, boolean isBlocked) throws DaoException;
     boolean changeUsersPassword(long id, String password) throws DaoException;
     String getUsersPassword(long id) throws DaoException;
+    boolean changeUsersRole(long id, String role) throws DaoException;
 }

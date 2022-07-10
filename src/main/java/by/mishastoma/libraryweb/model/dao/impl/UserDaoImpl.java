@@ -43,6 +43,9 @@ public class UserDaoImpl implements UserDao {
             INSERT INTO users (login, password, first_name, last_name, email, birthdate)
             VALUES(?, ?, ?, ?, ?, ?)""";
 
+    private static final String UPDATE_USERS_ROLE = """
+            UPDATE users SET role = ? WHERE id = ?""";
+
     private static final String UPDATE_BALANCE_BY_USERS_ID = """
            UPDATE users SET days_balance = ? WHERE id = ?""";
 
@@ -272,5 +275,21 @@ public class UserDaoImpl implements UserDao {
             logger.error(e);
             throw new DaoException(e);
         }
+    }
+
+    @Override
+    public boolean changeUsersRole(long id, String role) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_USERS_ROLE)) {
+            statement.setString(1, role);
+            statement.setLong(2, id);
+            if(statement.executeUpdate() == 1){
+                return true;
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return false;
     }
 }

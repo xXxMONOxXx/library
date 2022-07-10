@@ -62,6 +62,8 @@ public final class AttributeName {
 
     public static final String UPDATE_PASSWORD_SUCCESS = "updated_users_password_successfully";
     public static final String UPDATE_PASSWORD_FAILED = "update_users_password_failed";
+    public static final String FAILED_TO_CHANGE_USERS_ROLE = "failed_to_change_role";
+    public static final String CHANGE_USERS_ROLE_SUCCESS = "change_role_success";
 
     public static final String UPDATE_GENRE_FAILED = "genre_update_failed";
     public static final String UPDATE_GENRE_SUCCESS = "updated_genre_successfully";

@@ -29,10 +29,13 @@
     <c:forEach items="${genres_list}" var="genre">
         <tr>
             <td>${genre.getName()}</td>
-            <td><a class="nav-link"
-                   href="${pageContext.request.contextPath}/controller?command=go_to_update_genre_page&genre_id=${genre.getId()}">
-                <button class="btn btn-primary"><fmt:message key="edit"/></button>
-            </a></td>
+            <td>
+                <c:if test="${sessionScope.user_role eq 'ADMIN' or sessionScope.user_role eq 'LIBRARIAN'}">
+                    <a class="nav-link"
+                       href="${pageContext.request.contextPath}/controller?command=go_to_update_genre_page&genre_id=${genre.getId()}">
+                        <button class="btn btn-primary"><fmt:message key="edit"/></button>
+                    </a>
+                </c:if></td>
         </tr>
     </c:forEach>
     </tbody>

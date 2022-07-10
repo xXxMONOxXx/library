@@ -177,6 +177,17 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public boolean changeUsersRole(long id, String role) throws ServiceException {
+        UserDao userDao = UserDaoImpl.getInstance();
+        try{
+            return userDao.changeUsersRole(id, role);
+        }
+        catch (DaoException e){
+            throw new ServiceException(e);
+        }
+    }
+
     private boolean isValidUser(Map<String, String> mapUser, Set<String> invalids){
         UserValidator validator = UserValidatorImpl.getInstance();
         if (!validator.isValidLogin(mapUser.get(ParameterName.LOGIN))) {

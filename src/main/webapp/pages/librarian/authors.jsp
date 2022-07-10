@@ -14,7 +14,7 @@
 <br/>
 
 <c:if test="${requestScope.delete_author_success}">
-    <p class="text-success"> <fmt:message key="librarian.author.delete_author_success"/></p>
+    <p class="text-success"><fmt:message key="librarian.author.delete_author_success"/></p>
 </c:if>
 
 <table class="table">
@@ -27,9 +27,12 @@
 
     <c:forEach items="${authors_list}" var="author">
         <tr>
-            <td><a class="nav-link"
-                   href="${pageContext.request.contextPath}/controller?command=go_to_author_page&author_id=${author.getId()}">
-                    ${author.getFirstname()} ${author.getLastname()}</a></td>
+            <td>
+                <c:if test="${sessionScope.user_role eq 'ADMIN' or sessionScope.user_role eq 'LIBRARIAN'}">
+                    <a class="nav-link"
+                       href="${pageContext.request.contextPath}/controller?command=go_to_author_page&author_id=${author.getId()}">
+                            ${author.getFirstname()} ${author.getLastname()}</a>
+                </c:if></td>
         </tr>
     </c:forEach>
     </tbody>

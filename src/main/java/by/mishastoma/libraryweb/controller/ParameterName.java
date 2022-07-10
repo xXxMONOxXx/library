@@ -21,6 +21,7 @@ public final class ParameterName {
     public static final String GENRE_ID = "genre_id";
     public static final String SEARCH_INPUT = "search_input";
     public static final String LANGUAGE = "locale";
+    public static final String USER_ROLE = "user_role";
 
     public static final String SIGN_UP_LOGIN_IS_INVALID = "sign_up_login_is_invalid";
     public static final String SIGN_UP_FIRSTNAME_IS_INVALID = "sign_up_firstname_is_invalid";

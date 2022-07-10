@@ -58,6 +58,18 @@
                         key="header.books"/></a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link"
+                   href="${pageContext.request.contextPath}/controller?command=get_all_genres"><fmt:message
+                        key="header.genres"/></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link"
+                   href="${pageContext.request.contextPath}/controller?command=get_all_authors"><fmt:message
+                        key="header.authors"/></a>
+            </li>
+
             <c:if test="${sessionScope.user_id != null}">
 
                 <li class="nav-item">
@@ -83,18 +95,6 @@
                         <a class="nav-link"
                            href="${pageContext.request.contextPath}/pages/librarian/add_genre.jsp"><fmt:message
                                 key="header.add_genre"/></a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           href="${pageContext.request.contextPath}/controller?command=get_all_genres"><fmt:message
-                                key="header.genres"/></a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           href="${pageContext.request.contextPath}/controller?command=get_all_authors"><fmt:message
-                                key="header.authors"/></a>
                     </li>
 
                 </c:if>

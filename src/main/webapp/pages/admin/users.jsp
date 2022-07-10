@@ -33,7 +33,7 @@
         <c:forEach items="${users_list}" var="user">
             <tr>
                 <td><a class="nav-link"
-                       href="${pageContext.request.contextPath}/controller?command=get_user_info_by_id&user_id=${sessionScope.user_id}">${user.getLogin()}</a>
+                       href="${pageContext.request.contextPath}/controller?command=get_user_info_by_id&user_id=${user.getId()}">${user.getLogin()}</a>
                 </td>
                 <td>${user.getRole()}</td>
                 <td>

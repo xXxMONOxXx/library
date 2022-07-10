@@ -18,4 +18,5 @@ public interface UserService {
     int getUserBalance (long id) throws ServiceException;
     boolean setIsBlockState(long id, boolean isBlocked) throws ServiceException;
     boolean changeUsersPassword(long id, String oldPassword, String newPassword) throws ServiceException;
+    boolean changeUsersRole(long id, String role) throws ServiceException;
 }

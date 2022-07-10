@@ -12,6 +12,57 @@
 <h1><fmt:message key="profile.birthdate"/> ${user.getBirthdate()}</h1>
 <h1><fmt:message key="profile.balance"/> ${user.getDaysBalance()}</h1>
 
+<c:if test="${sessionScope.user_role eq 'ADMIN'}">
+    <c:if test="${requestScope.change_role_success}">
+        <p class="text-success"><fmt:message key="change_role_success"/></p>
+    </c:if>
+
+    <c:if test="${requestScope.failed_to_change_role}">
+        <p class="text-danger"><fmt:message key="failed_to_change_role"/></p>
+    </c:if>
+
+    <h2><fmt:message key="profile.change_role"/></h2>
+
+    <form action="${pageContext.request.contextPath}/controller" method="post">
+
+        <input type="hidden" name="command" value="change_users_role"/>
+
+        <input type="hidden" name="user_id" value="${requestScope.user.getId()}"/>
+
+        <input type="hidden" name="user_role" value="USER"/>
+
+            <button type="submit" <c:if test="${requestScope.user.getRole() eq 'USER' }"><c:out value="disabled='disabled'"/></c:if>
+                    class="btn btn-primary"><fmt:message key="role.user"/></button>
+
+    </form>
+
+    <form action="${pageContext.request.contextPath}/controller" method="post">
+
+        <input type="hidden" name="command" value="change_users_role"/>
+
+        <input type="hidden" name="user_id" value="${requestScope.user.getId()}"/>
+
+        <input type="hidden" name="user_role" value="LIBRARIAN"/>
+
+    <button type="submit" <c:if test="${requestScope.user.getRole() eq 'LIBRARIAN' }"><c:out value="disabled='disabled'"/> </c:if>
+                class="btn btn-primary"><fmt:message key="role.librarian"/></button>
+
+    </form>
+
+    <form action="${pageContext.request.contextPath}/controller" method="post">
+
+        <input type="hidden" name="command" value="change_users_role"/>
+
+        <input type="hidden" name="user_id" value="${requestScope.user.getId()}"/>
+
+        <input type="hidden" name="user_role" value="ADMIN"/>
+
+        <button type="submit" <c:if test="${requestScope.user.getRole() eq 'ADMIN'}"><c:out value="disabled='disabled'"/></c:if>
+                class="btn btn-primary"><fmt:message key="role.admin"/></button>
+
+    </form>
+</c:if>
+
 <c:if test="${sessionScope.user_role eq 'ADMIN' or sessionScope.user_id == user.getId()}">
 
     <form action="${pageContext.request.contextPath}/controller" method="post">
@@ -38,7 +89,8 @@
         </div>
 
         <div class="col text-center">
-            <button type="submit" class="btn btn-primary btn-block mb-4"><fmt:message key="user.change_balance"/></button>
+            <button type="submit" class="btn btn-primary btn-block mb-4"><fmt:message
+                    key="user.change_balance"/></button>
         </div>
     </form>
 
