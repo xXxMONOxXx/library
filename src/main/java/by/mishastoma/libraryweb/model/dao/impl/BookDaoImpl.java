@@ -71,6 +71,9 @@ public class BookDaoImpl implements BookDao {
     private static final String FREE_LIB_ITEM = """
             UPDATE library_items SET user_id = NULL WHERE id = ? """;
 
+    private static final String COUNT_NUMBER_OF_BOOKS = """
+            SELECT COUNT(id) FROM books""";
+
     private static final String COUNT_FREE_LIBRARY_ITEMS_BY_ID = """
             SELECT COUNT(id) FROM library_items WHERE book_id = ? AND user_id IS NULL """;
 
@@ -101,8 +104,11 @@ public class BookDaoImpl implements BookDao {
     private static final String SELECT_FREE_LIB_ITEMS_WITH_BOOK_ID_AND_USER_ID = """
             SELECT id FROM library_items WHERE book_id = ? AND user_id = ?""";
 
+    private static final String SELECT_BOOKS_FROM_TO = """
+            SELECT * FROM books LIMIT ?, ?""";
+
     private static final String SELECT_ALL_BOOKS = """
-            SELECT * FROM books """; // todo remove "*"
+            SELECT * FROM books """;
 
     public static BookDaoImpl getInstance() {
         return instance;
@@ -115,7 +121,12 @@ public class BookDaoImpl implements BookDao {
             statement.setString(1, book.getName());
             statement.setString(2, book.getInfo());
             statement.setDate(3, Date.valueOf(book.getReleaseDate()));
-            statement.setInt(4, book.getAgeLimitation());
+            if(book.getAgeLimitation() == null){
+                statement.setNull(4,Types.INTEGER);
+            }
+            else{
+                statement.setInt(4, book.getAgeLimitation());
+            }
             statement.setBlob(5, book.getCoverPhoto());
             if (statement.executeUpdate() == 0) {
                 return false;
@@ -142,7 +153,7 @@ public class BookDaoImpl implements BookDao {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_BOOK_BY_ID)) {
             statement.setLong(1, id);
-            if(statement.executeUpdate() == 0){
+            if (statement.executeUpdate() == 0) {
                 return false;
             }
         } catch (SQLException e) {
@@ -177,7 +188,12 @@ public class BookDaoImpl implements BookDao {
             statement.setString(1, book.getName());
             statement.setString(2, book.getInfo());
             statement.setDate(3, Date.valueOf(book.getReleaseDate()));
-            statement.setInt(4, book.getAgeLimitation());
+            if(book.getAgeLimitation() == null){
+                statement.setNull(4,Types.INTEGER);
+            }
+            else{
+                statement.setInt(4, book.getAgeLimitation());
+            }
             statement.setBlob(5, book.getCoverPhoto());
             statement.setLong(6, book.getId());
             statement.executeUpdate();
@@ -502,28 +518,67 @@ public class BookDaoImpl implements BookDao {
         }
     }
 
+    @Override
+    public int countNumberOfBooks() throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(COUNT_NUMBER_OF_BOOKS)) {
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return -1;
+    }
+
+    @Override
+    public List<Book> getAll(int offSet, int amount) throws DaoException {
+        List<Book> books = new ArrayList<>();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_BOOKS_FROM_TO)) {
+            statement.setInt(1, offSet);
+            statement.setInt(2, amount);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                CustomRowMapper<Book> mapper = BookMapper.getInstance();
+                Optional<Book> book = mapper.map(resultSet);
+                book.ifPresent(books::add);
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+        return books;
+    }
+
     private void updateBooksRelations(Book book) throws DaoException {
         deleteBookRelations(book.getId());
         setBookRelations(book);
     }
 
-    private void deleteBookRelations(long bookId) throws DaoException{
+    private void deleteBookRelations(long bookId) throws DaoException {
         deleteBooksAuthors(bookId);
         deleteBooksGenres(bookId);
         deleteBooksLibItems(bookId);
     }
 
-    private void setBookRelations(Book book) throws DaoException{
+    private void setBookRelations(Book book) throws DaoException {
         long bookId = book.getId();
 
         for (int i = 0; i < book.getQuantity(); i++) {
             addNewLibraryItem(bookId);
         }
-        for (Author author : book.getAuthors()) {
-            associateBookWithAuthor(bookId, author.getId());
+        if (book.getAuthors() != null) {
+            for (Author author : book.getAuthors()) {
+                associateBookWithAuthor(bookId, author.getId());
+            }
         }
-        for (Genre genre : book.getGenres()) {
-            associateBookWithGenre(bookId, genre.getId());
+        if (book.getGenres() != null) {
+            for (Genre genre : book.getGenres()) {
+                associateBookWithGenre(bookId, genre.getId());
+            }
         }
     }
 }

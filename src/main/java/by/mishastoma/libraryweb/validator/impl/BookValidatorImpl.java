@@ -76,7 +76,7 @@ public class BookValidatorImpl implements BookValidator {
     @Override
     public boolean isValidAgeLimitations(String ageLimitations) {
         if (StringUtils.isEmptyOrWhitespaceOnly(ageLimitations)) {
-            return false;
+            return true;
         }
         Pattern pattern = Pattern.compile(NUMBER_REGEX);
         return pattern.matcher(ageLimitations).matches();
@@ -85,7 +85,7 @@ public class BookValidatorImpl implements BookValidator {
     @Override
     public boolean isValidPicture(Part file) {
         if (file != null) {
-            if (file.getSize() != -1) {
+            if (file.getSize() != -1 && file.getSize()!=0 ) {
                 if (!IMAGE_TYPE.equals(file.getContentType())) {
                     return false;
                 }

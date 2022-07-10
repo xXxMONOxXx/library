@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BookDao extends BaseDao<Book> {
+
     boolean addNewLibraryItem(long id) throws DaoException;
 
     boolean freeLibraryItem(long itemId) throws DaoException;
@@ -46,4 +47,8 @@ public interface BookDao extends BaseDao<Book> {
     boolean deleteAuthorFromBooks(long authorId) throws DaoException;
 
     boolean deleteGenreFromBooks(long genreId) throws DaoException;
+
+    int countNumberOfBooks() throws DaoException;
+
+    List<Book> getAll(int offSet, int amount) throws DaoException;
 }

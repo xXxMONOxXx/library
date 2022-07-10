@@ -15,6 +15,7 @@ import by.mishastoma.libraryweb.model.entity.Genre;
 import by.mishastoma.libraryweb.model.service.BookService;
 import by.mishastoma.libraryweb.validator.BookValidator;
 import by.mishastoma.libraryweb.validator.impl.BookValidatorImpl;
+import com.mysql.cj.util.StringUtils;
 import jakarta.servlet.http.Part;
 
 import java.io.IOException;
@@ -51,14 +52,26 @@ public class BookServiceImpl implements BookService {
         Optional<Book> optionalBook = Optional.empty();
         if (isValidBook(bookMap, invalids)) {
             String[] authorsIds = (String[]) bookMap.get(ParameterName.BOOK_AUTHORS);
-            List<Long> authorsIdsLong = Stream.of(authorsIds).map(Long::valueOf).collect(Collectors.toList());
-            List<Author> authors = getAuthorsByIds(authorsIdsLong);
-
+            List<Author> authors = null;
+            if (authorsIds != null) {
+                List<Long> authorsIdsLong = Stream.of(authorsIds).map(Long::valueOf).collect(Collectors.toList());
+                authors = getAuthorsByIds(authorsIdsLong);
+            }
             String[] genresIds = (String[]) bookMap.get(ParameterName.BOOK_GENRES);
-            List<Long> genresIdsLong = Stream.of(genresIds).map(Long::valueOf).collect(Collectors.toList());
-            List<Genre> genres = getGenresByIds(genresIdsLong);
-
+            List<Genre> genres = null;
+            if (genresIds != null) {
+                List<Long> genresIdsLong = Stream.of(genresIds).map(Long::valueOf).collect(Collectors.toList());
+                genres = getGenresByIds(genresIdsLong);
+            }
             Part coverPhoto = (Part) bookMap.get(ParameterName.BOOK_COVER_PHOTO);
+            String ageLimitationsStr = (String) bookMap.get(ParameterName.BOOK_AGE_LIMITATIONS);
+            Integer ageLimitations;
+            if(StringUtils.isEmptyOrWhitespaceOnly(ageLimitationsStr)){
+                ageLimitations = null;
+            }
+            else{
+                ageLimitations = Integer.parseInt(ageLimitationsStr);
+            }
             try {
                 Book book = new Book.Builder(-1).
                         withName((String) bookMap.get(ParameterName.BOOK_NAME)).
@@ -66,7 +79,7 @@ public class BookServiceImpl implements BookService {
                         withReleaseDate(LocalDate.parse((String) bookMap.get(ParameterName.BOOK_RELEASE_DATE))).
                         withGenres(genres).
                         withAuthors(authors).
-                        withAgeLimitations(Integer.valueOf((String) bookMap.get(ParameterName.BOOK_AGE_LIMITATIONS))).
+                        withAgeLimitations(ageLimitations).
                         withCoverPhoto(coverPhoto.getInputStream()).
                         withQuantity(Integer.parseInt((String) bookMap.get(ParameterName.BOOK_QUANTITY)))
                         .build();
@@ -213,6 +226,26 @@ public class BookServiceImpl implements BookService {
             } else {
                 return bookDao.delete(bookId);
             }
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public int countNumberOfBooks() throws ServiceException {
+        BookDao bookDao = BookDaoImpl.getInstance();
+        try {
+            return bookDao.countNumberOfBooks();
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public List<Book> getAmount(int offSet, int amount) throws ServiceException {
+        BookDao bookDao = BookDaoImpl.getInstance();
+        try {
+            return bookDao.getAll(offSet, amount);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

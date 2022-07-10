@@ -28,6 +28,8 @@ public final class AttributeName {
     public static final String BOOK = "book";
     public static final String BOOK_ID = "book_id";
     public static final String ACTUAL_QUANTITY = "actual_quantity";
+    public static final String CURRENT_PAGE = "current_page";
+    public static final String NUMBER_OF_PAGES = "number_of_pages";
 
     public static final String SIGN_IN_MESSAGE = "sign_in_msg";
     public static final String SIGN_UP_LOGIN_IS_INVALID = "sign_up_login_is_invalid";

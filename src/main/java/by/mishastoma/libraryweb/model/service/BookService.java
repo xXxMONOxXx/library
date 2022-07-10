@@ -19,4 +19,6 @@ public interface BookService {
     int getActualBooksQuantity(long id) throws ServiceException;
     boolean updateBook(Map<String, Object> bookMap, Set<String> invalids) throws ServiceException;
     boolean deleteBook (long bookId) throws ServiceException;
+    int countNumberOfBooks() throws ServiceException;
+    List<Book> getAmount(int from, int to) throws ServiceException;
 }
