@@ -22,7 +22,7 @@ public class GoToUpdateGenrePageCommand implements Command {
         GenreService genreService = GenreServiceImpl.getInstance();
         try {
             Optional<Genre> optionalGenre = genreService.getById(genreId);
-            if(optionalGenre.isEmpty()){
+            if (optionalGenre.isEmpty()) {
                 request.setAttribute(AttributeName.FAILED_TO_GET_GENRE, true);
                 return new GetAllGenresCommand().execute(request, response);
             }

@@ -11,18 +11,17 @@ public class SetLocalizationCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String locale = request.getParameter(ParameterName.LANGUAGE);
-        if(!isValidLanguage(locale)){
+        if (!isValidLanguage(locale)) {
             request.setAttribute(AttributeName.INVALID_LOCALE, true);
-        }
-        else {
+        } else {
             HttpSession session = request.getSession();
             session.setAttribute(AttributeName.LANGUAGE, locale);
         }
         return new Router(PagesPath.INDEX, Router.Type.REDIRECT);
     }
 
-    private boolean isValidLanguage(String locale){
-        if(locale!=null){
+    private boolean isValidLanguage(String locale) {
+        if (locale != null) {
             return locale.equals(LocaleType.RUSSIAN) || locale.equals(LocaleType.ENGLISH);
         }
         return false;

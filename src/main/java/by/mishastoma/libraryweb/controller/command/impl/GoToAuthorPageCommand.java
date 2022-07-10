@@ -29,7 +29,7 @@ public class GoToAuthorPageCommand implements Command {
             long authorId = Long.parseLong(request.getParameter(ParameterName.AUTHOR_ID));
             List<Book> books = bookService.getBooksByAuthorsId(authorId);
             Optional<Author> optionalAuthor = authorService.getById(authorId);
-            if(optionalAuthor.isEmpty()){
+            if (optionalAuthor.isEmpty()) {
                 return new Router(PagesPath.NOT_FOUND);
             }
             request.setAttribute(AttributeName.BOOKS_LIST, books);

@@ -35,7 +35,7 @@ public class GoToAllBooksPageCommand implements Command {
             } else {
                 numberOfBooks = service.countBooksWithNameLike(searchInput);
                 books = service.getBooksWithNameLike(searchInput, (page - 1) * PAGE_SIZE, PAGE_SIZE);
-                request.setAttribute(AttributeName.SEARCH_INPUT , searchInput);
+                request.setAttribute(AttributeName.SEARCH_INPUT, searchInput);
             }
             numberOfPages = (int) Math.ceil(numberOfBooks * 1.0 / PAGE_SIZE);
             request.setAttribute(AttributeName.CURRENT_PAGE, page);

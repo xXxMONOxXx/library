@@ -22,11 +22,10 @@ public class UnblockUserCommand implements Command {
         long userId = Long.parseLong(request.getParameter(ParameterName.USER_ID));
         UserService userService = UserServiceImpl.getInstance();
         try {
-            if(userService.setIsBlockState(userId, false)){
+            if (userService.setIsBlockState(userId, false)) {
                 request.setAttribute(AttributeName.BLOCKED_OR_UNBLOCKED_USER_SUCCESS, true);
                 logger.info("Changed users state to unblocked, id - {}", userId);
-            }
-            else{
+            } else {
                 request.setAttribute(AttributeName.BLOCKED_OR_UNBLOCKED_USER_FAILED, true);
             }
         } catch (ServiceException e) {

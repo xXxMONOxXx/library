@@ -7,17 +7,17 @@ import java.util.regex.Pattern;
 
 public class AuthorValidatorImpl implements AuthorValidator {
 
-    private static final String NAME_REGEX ="^[A-Za-zА-Яа-я]{2,25}$";
+    private static final String NAME_REGEX = "^[A-Za-zА-Яа-я]{2,25}$";
     private static final int BIOGRAPHY_MAX_LENGTH = 1000;
 
-    private AuthorValidatorImpl(){
+    private AuthorValidatorImpl() {
 
     }
 
     public static AuthorValidatorImpl instance;
 
-    public static AuthorValidatorImpl getInstance(){
-        if(instance==null){
+    public static AuthorValidatorImpl getInstance() {
+        if (instance == null) {
             instance = new AuthorValidatorImpl();
         }
         return instance;
@@ -25,7 +25,7 @@ public class AuthorValidatorImpl implements AuthorValidator {
 
     @Override
     public boolean isValidFirstName(String firstname) {
-        if(StringUtils.isEmptyOrWhitespaceOnly(firstname)){
+        if (StringUtils.isEmptyOrWhitespaceOnly(firstname)) {
             return false;
         }
         Pattern pattern = Pattern.compile(NAME_REGEX);
@@ -34,7 +34,7 @@ public class AuthorValidatorImpl implements AuthorValidator {
 
     @Override
     public boolean isValidLastName(String lastname) {
-        if(StringUtils.isEmptyOrWhitespaceOnly(lastname)){
+        if (StringUtils.isEmptyOrWhitespaceOnly(lastname)) {
             return false;
         }
         Pattern pattern = Pattern.compile(NAME_REGEX);
@@ -43,7 +43,7 @@ public class AuthorValidatorImpl implements AuthorValidator {
 
     @Override
     public boolean isValidBiography(String biography) {
-        if(!StringUtils.isEmptyOrWhitespaceOnly(biography)){
+        if (!StringUtils.isEmptyOrWhitespaceOnly(biography)) {
             return biography.length() < BIOGRAPHY_MAX_LENGTH;
         }
         return true;

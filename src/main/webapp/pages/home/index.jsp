@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<%@include file="/pages/parts/header.jsp"%>
+<%@include file="/pages/parts/header.jsp" %>
 
 <!DOCTYPE html>
 <html>
@@ -11,7 +11,7 @@
 <body>
 
 <c:if test="${requestScope.invalid_locale}">
-    <p class="text-danger"> <fmt:message key="invalid_locale"/></p>
+    <p class="text-danger"><fmt:message key="invalid_locale"/></p>
 </c:if>
 
 

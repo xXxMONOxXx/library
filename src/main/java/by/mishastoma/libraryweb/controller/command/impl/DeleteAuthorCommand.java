@@ -22,11 +22,10 @@ public class DeleteAuthorCommand implements Command {
         long authorId = Long.parseLong(request.getParameter(ParameterName.AUTHOR_ID));
         AuthorService authorService = AuthorServiceImpl.getInstance();
         try {
-            if(!authorService.deleteAuthor(authorId)){
+            if (!authorService.deleteAuthor(authorId)) {
                 request.setAttribute(AttributeName.FAILED_TO_DELETE_AUTHOR, true);
                 return new GoToUpdateAuthorPageCommand().execute(request, response);
-            }
-            else{
+            } else {
                 request.setAttribute(AttributeName.DELETE_AUTHOR_SUCCESS, true);
                 logger.info("Deleted author.");
                 return new GetAllAuthorsCommand().execute(request, response);

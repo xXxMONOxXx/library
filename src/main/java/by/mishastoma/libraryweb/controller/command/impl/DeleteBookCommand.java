@@ -23,11 +23,10 @@ public class DeleteBookCommand implements Command {
         long bookId = Long.parseLong(request.getParameter(ParameterName.BOOK_ID));
         BookService bookService = BookServiceImpl.getInstance();
         try {
-            if(!bookService.deleteBook(bookId)){
+            if (!bookService.deleteBook(bookId)) {
                 request.setAttribute(AttributeName.FAILED_TO_DELETE_BOOK, true);
                 return new GoToUpdateBookPageCommand().execute(request, response);
-            }
-            else{
+            } else {
                 request.setAttribute(AttributeName.DELETE_BOOK_SUCCESS, true);
                 logger.info("Deleted book.");
                 return new GoToAllBooksPageCommand().execute(request, response);

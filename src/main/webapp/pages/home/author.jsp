@@ -1,5 +1,6 @@
 <%@include file="/pages/parts/header.jsp" %>
 
+<!DOCTYPE html>
 <html>
 <head>
     <title>${author.getFirstname()} ${author.getLastname()}</title>
@@ -39,7 +40,7 @@
 
                 <td><img src="data:image/png;base64,${book.getPhotoCoverAsBase64()}" width="240" height="300"
                          alt=
-                             <fmt:message key="books.cover_photo"/>/></td>
+                        <fmt:message key="books.cover_photo"/>/></td>
             </tr>
         </c:forEach>
         </tbody>

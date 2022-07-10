@@ -9,19 +9,24 @@
     <welcome-file-list>
         <welcome-file>pages/home/index.jsp</welcome-file>
     </welcome-file-list>
-
-<!--        //todo uncomment errors-->
-
-<!--    <error-page>-->
-<!--        <error-code>404</error-code>-->
-<!--        <location>/pages/errors/404.jsp</location>-->
-<!--    </error-page>-->
-<!--    <error-page>-->
-<!--        <error-code>500</error-code>-->
-<!--        <location>/pages/errors/500.jsp</location>-->
-<!--    </error-page>-->
-<!--    <error-page>-->
-<!--        <error-code>501</error-code>-->
-<!--        <location>/pages/errors/501.jsp</location>-->
-<!--    </error-page>-->
+    <error-page>
+        <error-code>403</error-code>
+        <location>/pages/errors/403.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/pages/errors/404.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>405</error-code>
+        <location>/pages/errors/405.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/pages/errors/500.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>501</error-code>
+        <location>/pages/errors/501.jsp</location>
+    </error-page>
 </web-app>

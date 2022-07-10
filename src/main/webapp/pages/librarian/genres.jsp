@@ -14,7 +14,7 @@
 <br/>
 
 <c:if test="${requestScope.delete_genre_success}">
-    <p class="text-success"> <fmt:message key="librarian.genre.delete_genre_success"/></p>
+    <p class="text-success"><fmt:message key="librarian.genre.delete_genre_success"/></p>
 </c:if>
 
 <table class="table">

@@ -6,7 +6,6 @@ import by.mishastoma.libraryweb.controller.Router;
 import by.mishastoma.libraryweb.controller.command.Command;
 import by.mishastoma.libraryweb.exception.CommandException;
 import by.mishastoma.libraryweb.exception.ServiceException;
-import by.mishastoma.libraryweb.model.entity.Book;
 import by.mishastoma.libraryweb.model.service.BookService;
 import by.mishastoma.libraryweb.model.service.impl.BookServiceImpl;
 import jakarta.servlet.ServletException;

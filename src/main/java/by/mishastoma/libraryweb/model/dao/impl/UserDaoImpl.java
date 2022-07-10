@@ -37,7 +37,7 @@ public class UserDaoImpl implements UserDao {
             SELECT id FROM users WHERE email=?""";
 
     private static final String SELECT_ALL_USERS = """
-            SELECT * FROM users """; // todo remove "*"
+            SELECT * FROM users """;
 
     private static final String ADD_NEW_USER = """
             INSERT INTO users (login, password, first_name, last_name, email, birthdate)
@@ -47,14 +47,14 @@ public class UserDaoImpl implements UserDao {
             UPDATE users SET role = ? WHERE id = ?""";
 
     private static final String UPDATE_BALANCE_BY_USERS_ID = """
-           UPDATE users SET days_balance = ? WHERE id = ?""";
+            UPDATE users SET days_balance = ? WHERE id = ?""";
 
     private static final String SELECT_USERS_BALANCE_BY_ID = """
             SELECT days_balance FROM users WHERE id = ?""";
 
     private static final String UPDATE_USER_STATE_BY_ID = """
-        UPDATE users SET is_blocked = ? WHERE id = ?
-        """;
+            UPDATE users SET is_blocked = ? WHERE id = ?
+            """;
 
     private static final String UPDATE_PASSWORD = """
             UPDATE users SET password = ? WHERE id = ?""";
@@ -85,7 +85,7 @@ public class UserDaoImpl implements UserDao {
             statement.setString(4, user.getLastname());
             statement.setString(5, user.getEmail());
             statement.setDate(6, Date.valueOf(user.getBirthdate()));
-            if(statement.executeUpdate()==0){
+            if (statement.executeUpdate() == 0) {
                 return false;
             }
         } catch (SQLException e) {
@@ -97,7 +97,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean delete(long id) throws DaoException {
-        throw new UnsupportedOperationException(); //todo
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -120,24 +120,22 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean update(User user) throws DaoException {
-        throw new UnsupportedOperationException(); //todo
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Optional<User> signIn(String login, String password) throws DaoException {
-        // todo add new sign in methods (email)
         Optional<User> optionalUser = Optional.empty();
-        try(Connection connection = ConnectionPool.getInstance().getConnection();
-            PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_LOGIN_AND_PASSWORD)){
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_LOGIN_AND_PASSWORD)) {
             statement.setString(1, login);
             statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 UserMapper mapper = UserMapper.getInstance();
                 optionalUser = mapper.map(resultSet);
             }
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DaoException(e);
         }
         return optionalUser;
@@ -185,16 +183,15 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> getUserById(long id) throws DaoException {
         Optional<User> optionalUser = Optional.empty();
-        try(Connection connection = ConnectionPool.getInstance().getConnection();
-            PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_ID)){
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_ID)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 UserMapper mapper = UserMapper.getInstance();
                 optionalUser = mapper.map(resultSet);
             }
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DaoException(e);
         }
         return optionalUser;
@@ -206,7 +203,7 @@ public class UserDaoImpl implements UserDao {
              PreparedStatement statement = connection.prepareStatement(SELECT_USERS_BALANCE_BY_ID)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 return resultSet.getInt(1);
             }
         } catch (SQLException e) {
@@ -222,7 +219,7 @@ public class UserDaoImpl implements UserDao {
              PreparedStatement statement = connection.prepareStatement(UPDATE_BALANCE_BY_USERS_ID)) {
             statement.setInt(1, balance);
             statement.setLong(2, id);
-            if(statement.executeUpdate() == 1){
+            if (statement.executeUpdate() == 1) {
                 return true;
             }
         } catch (SQLException e) {
@@ -238,7 +235,7 @@ public class UserDaoImpl implements UserDao {
              PreparedStatement statement = connection.prepareStatement(UPDATE_USER_STATE_BY_ID)) {
             statement.setBoolean(1, isBlocked);
             statement.setLong(2, id);
-            if(statement.executeUpdate() == 1){
+            if (statement.executeUpdate() == 1) {
                 return true;
             }
         } catch (SQLException e) {
@@ -254,7 +251,7 @@ public class UserDaoImpl implements UserDao {
              PreparedStatement statement = connection.prepareStatement(UPDATE_PASSWORD)) {
             statement.setString(1, password);
             statement.setLong(2, id);
-            if(statement.executeUpdate() == 1){
+            if (statement.executeUpdate() == 1) {
                 return true;
             }
         } catch (SQLException e) {
@@ -283,7 +280,7 @@ public class UserDaoImpl implements UserDao {
              PreparedStatement statement = connection.prepareStatement(UPDATE_USERS_ROLE)) {
             statement.setString(1, role);
             statement.setLong(2, id);
-            if(statement.executeUpdate() == 1){
+            if (statement.executeUpdate() == 1) {
                 return true;
             }
         } catch (SQLException e) {

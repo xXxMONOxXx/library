@@ -2,7 +2,7 @@ package by.mishastoma.libraryweb.controller;
 
 public final class PagesPath {
 
-    private PagesPath(){
+    private PagesPath() {
 
     }
 
@@ -26,4 +26,5 @@ public final class PagesPath {
     public static final String UPDATE_AUTHOR = "pages/librarian/update_author.jsp";
     public static final String UPDATE_GENRE = "pages/librarian/update_genre.jsp";
     public static final String UPDATE_BOOK = "pages/librarian/update_book.jsp";
+    public static final String PERMISSION_DENIED = "pages/errors/403.jsp";
 }

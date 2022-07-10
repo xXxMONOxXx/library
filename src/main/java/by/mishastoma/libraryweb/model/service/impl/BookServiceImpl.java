@@ -66,10 +66,9 @@ public class BookServiceImpl implements BookService {
             Part coverPhoto = (Part) bookMap.get(ParameterName.BOOK_COVER_PHOTO);
             String ageLimitationsStr = (String) bookMap.get(ParameterName.BOOK_AGE_LIMITATIONS);
             Integer ageLimitations;
-            if(StringUtils.isEmptyOrWhitespaceOnly(ageLimitationsStr)){
+            if (StringUtils.isEmptyOrWhitespaceOnly(ageLimitationsStr)) {
                 ageLimitations = null;
-            }
-            else{
+            } else {
                 ageLimitations = Integer.parseInt(ageLimitationsStr);
             }
             try {

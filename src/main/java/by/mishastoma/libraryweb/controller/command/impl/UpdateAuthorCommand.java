@@ -23,25 +23,23 @@ public class UpdateAuthorCommand implements Command {
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         Set<String> invalids = new HashSet<>();
         AuthorService service = AuthorServiceImpl.getInstance();
-        try{
+        try {
             Map<String, String> authorMap = createAuthorMap(request);
-            if(service.updateAuthor(authorMap, invalids)){
+            if (service.updateAuthor(authorMap, invalids)) {
                 request.setAttribute(AttributeName.UPDATE_AUTHOR_SUCCESS, true);
                 logger.info("Author - {}, was updated", authorMap.get(ParameterName.AUTHOR_ID));
-            }
-            else {
+            } else {
                 request.setAttribute(AttributeName.UPDATE_AUTHOR_FAILED, true);
                 addInvalidsToRequest(request, invalids);
             }
-        }
-        catch (ServiceException e){
+        } catch (ServiceException e) {
             throw new CommandException(e);
         }
         request.setAttribute(AttributeName.AUTHOR_ID, request.getParameter(ParameterName.AUTHOR_ID));
         return new GoToUpdateAuthorPageCommand().execute(request, response);
     }
 
-    private Map<String, String> createAuthorMap(HttpServletRequest request){
+    private Map<String, String> createAuthorMap(HttpServletRequest request) {
         Map<String, String> authorMap = new HashMap<>();
         authorMap.put(ParameterName.AUTHOR_ID, request.getParameter(ParameterName.AUTHOR_ID));
         authorMap.put(ParameterName.FIRST_NAME, request.getParameter(ParameterName.FIRST_NAME));

@@ -85,7 +85,7 @@ public class BookValidatorImpl implements BookValidator {
     @Override
     public boolean isValidPicture(Part file) {
         if (file != null) {
-            if (file.getSize() != -1 && file.getSize()!=0 ) {
+            if (file.getSize() != -1 && file.getSize() != 0) {
                 if (!IMAGE_TYPE.equals(file.getContentType())) {
                     return false;
                 }

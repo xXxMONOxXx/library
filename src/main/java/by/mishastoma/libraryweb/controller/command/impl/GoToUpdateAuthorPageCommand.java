@@ -22,7 +22,7 @@ public class GoToUpdateAuthorPageCommand implements Command {
         AuthorService authorService = AuthorServiceImpl.getInstance();
         try {
             Optional<Author> optionalAuthor = authorService.getById(authorId);
-            if(optionalAuthor.isEmpty()){
+            if (optionalAuthor.isEmpty()) {
                 request.setAttribute(AttributeName.FAILED_TO_GET_AUTHOR, true);
                 return new GetAllAuthorsCommand().execute(request, response);
             }

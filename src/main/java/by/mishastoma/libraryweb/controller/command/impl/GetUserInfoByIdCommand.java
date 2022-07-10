@@ -8,25 +8,35 @@ import by.mishastoma.libraryweb.controller.command.Command;
 import by.mishastoma.libraryweb.exception.CommandException;
 import by.mishastoma.libraryweb.exception.ServiceException;
 import by.mishastoma.libraryweb.model.entity.User;
+import by.mishastoma.libraryweb.model.entity.UserRole;
 import by.mishastoma.libraryweb.model.service.BookService;
 import by.mishastoma.libraryweb.model.service.UserService;
 import by.mishastoma.libraryweb.model.service.impl.BookServiceImpl;
 import by.mishastoma.libraryweb.model.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.util.Optional;
 
 
 public class GetUserInfoByIdCommand implements Command {
+
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         Router router = new Router();
         UserService userService = UserServiceImpl.getInstance();
+        HttpSession session = request.getSession();
+        String userIdStr = (String) session.getAttribute(AttributeName.USER_ID);
+        String role = (String) session.getAttribute(AttributeName.ROLE);
+        long id = Long.parseLong(request.getParameter(ParameterName.USER_ID));
+        if (!request.getParameter(ParameterName.USER_ID).equals(userIdStr) &&
+                !role.equals(UserRole.ADMIN.toString())) {
+            return new Router(PagesPath.PERMISSION_DENIED);
+        }
         try {
-            long id = Long.parseLong(request.getParameter(ParameterName.USER_ID));
             Optional<User> optionalUser = userService.getUserById(id);
-            if(optionalUser.isEmpty()){
+            if (optionalUser.isEmpty()) {
                 throw new CommandException("No user with id " + id);
             }
             BookService bookService = BookServiceImpl.getInstance();

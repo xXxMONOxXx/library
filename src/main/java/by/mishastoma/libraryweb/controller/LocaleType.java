@@ -8,7 +8,7 @@ public class LocaleType {
 
     public static final String DEFAULT = ENGLISH;
 
-    private LocaleType(){
+    private LocaleType() {
 
     }
 }

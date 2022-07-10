@@ -13,14 +13,14 @@ public class GenreMapper implements CustomRowMapper<Genre> {
 
     private static GenreMapper instance;
 
-    public static GenreMapper getInstance(){
-        if(instance==null){
+    public static GenreMapper getInstance() {
+        if (instance == null) {
             instance = new GenreMapper();
         }
         return instance;
     }
 
-    private GenreMapper(){
+    private GenreMapper() {
 
     }
 
@@ -28,13 +28,12 @@ public class GenreMapper implements CustomRowMapper<Genre> {
     public Optional<Genre> map(ResultSet resultSet) throws DaoException {
         Genre genre;
         Optional<Genre> optionalGenre;
-        try{
+        try {
             String name = resultSet.getString(TableColumn.NAME);
             long id = resultSet.getLong(TableColumn.ID);
             genre = new Genre(id, name);
             optionalGenre = Optional.of(genre);
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DaoException(e);
         }
         return optionalGenre;

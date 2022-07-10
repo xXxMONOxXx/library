@@ -22,17 +22,15 @@ public class ChangeUsersRoleCommand implements Command {
         long userId = Long.parseLong(request.getParameter(ParameterName.USER_ID));
         String role = request.getParameter(ParameterName.USER_ROLE);
         UserService userService = UserServiceImpl.getInstance();
-        try{
-            if(!userService.changeUsersRole(userId, role)){
+        try {
+            if (!userService.changeUsersRole(userId, role)) {
                 request.setAttribute(AttributeName.FAILED_TO_CHANGE_USERS_ROLE, true);
-            }
-            else{
+            } else {
                 request.setAttribute(AttributeName.CHANGE_USERS_ROLE_SUCCESS, true);
-                logger.info("Changed users role, user id - {}, new role - {}", userId , role);
+                logger.info("Changed users role, user id - {}, new role - {}", userId, role);
             }
             return new GetUserInfoByIdCommand().execute(request, response);
-        }
-        catch (ServiceException e){
+        } catch (ServiceException e) {
             throw new CommandException(e);
         }
     }

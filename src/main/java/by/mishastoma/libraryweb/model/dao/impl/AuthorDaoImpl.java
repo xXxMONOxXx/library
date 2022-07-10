@@ -113,7 +113,7 @@ public class AuthorDaoImpl implements AuthorDao {
             statement.setString(2, author.getLastname());
             statement.setString(3, author.getBiography());
             statement.setLong(4, author.getId());
-            if(statement.executeUpdate() == 1){
+            if (statement.executeUpdate() == 1) {
                 return true;
             }
         } catch (SQLException e) {
@@ -144,7 +144,7 @@ public class AuthorDaoImpl implements AuthorDao {
              PreparedStatement statement = connection.prepareStatement(SELECT_AUTHOR_BY_ID)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 CustomRowMapper<Author> mapper = AuthorMapper.getInstance();
                 optionalAuthor = mapper.map(resultSet);
             }

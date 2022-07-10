@@ -27,26 +27,24 @@ public class SignUpCommand implements Command {
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         Set<String> invalids = new HashSet<>();
         UserService service = UserServiceImpl.getInstance();
-        try{
+        try {
             Optional<User> user = service.signUp(createUserMap(request), invalids);
-            if(user.isPresent()){
+            if (user.isPresent()) {
                 logger.info("User - {}, have been registered.", user.get().getId());
                 HttpSession session = request.getSession();
                 session.setAttribute(AttributeName.USER_ID, user.get().getId());
                 session.setAttribute(AttributeName.ROLE, user.get().getRole().toString());
                 return new GoToAllBooksPageCommand().execute(request, response);
-            }
-            else{
+            } else {
                 addInvalidsToRequest(request, invalids);
                 return new Router(PagesPath.ENTRY_SIGN_UP);
             }
-        }
-        catch (ServiceException e){
+        } catch (ServiceException e) {
             throw new CommandException(e);
         }
     }
 
-    private Map<String, String> createUserMap(HttpServletRequest request){
+    private Map<String, String> createUserMap(HttpServletRequest request) {
         Map<String, String> userMap = new HashMap<>();
         userMap.put(ParameterName.LOGIN, request.getParameter(ParameterName.LOGIN));
         userMap.put(ParameterName.FIRST_NAME, request.getParameter(ParameterName.FIRST_NAME));

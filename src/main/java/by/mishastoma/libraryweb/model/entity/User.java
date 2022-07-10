@@ -31,7 +31,7 @@ public class User extends AbstractEntity {
         return login;
     }
 
-    public void setLogin(String login) { //todo remove
+    public void setLogin(String login) {
         this.login = login;
     }
 
@@ -40,7 +40,7 @@ public class User extends AbstractEntity {
     }
 
     public void setPassword(String password) {
-        this.password = password; //todo remove
+        this.password = password;
     }
 
     public String getFirstname() {
@@ -57,7 +57,7 @@ public class User extends AbstractEntity {
     }
 
     public void setEmail(String email) {
-        this.email = email; //todo remove
+        this.email = email;
     }
 
     public LocalDate getBirthdate() {
@@ -70,7 +70,7 @@ public class User extends AbstractEntity {
     }
 
     public void setRole(UserRole role) {
-        this.role = role; //todo remove
+        this.role = role;
     }
 
     public boolean isBlocked() {
@@ -114,7 +114,7 @@ public class User extends AbstractEntity {
             return this;
         }
 
-        public Builder withStatus(boolean status){
+        public Builder withStatus(boolean status) {
             newUser.isBlocked = status;
             return this;
         }
@@ -129,7 +129,7 @@ public class User extends AbstractEntity {
             return this;
         }
 
-        public Builder withBalance(int daysBalance){
+        public Builder withBalance(int daysBalance) {
             newUser.daysBalance = daysBalance;
             return this;
         }

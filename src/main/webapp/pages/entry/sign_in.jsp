@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<%@include file="/pages/parts/header.jsp"%>
+<%@include file="/pages/parts/header.jsp" %>
 
 <!DOCTYPE html>
 <html>
@@ -19,7 +19,9 @@
                         <div class="card-body p-5">
                             <h2 class="text-uppercase text-center mb-5"><fmt:message key="entry.sign_in"/></h2>
 
-                            <p class="text-danger"> ${sign_in_msg}</p>
+                            <c:if test="${requestScope.sign_in_login_or_password_invalid}">
+                                <p class="text-danger"><fmt:message key="entry.login_or_password_invalid"/></p>
+                            </c:if>
 
                             <form action="${pageContext.request.contextPath}/controller" method="post">
                                 <input type="hidden" name="command" value="sign_in"/>

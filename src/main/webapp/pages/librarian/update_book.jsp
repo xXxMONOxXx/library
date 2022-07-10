@@ -3,6 +3,7 @@
 
 <%@include file="/pages/parts/header.jsp" %>
 
+<!DOCTYPE html>
 <html>
 <head>
     <title><fmt:message key="librarian.update_book"/></title>
@@ -10,10 +11,10 @@
 <body>
 
 <c:if test="${requestScope.failed_to_delete_book}">
-    <p class="text-danger"> <fmt:message key="librarian.book.failed_to_delete_book"/></p>
+    <p class="text-danger"><fmt:message key="librarian.book.failed_to_delete_book"/></p>
 </c:if>
 <c:if test="${requestScope.update_book_success}">
-    <p class="text-success"> <fmt:message key="librarian.book.updated_book_successfully"/></p>
+    <p class="text-success"><fmt:message key="librarian.book.updated_book_successfully"/></p>
 </c:if>
 
 <form action="${pageContext.request.contextPath}/controller" method="post" enctype="multipart/form-data">
@@ -24,7 +25,7 @@
 
     <div class="row mb-4">
         <c:if test="${requestScope.invalid_book_name}">
-            <p class="text-danger"> <fmt:message key="librarian.add_book.invalid_book_name"/></p>
+            <p class="text-danger"><fmt:message key="librarian.add_book.invalid_book_name"/></p>
         </c:if>
         <div class="col">
             <div class="form-outline">
@@ -33,12 +34,13 @@
             </div>
         </div>
         <c:if test="${requestScope.invalid_release_date}">
-            <p class="text-danger"> <fmt:message key="librarian.add_book.invalid_release_date"/></p>
+            <p class="text-danger"><fmt:message key="librarian.add_book.invalid_release_date"/></p>
         </c:if>
         <div class="col">
             <div class="form-outline">
                 <label for="release_date"><fmt:message key="book.release_date"/></label>
-                <input type="date" id="release_date" class="form-control form-control-lg" name="release_date" value="${book.getReleaseDate()}"/>
+                <input type="date" id="release_date" class="form-control form-control-lg" name="release_date"
+                       value="${book.getReleaseDate()}"/>
             </div>
         </div>
     </div>
@@ -72,7 +74,7 @@
 
     <div class="row mb-4">
         <c:if test="${requestScope.invalid_age_limitationa}">
-            <p class="text-danger"> <fmt:message key="librarian.add_book.invalid_book_age_limitations"/></p>
+            <p class="text-danger"><fmt:message key="librarian.add_book.invalid_book_age_limitations"/></p>
         </c:if>
         <div class="col">
             <div class="form-outline">
@@ -82,7 +84,7 @@
             </div>
         </div>
         <c:if test="${requestScope.invalid_book_quantity}">
-            <p class="text-danger"> <fmt:message key="librarian.add_book.invalid_book_book_quantity"/></p>
+            <p class="text-danger"><fmt:message key="librarian.add_book.invalid_book_book_quantity"/></p>
         </c:if>
         <div class="col">
             <div class="form-outline">
@@ -95,7 +97,7 @@
     </div>
 
     <c:if test="${requestScope.invalid_book_info}">
-        <p class="text-danger"> <fmt:message key="librarian.add_book.invalid_book_info"/></p>
+        <p class="text-danger"><fmt:message key="librarian.add_book.invalid_book_info"/></p>
     </c:if>
     <div class="form-outline mb-4">
         <label for="book_info"><fmt:message key="book.info"/></label>
@@ -103,12 +105,13 @@
     </div>
 
     <c:if test="${requestScope.invalid_book_cover_photo}">
-        <p class="text-danger"> <fmt:message key="librarian.add_book.invalid_book_cover_photo"/></p>
+        <p class="text-danger"><fmt:message key="librarian.add_book.invalid_book_cover_photo"/></p>
     </c:if>
     <div class="form-outline mb-4">
         <label for="cover_photo"><fmt:message key="book.cover_photo"/></label>
         <img src="data:image/png;base64,${book.getPhotoCoverAsBase64()}" width="240" height="300"
-             alt=<fmt:message key="books.cover_photo"/> />
+             alt=
+             <fmt:message key="books.cover_photo"/>/>
         <input type="file" class="form-control-file" id="cover_photo" name="cover_photo">
 
         <label for="delete_cover_photo"><fmt:message key="book.delete_cover_photo"/></label>

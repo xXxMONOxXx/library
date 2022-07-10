@@ -1,5 +1,6 @@
 <%@include file="/pages/parts/header.jsp" %>
 
+<!DOCTYPE html>
 <html>
 <head>
     <title>${user.getLogin()}</title>
@@ -31,8 +32,9 @@
 
         <input type="hidden" name="user_role" value="USER"/>
 
-            <button type="submit" <c:if test="${requestScope.user.getRole() eq 'USER' }"><c:out value="disabled='disabled'"/></c:if>
-                    class="btn btn-primary"><fmt:message key="role.user"/></button>
+        <button type="submit" <c:if test="${requestScope.user.getRole() eq 'USER' }"><c:out
+                value="disabled='disabled'"/></c:if>
+                class="btn btn-primary"><fmt:message key="role.user"/></button>
 
     </form>
 
@@ -44,7 +46,8 @@
 
         <input type="hidden" name="user_role" value="LIBRARIAN"/>
 
-    <button type="submit" <c:if test="${requestScope.user.getRole() eq 'LIBRARIAN' }"><c:out value="disabled='disabled'"/> </c:if>
+        <button type="submit" <c:if test="${requestScope.user.getRole() eq 'LIBRARIAN' }"><c:out
+                value="disabled='disabled'"/> </c:if>
                 class="btn btn-primary"><fmt:message key="role.librarian"/></button>
 
     </form>
@@ -57,7 +60,8 @@
 
         <input type="hidden" name="user_role" value="ADMIN"/>
 
-        <button type="submit" <c:if test="${requestScope.user.getRole() eq 'ADMIN'}"><c:out value="disabled='disabled'"/></c:if>
+        <button type="submit" <c:if test="${requestScope.user.getRole() eq 'ADMIN'}"><c:out
+                value="disabled='disabled'"/></c:if>
                 class="btn btn-primary"><fmt:message key="role.admin"/></button>
 
     </form>

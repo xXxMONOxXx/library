@@ -64,12 +64,10 @@ public class UserServiceImpl implements UserService {
                 UserDao userDao = UserDaoImpl.getInstance();
                 if (userDao.emailExists(mapUser.get(ParameterName.EMAIL))) {
                     invalids.add(ParameterName.SIGN_UP_EMAIL_IS_INVALID);
-                }
-                else{
-                    if(userDao.loginExists(mapUser.get(ParameterName.LOGIN))){
+                } else {
+                    if (userDao.loginExists(mapUser.get(ParameterName.LOGIN))) {
                         invalids.add(ParameterName.SIGN_UP_LOGIN_IS_INVALID);
-                    }
-                    else{
+                    } else {
                         userDao.insert(user);
                         user.setId(userDao.getIdByLogin(user.getLogin()));
                         optionalUser = Optional.of(user);
@@ -109,7 +107,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean addToUsersBalance(long id, String amount) throws ServiceException {
         UserValidator validator = UserValidatorImpl.getInstance();
-        if(!validator.isValidBalance(amount)){
+        if (!validator.isValidBalance(amount)) {
             return false;
         }
         UserDao userDao = UserDaoImpl.getInstance();
@@ -126,7 +124,7 @@ public class UserServiceImpl implements UserService {
         UserDao userDao = UserDaoImpl.getInstance();
         try {
             int currentBalance = userDao.getUsersBalance(id);
-            if(currentBalance < amount){
+            if (currentBalance < amount) {
                 return false;
             }
             return userDao.updateUsersBalance(id, currentBalance - amount);
@@ -158,16 +156,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean changeUsersPassword(long id, String oldPassword, String newPassword) throws ServiceException {
         UserDao userDao = UserDaoImpl.getInstance();
-        try{
+        try {
             UserValidator validator = UserValidatorImpl.getInstance();
-            if(!validator.isValidPassword(newPassword)){
+            if (!validator.isValidPassword(newPassword)) {
                 return false;
             }
             String passwordFromDb = userDao.getUsersPassword(id);
-            if(passwordFromDb == null){
+            if (passwordFromDb == null) {
                 return false;
             }
-            if(!passwordFromDb.equals(PasswordEncryptor.encrypt(oldPassword))){
+            if (!passwordFromDb.equals(PasswordEncryptor.encrypt(oldPassword))) {
                 return false;
             }
             return userDao.changeUsersPassword(id, PasswordEncryptor.encrypt(newPassword));
@@ -180,15 +178,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean changeUsersRole(long id, String role) throws ServiceException {
         UserDao userDao = UserDaoImpl.getInstance();
-        try{
+        try {
             return userDao.changeUsersRole(id, role);
-        }
-        catch (DaoException e){
+        } catch (DaoException e) {
             throw new ServiceException(e);
         }
     }
 
-    private boolean isValidUser(Map<String, String> mapUser, Set<String> invalids){
+    private boolean isValidUser(Map<String, String> mapUser, Set<String> invalids) {
         UserValidator validator = UserValidatorImpl.getInstance();
         if (!validator.isValidLogin(mapUser.get(ParameterName.LOGIN))) {
             invalids.add(ParameterName.SIGN_UP_LOGIN_IS_INVALID);

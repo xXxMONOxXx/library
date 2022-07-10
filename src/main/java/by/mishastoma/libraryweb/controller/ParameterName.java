@@ -59,7 +59,7 @@ public final class ParameterName {
 
     public static final String CHANGE_BALANCE = "change_balance";
 
-    private ParameterName(){
+    private ParameterName() {
 
     }
 }

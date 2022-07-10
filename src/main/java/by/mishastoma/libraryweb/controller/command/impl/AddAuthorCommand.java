@@ -26,24 +26,22 @@ public class AddAuthorCommand implements Command {
         Router router = new Router(PagesPath.LIBRARIAN_ADD_AUTHOR);
         Set<String> invalids = new HashSet<>();
         AuthorService service = AuthorServiceImpl.getInstance();
-        try{
+        try {
             Map<String, String> authorMap = createAuthorMap(request);
             Optional<Author> author = service.addAuthor(authorMap, invalids);
-            if(author.isPresent()){
+            if (author.isPresent()) {
                 request.setAttribute(AttributeName.ADD_AUTHOR_SUCCESS, true);
                 logger.info("Added new author.");
-            }
-            else {
+            } else {
                 addInvalidsToRequest(request, invalids);
             }
-        }
-        catch (ServiceException e){
+        } catch (ServiceException e) {
             throw new CommandException(e);
         }
         return router;
     }
 
-    private Map<String, String> createAuthorMap(HttpServletRequest request){
+    private Map<String, String> createAuthorMap(HttpServletRequest request) {
         Map<String, String> authorMap = new HashMap<>();
         authorMap.put(ParameterName.FIRST_NAME, request.getParameter(ParameterName.FIRST_NAME));
         authorMap.put(ParameterName.LAST_NAME, request.getParameter(ParameterName.LAST_NAME));

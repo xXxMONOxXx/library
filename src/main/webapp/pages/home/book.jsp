@@ -1,5 +1,6 @@
 <%@include file="/pages/parts/header.jsp" %>
 
+<!DOCTYPE html>
 <html>
 <head>
     <title>${book.getName()}</title>
@@ -34,7 +35,6 @@
 <h2>
     <c:forEach items="${book.getGenres()}" var="genre">
         ${genre.getName()}
-        <%--    todo add link to genre--%>
     </c:forEach>
 </h2>
 

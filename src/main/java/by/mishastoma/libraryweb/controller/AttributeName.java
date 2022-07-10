@@ -30,7 +30,7 @@ public final class AttributeName {
 
     public static final String INVALID_LOCALE = "invalid_locale";
 
-    public static final String SIGN_IN_MESSAGE = "sign_in_msg";
+    public static final String SING_IN_LOGIN_OR_PASSWORD_INVALID = "sign_in_login_or_password_invalid";
     public static final String SIGN_UP_LOGIN_IS_INVALID = "sign_up_login_is_invalid";
     public static final String SIGN_UP_FIRSTNAME_IS_INVALID = "sign_up_firstname_is_invalid";
     public static final String SIGN_UP_LASTNAME_IS_INVALID = "sign_up_lastname_is_invalid";
@@ -83,7 +83,7 @@ public final class AttributeName {
     public static final String FAILED_TO_DELETE_BOOK = "failed_to_delete_book";
     public static final String DELETE_BOOK_SUCCESS = "delete_book_success";
 
-    private AttributeName(){
+    private AttributeName() {
 
     }
 }

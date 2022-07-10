@@ -22,11 +22,10 @@ public class DeleteGenreCommand implements Command {
         long genreId = Long.parseLong(request.getParameter(ParameterName.GENRE_ID));
         GenreService genreService = GenreServiceImpl.getInstance();
         try {
-            if(!genreService.deleteGenre(genreId)){
+            if (!genreService.deleteGenre(genreId)) {
                 request.setAttribute(AttributeName.FAILED_TO_DELETE_GENRE, true);
                 return new GoToUpdateGenrePageCommand().execute(request, response);
-            }
-            else{
+            } else {
                 request.setAttribute(AttributeName.DELETE_GENRE_SUCCESS, true);
                 logger.info("Deleted genre.");
                 return new GetAllGenresCommand().execute(request, response);

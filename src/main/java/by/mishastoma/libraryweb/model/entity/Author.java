@@ -13,7 +13,8 @@ public class Author extends AbstractEntity {
     }
 
     public Author(long id) {
-        super(id);}
+        super(id);
+    }
 
     public String getFirstname() {
         return firstname;

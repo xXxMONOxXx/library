@@ -9,6 +9,7 @@
 
 <fmt:setBundle basename="language"/>
 
+<!DOCTYPE html>
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/stylesheets/bootstrap/css/bootstrap.css">
@@ -18,7 +19,8 @@
 <footer class="text-center text-white fixed-bottom" style="background-color: gray;">
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
         <fmt:message key="footer.copyright"/>
-        <a class="text-white" href="${pageContext.request.contextPath}/pages/home/index.jsp"><fmt:message key="footer.company_name"/></a>
+        <a class="text-white" href="${pageContext.request.contextPath}/pages/home/index.jsp"><fmt:message
+                key="footer.company_name"/></a>
     </div>
 </footer>
 </body>

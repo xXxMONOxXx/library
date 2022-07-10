@@ -1,22 +1,17 @@
 package by.mishastoma.libraryweb.model.service.impl;
 
-import by.mishastoma.libraryweb.controller.ParameterName;
 import by.mishastoma.libraryweb.exception.DaoException;
 import by.mishastoma.libraryweb.exception.ServiceException;
 import by.mishastoma.libraryweb.model.dao.BaseDao;
 import by.mishastoma.libraryweb.model.dao.BookDao;
 import by.mishastoma.libraryweb.model.dao.GenreDao;
-import by.mishastoma.libraryweb.model.dao.UserDao;
 import by.mishastoma.libraryweb.model.dao.impl.BookDaoImpl;
 import by.mishastoma.libraryweb.model.dao.impl.GenreDaoImpl;
-import by.mishastoma.libraryweb.model.dao.impl.UserDaoImpl;
 import by.mishastoma.libraryweb.model.entity.Genre;
-import by.mishastoma.libraryweb.model.entity.User;
 import by.mishastoma.libraryweb.model.service.GenreService;
 import by.mishastoma.libraryweb.validator.GenreValidator;
 import by.mishastoma.libraryweb.validator.impl.GenreValidatorImpl;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,7 +74,7 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public boolean updateGenre(long id, String name) throws ServiceException {
         GenreValidator validator = GenreValidatorImpl.getInstance();
-        if(!validator.isValidName(name)){
+        if (!validator.isValidName(name)) {
             return false;
         }
         GenreDao genreDao = GenreDaoImpl.getInstance();
@@ -94,13 +89,12 @@ public class GenreServiceImpl implements GenreService {
     public boolean deleteGenre(long id) throws ServiceException {
         GenreDao genreDao = GenreDaoImpl.getInstance();
         BookDao bookDao = BookDaoImpl.getInstance();
-        try{
-            if(!bookDao.deleteGenreFromBooks(id)){
+        try {
+            if (!bookDao.deleteGenreFromBooks(id)) {
                 return false;
             }
             return genreDao.delete(id);
-        }
-        catch (DaoException e){
+        } catch (DaoException e) {
             throw new ServiceException(e);
         }
     }

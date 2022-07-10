@@ -9,14 +9,14 @@ public class GenreValidatorImpl implements GenreValidator {
 
     private static final String GENRE_NAME_REGEX = "^[A-Za-zА-Яа-я]{3,20}$";
 
-    private GenreValidatorImpl(){
+    private GenreValidatorImpl() {
 
     }
 
     public static GenreValidatorImpl instance;
 
-    public static GenreValidatorImpl getInstance(){
-        if(instance==null){
+    public static GenreValidatorImpl getInstance() {
+        if (instance == null) {
             instance = new GenreValidatorImpl();
         }
         return instance;
@@ -24,7 +24,7 @@ public class GenreValidatorImpl implements GenreValidator {
 
     @Override
     public boolean isValidName(String name) {
-        if(StringUtils.isEmptyOrWhitespaceOnly(name)){
+        if (StringUtils.isEmptyOrWhitespaceOnly(name)) {
             return false;
         }
         Pattern pattern = Pattern.compile(GENRE_NAME_REGEX);

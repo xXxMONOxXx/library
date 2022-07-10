@@ -56,7 +56,7 @@ public class GenreDaoImpl implements GenreDao {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(ADD_NEW_GENRE)) {
             statement.setString(1, genre.getName());
-            if(statement.executeUpdate()==0){
+            if (statement.executeUpdate() == 0) {
                 return false;
             }
         } catch (SQLException e) {
@@ -105,7 +105,7 @@ public class GenreDaoImpl implements GenreDao {
              PreparedStatement statement = connection.prepareStatement(UPDATE_GENRE)) {
             statement.setString(1, genre.getName());
             statement.setLong(2, genre.getId());
-            if(statement.executeUpdate() == 1){
+            if (statement.executeUpdate() == 1) {
                 return true;
             }
         } catch (SQLException e) {
@@ -135,7 +135,7 @@ public class GenreDaoImpl implements GenreDao {
              PreparedStatement statement = connection.prepareStatement(SELECT_GENRE_BY_ID)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 optionalGenre = Optional.of(new Genre(id, resultSet.getString(TableColumn.NAME)));
             }
 

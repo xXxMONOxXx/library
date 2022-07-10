@@ -17,8 +17,6 @@ import java.util.Optional;
 
 public class SignInCommand implements Command {
 
-    //todo check for minus balance -> block
-
     private static final Logger logger = LogManager.getLogger();
 
     @Override
@@ -29,18 +27,21 @@ public class SignInCommand implements Command {
         String password = request.getParameter(ParameterName.PASSWORD);
         try {
             Optional<User> user = userService.signIn(login, password);
-            if(user.isPresent()){
+            if (user.isPresent()) {
                 logger.info("User - {}, sign in.", user.get().getId());
-                if(user.get().isBlocked()){
+                if (user.get().isBlocked()) {
+                    return new Router(PagesPath.BLOCKED_USER);
+                }
+                if (user.get().getDaysBalance() < 0) {
+                    userService.setIsBlockState(user.get().getId(), true);
                     return new Router(PagesPath.BLOCKED_USER);
                 }
                 HttpSession session = request.getSession();
                 session.setAttribute(AttributeName.USER_ID, user.get().getId());
                 session.setAttribute(AttributeName.ROLE, user.get().getRole().toString());
                 return new GoToAllBooksPageCommand().execute(request, response);
-            }
-            else{
-                request.setAttribute(AttributeName.SIGN_IN_MESSAGE, Messages.INCORRECT_LOGIN_OR_PASSWORD);
+            } else {
+                request.setAttribute(AttributeName.SING_IN_LOGIN_OR_PASSWORD_INVALID, true);
                 router.setPage(PagesPath.ENTRY_SIGN_IN);
             }
         } catch (ServiceException e) {

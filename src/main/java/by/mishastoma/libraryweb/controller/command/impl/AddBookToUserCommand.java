@@ -34,10 +34,9 @@ public class AddBookToUserCommand implements Command {
             return new Router(PagesPath.BLOCKED_USER);
         }
         long bookId = Long.parseLong(request.getParameter(ParameterName.BOOK_ID));
-        if(!numberOfBooksUserHasWithinALimit(userId)){
+        if (!numberOfBooksUserHasWithinALimit(userId)) {
             request.setAttribute(AttributeName.GOT_BOOK_FAILED, true);
-        }
-        else if (userHasEnoughBalance(userId)) {
+        } else if (userHasEnoughBalance(userId)) {
             BookService bookService = BookServiceImpl.getInstance();
             try {
                 if (!bookService.addBookToUser(userId, bookId)) {

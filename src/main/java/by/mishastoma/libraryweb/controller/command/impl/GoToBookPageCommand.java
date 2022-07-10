@@ -23,11 +23,10 @@ public class GoToBookPageCommand implements Command {
         try {
             long id = Long.parseLong(request.getParameter(ParameterName.BOOK_ID));
             Optional<Book> optionalBook = service.getBookById(id);
-            if(optionalBook.isPresent()){
-                request.setAttribute(ParameterName.BOOK, optionalBook.get()); //todo replace EVERYWHERE with response
+            if (optionalBook.isPresent()) {
+                request.setAttribute(ParameterName.BOOK, optionalBook.get());
                 return new Router(PagesPath.BOOK);
-            }
-            else{
+            } else {
                 return new Router(PagesPath.NOT_FOUND);
             }
         } catch (ServiceException e) {

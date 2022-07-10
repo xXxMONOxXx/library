@@ -25,17 +25,15 @@ public class AddGenreCommand implements Command {
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         Router router = new Router(PagesPath.LIBRARIAN_ADD_GENRE);
         GenreService service = GenreServiceImpl.getInstance();
-        try{
+        try {
             Optional<Genre> genre = service.addGenre(request.getParameter(ParameterName.GENRE_NAME));
-            if(genre.isPresent()){
+            if (genre.isPresent()) {
                 request.setAttribute(AttributeName.ADD_GENRE_SUCCESS, true);
                 logger.info("Added new genre.");
-            }
-            else{
+            } else {
                 request.setAttribute(AttributeName.ADD_GENRE_INVALID_NAME, true);
             }
-        }
-        catch (ServiceException e){
+        } catch (ServiceException e) {
             throw new CommandException(e);
         }
         return router;

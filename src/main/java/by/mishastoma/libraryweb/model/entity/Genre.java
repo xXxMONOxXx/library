@@ -1,6 +1,6 @@
 package by.mishastoma.libraryweb.model.entity;
 
-public class Genre extends AbstractEntity{
+public class Genre extends AbstractEntity {
     private String name;
 
     public Genre(long id, String genre) {

@@ -18,7 +18,8 @@ public class Controller extends HttpServlet {
 
     private static final Logger logger = LogManager.getLogger();
 
-    public void init(){
+    @Override
+    public void init() {
         ConnectionPool.getInstance();
     }
 
@@ -32,11 +33,11 @@ public class Controller extends HttpServlet {
         processRequest(request, response);
     }
 
-    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Command command = CommandType.define(request.getParameter(ParameterName.COMMAND));
         try {
             Router router = command.execute(request, response);
-            switch (router.getType()){
+            switch (router.getType()) {
                 case FORWARD -> request.getRequestDispatcher(router.getPage()).forward(request, response);
                 case REDIRECT -> response.sendRedirect(router.getPage());
                 default -> throw new ServletException("Non existing command.");
@@ -47,7 +48,8 @@ public class Controller extends HttpServlet {
         }
     }
 
-    public void destroy(){
+    @Override
+    public void destroy() {
         ConnectionPool.getInstance().destroyPool();
     }
 }

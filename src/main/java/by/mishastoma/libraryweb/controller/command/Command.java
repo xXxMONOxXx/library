@@ -10,10 +10,12 @@ import java.util.Set;
 @FunctionalInterface
 public interface Command {
     Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException;
-    default void refresh(){}
 
-    default void addInvalidsToRequest(HttpServletRequest request, Set<String> invalids){
-        for(String invalid : invalids){
+    default void refresh() {
+    }
+
+    default void addInvalidsToRequest(HttpServletRequest request, Set<String> invalids) {
+        for (String invalid : invalids) {
             request.setAttribute(invalid, true);
         }
     }

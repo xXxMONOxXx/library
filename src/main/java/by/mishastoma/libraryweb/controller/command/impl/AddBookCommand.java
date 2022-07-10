@@ -1,7 +1,6 @@
 package by.mishastoma.libraryweb.controller.command.impl;
 
 import by.mishastoma.libraryweb.controller.AttributeName;
-import by.mishastoma.libraryweb.controller.PagesPath;
 import by.mishastoma.libraryweb.controller.ParameterName;
 import by.mishastoma.libraryweb.controller.Router;
 import by.mishastoma.libraryweb.controller.command.Command;
@@ -32,8 +31,7 @@ public class AddBookCommand implements Command {
             Optional<Book> optionalBook = bookService.addBook(createBookMap(request), invalids);
             if (optionalBook.isEmpty()) {
                 addInvalidsToRequest(request, invalids);
-            }
-            else{
+            } else {
                 request.setAttribute(AttributeName.ADD_BOOK_SUCCESS, true);
                 logger.info("Created new book.");
             }
@@ -54,7 +52,7 @@ public class AddBookCommand implements Command {
         bookMap.put(ParameterName.BOOK_INFO, request.getParameter(ParameterName.BOOK_INFO));
         try {
             Part coverPhoto = request.getPart(ParameterName.BOOK_COVER_PHOTO);
-            if(coverPhoto != null) {
+            if (coverPhoto != null) {
                 bookMap.put(ParameterName.BOOK_COVER_PHOTO, coverPhoto);
             }
         } catch (IOException | ServletException e) {

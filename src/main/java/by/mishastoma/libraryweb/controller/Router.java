@@ -8,7 +8,7 @@ public class Router {
         FORWARD, REDIRECT
     }
 
-    public Router(){
+    public Router() {
         this.type = Type.FORWARD;
     }
 
@@ -33,7 +33,7 @@ public class Router {
         this.type = type;
     }
 
-    public Type getType(){
+    public Type getType() {
         return this.type;
     }
 }

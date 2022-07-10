@@ -13,14 +13,14 @@ public class AuthorMapper implements CustomRowMapper<Author> {
 
     private static AuthorMapper instance;
 
-    public static AuthorMapper getInstance(){
-        if(instance==null){
+    public static AuthorMapper getInstance() {
+        if (instance == null) {
             instance = new AuthorMapper();
         }
         return instance;
     }
 
-    private AuthorMapper(){
+    private AuthorMapper() {
 
     }
 
@@ -28,15 +28,14 @@ public class AuthorMapper implements CustomRowMapper<Author> {
     public Optional<Author> map(ResultSet resultSet) throws DaoException {
         Author author;
         Optional<Author> optionalAuthor;
-        try{
+        try {
             String firstname = resultSet.getString(TableColumn.FIRST_NAME);
             String lastname = resultSet.getString(TableColumn.LAST_NAME);
             String biography = resultSet.getString(TableColumn.BIO);
             long id = resultSet.getLong(TableColumn.ID);
-            author = new Author(id, firstname,lastname ,biography);
+            author = new Author(id, firstname, lastname, biography);
             optionalAuthor = Optional.of(author);
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DaoException(e);
         }
         return optionalAuthor;

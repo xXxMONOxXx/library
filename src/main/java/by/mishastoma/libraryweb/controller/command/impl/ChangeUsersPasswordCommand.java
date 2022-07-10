@@ -39,8 +39,7 @@ public class ChangeUsersPasswordCommand implements Command {
                     throw new CommandException(e);
                 }
             }
-        }
-        else{
+        } else {
             request.setAttribute(AttributeName.UPDATE_PASSWORD_FAILED, true);
         }
         return new GetUserInfoByIdCommand().execute(request, response);

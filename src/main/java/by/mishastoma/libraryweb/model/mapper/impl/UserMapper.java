@@ -15,14 +15,14 @@ public class UserMapper implements CustomRowMapper<User> {
 
     private static UserMapper instance;
 
-    public static UserMapper getInstance(){
-        if(instance==null){
+    public static UserMapper getInstance() {
+        if (instance == null) {
             instance = new UserMapper();
         }
         return instance;
     }
 
-    private UserMapper(){
+    private UserMapper() {
 
     }
 
@@ -30,7 +30,7 @@ public class UserMapper implements CustomRowMapper<User> {
     public Optional<User> map(ResultSet resultSet) throws DaoException {
         User user;
         Optional<User> optionalUser;
-        try{
+        try {
             LocalDate birthdate = LocalDate.parse(resultSet.getString(TableColumn.BIRTHDATE));
             user = new User.Builder(resultSet.getLong(TableColumn.ID)).
                     withLogin(resultSet.getString(TableColumn.LOGIN)).
@@ -44,8 +44,7 @@ public class UserMapper implements CustomRowMapper<User> {
                     withBalance(resultSet.getInt(TableColumn.BALANCE)).
                     build();
             optionalUser = Optional.of(user);
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DaoException(e);
         }
         return optionalUser;

@@ -3,6 +3,7 @@
 
 <%@include file="/pages/parts/header.jsp" %>
 
+<!DOCTYPE html>
 <html>
 <head>
     <title><fmt:message key="book.add_book"/></title>
@@ -10,7 +11,7 @@
 <body>
 
 <c:if test="${requestScope.added_book_successfully}">
-    <p class="text-success"> <fmt:message key="librarian.book.added_successfully"/></p>
+    <p class="text-success"><fmt:message key="librarian.book.added_successfully"/></p>
 </c:if>
 
 <form action="${pageContext.request.contextPath}/controller" method="post" enctype="multipart/form-data">
@@ -19,7 +20,7 @@
 
     <div class="row mb-4">
         <c:if test="${requestScope.invalid_book_name}">
-            <p class="text-danger"> <fmt:message key="librarian.add_book.invalid_book_name"/></p>
+            <p class="text-danger"><fmt:message key="librarian.add_book.invalid_book_name"/></p>
         </c:if>
         <div class="col">
             <div class="form-outline">
@@ -28,7 +29,7 @@
             </div>
         </div>
         <c:if test="${requestScope.invalid_release_date}">
-            <p class="text-danger"> <fmt:message key="librarian.add_book.invalid_release_date"/></p>
+            <p class="text-danger"><fmt:message key="librarian.add_book.invalid_release_date"/></p>
         </c:if>
         <div class="col">
             <div class="form-outline">
@@ -41,7 +42,7 @@
 
     <div class="row mb-4">
         <c:if test="${requestScope.invalid_book_genres}">
-            <p class="text-danger"> <fmt:message key="librarian.add_book.invalid_book_genres"/></p>
+            <p class="text-danger"><fmt:message key="librarian.add_book.invalid_book_genres"/></p>
         </c:if>
         <div class="col">
             <div class="form-outline">
@@ -54,7 +55,7 @@
             </div>
         </div>
         <c:if test="${requestScope.invalid_book_authors}">
-            <p class="text-danger"> <fmt:message key="librarian.add_book.invalid_book_authors"/></p>
+            <p class="text-danger"><fmt:message key="librarian.add_book.invalid_book_authors"/></p>
         </c:if>
         <div class="col">
             <div class="form-outline">
@@ -71,7 +72,7 @@
 
     <div class="row mb-4">
         <c:if test="${requestScope.invalid_age_limitationa}">
-            <p class="text-danger"> <fmt:message key="librarian.add_book.invalid_book_age_limitations"/></p>
+            <p class="text-danger"><fmt:message key="librarian.add_book.invalid_book_age_limitations"/></p>
         </c:if>
         <div class="col">
             <div class="form-outline">
@@ -81,7 +82,7 @@
             </div>
         </div>
         <c:if test="${requestScope.invalid_book_quantity}">
-            <p class="text-danger"> <fmt:message key="librarian.add_book.invalid_book_book_quantity"/></p>
+            <p class="text-danger"><fmt:message key="librarian.add_book.invalid_book_book_quantity"/></p>
         </c:if>
         <div class="col">
             <div class="form-outline">
@@ -93,7 +94,7 @@
     </div>
 
     <c:if test="${requestScope.invalid_book_info}">
-        <p class="text-danger"> <fmt:message key="librarian.add_book.invalid_book_info"/></p>
+        <p class="text-danger"><fmt:message key="librarian.add_book.invalid_book_info"/></p>
     </c:if>
     <div class="form-outline mb-4">
         <label for="book_info"><fmt:message key="book.info"/></label>
@@ -101,7 +102,7 @@
     </div>
 
     <c:if test="${requestScope.invalid_book_cover_photo}">
-        <p class="text-danger"> <fmt:message key="librarian.add_book.invalid_book_cover_photo"/></p>
+        <p class="text-danger"><fmt:message key="librarian.add_book.invalid_book_cover_photo"/></p>
     </c:if>
     <div class="form-outline mb-4">
         <label for="cover_photo"><fmt:message key="book.cover_photo"/></label>

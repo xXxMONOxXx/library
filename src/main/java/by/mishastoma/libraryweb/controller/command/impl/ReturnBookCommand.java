@@ -24,11 +24,10 @@ public class ReturnBookCommand implements Command {
         request.setAttribute(AttributeName.USER_ID, userId);
         BookService bookService = BookServiceImpl.getInstance();
         try {
-            if(bookService.freeBookFromUser(userId, bookId)){
+            if (bookService.freeBookFromUser(userId, bookId)) {
                 request.setAttribute(AttributeName.RETURNED_BOOK_SUCCESS, true);
                 logger.info("User - {}, have returned book - {}.", userId, bookId);
-            }
-            else{
+            } else {
                 request.setAttribute(AttributeName.RETURN_BOOK_FAILED, true);
             }
         } catch (ServiceException e) {

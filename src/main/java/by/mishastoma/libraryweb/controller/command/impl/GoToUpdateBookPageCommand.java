@@ -24,13 +24,12 @@ public class GoToUpdateBookPageCommand implements Command {
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         long bookId = Long.parseLong(request.getParameter(ParameterName.BOOK_ID));
         BookService bookService = BookServiceImpl.getInstance();
-        try{
+        try {
             Optional<Book> optionalBook = bookService.getBookById(bookId);
-            if(optionalBook.isEmpty()){
+            if (optionalBook.isEmpty()) {
                 request.setAttribute(AttributeName.FAILED_TO_GET_BOOK, true);
                 return new GoToAllBooksPageCommand().execute(request, response);
-            }
-            else{
+            } else {
                 AuthorService authorService = AuthorServiceImpl.getInstance();
                 GenreService genreService = GenreServiceImpl.getInstance();
                 request.setAttribute(AttributeName.AUTHORS_LIST, authorService.getAll());
