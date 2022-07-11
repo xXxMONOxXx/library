@@ -136,11 +136,9 @@ public class BookDaoImpl implements BookDao {
             if (statement.executeUpdate() == 0) {
                 return false;
             }
-            //todo use this in others DAOS to !!!
             ResultSet results = statement.getGeneratedKeys();
             results.next();
             long bookId = results.getLong(1);
-            //
             book.setId(bookId);
             setBookRelations(book);
         } catch (SQLException e) {

@@ -15,8 +15,8 @@ public final class PagesPath {
     public static final String LIBRARIAN_ADD_GENRE = "pages/librarian/add_genre.jsp";
     public static final String LIBRARIAN_ADD_AUTHOR = "pages/librarian/add_author.jsp";
     public static final String USER_PROFILE = "pages/user/profile.jsp";
-    public static final String LIBRARIAN_GENRES = "pages/librarian/genres.jsp";
-    public static final String LIBRARIAN_AUTHORS = "pages/librarian/authors.jsp";
+    public static final String LIBRARIAN_GENRES = "pages/home/genres.jsp";
+    public static final String LIBRARIAN_AUTHORS = "pages/home/authors.jsp";
     public static final String BOOK = "pages/home/book.jsp";
     public static final String NOT_FOUND = "pages/error/404.jsp";
     public static final String AUTHOR = "pages/home/author.jsp";
