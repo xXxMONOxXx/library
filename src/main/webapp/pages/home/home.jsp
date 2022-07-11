@@ -27,6 +27,10 @@
     <p class="text-danger"><fmt:message key="librarian.failed_to_get_book"/></p>
 </c:if>
 
+<c:if test="${books_list.size() == 0}">
+    <p class="text"><fmt:message key="books.search_found_nothing"/></p>
+</c:if>
+
 <table class="table">
     <thead>
     <tr>

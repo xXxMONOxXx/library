@@ -43,7 +43,7 @@
 <h1><fmt:message key="book.info"/></h1>
 <h2>${book.getInfo()}</h2>
 
-<c:if test="${book.getAgeLimitation() != null}">
+<c:if test="${book.getAgeLimitation() != null && book.getAgeLimitation() != 0}">
     <h1><fmt:message key="book.age_limitations"/></h1>
     <h2>${book.getAgeLimitation()}</h2>
 </c:if>

@@ -80,7 +80,7 @@
             <div class="form-outline">
                 <label for="age_limitation"><fmt:message key="book.age_limitations"/></label>
                 <input class="form-control" type="number" id="age_limitation" name="age_limitations"
-                       min="3" max="24" value="${book.getAgeLimitation()}">
+                       min="0" max="24" value="${book.getAgeLimitation()}">
             </div>
         </div>
         <c:if test="${requestScope.invalid_book_quantity}">

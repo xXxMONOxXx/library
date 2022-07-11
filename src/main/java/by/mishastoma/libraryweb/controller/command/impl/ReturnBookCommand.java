@@ -25,10 +25,9 @@ public class ReturnBookCommand implements Command {
         long userId = Long.parseLong(request.getParameter(ParameterName.USER_ID));
         long bookId = Long.parseLong(request.getParameter(ParameterName.BOOK_ID));
         HttpSession session = request.getSession();
-        String userIdStr = (String) session.getAttribute(AttributeName.USER_ID);
+        long userIdEntering = (long) session.getAttribute(AttributeName.USER_ID);
         String role = (String) session.getAttribute(AttributeName.ROLE);
-        if (!request.getParameter(ParameterName.USER_ID).equals(userIdStr) &&
-                !role.equals(UserRole.ADMIN.toString())) {
+        if (userIdEntering != userId && !role.equals(UserRole.ADMIN.toString())) {
             return new Router(PagesPath.PERMISSION_DENIED);
         }
         request.setAttribute(AttributeName.USER_ID, userId);

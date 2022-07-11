@@ -24,11 +24,10 @@ public class AddBalanceToUserCommand implements Command {
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         UserService userService = UserServiceImpl.getInstance();
         HttpSession session = request.getSession();
-        String userIdStr = (String) session.getAttribute(AttributeName.USER_ID);
+        long userIdEntering = (long) session.getAttribute(AttributeName.USER_ID);
         String role = (String) session.getAttribute(AttributeName.ROLE);
         long userId = Long.parseLong(request.getParameter(ParameterName.USER_ID));
-        if (!request.getParameter(ParameterName.USER_ID).equals(userIdStr) &&
-                !role.equals(UserRole.ADMIN.toString())) {
+        if (userIdEntering != userId && !role.equals(UserRole.ADMIN.toString())) {
             return new Router(PagesPath.PERMISSION_DENIED);
         }
         try {

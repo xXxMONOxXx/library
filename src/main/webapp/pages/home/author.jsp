@@ -16,7 +16,7 @@
     </a>
 </c:if>
 
-<c:if test="${author.getBiography() != null}">
+<c:if test="${author.getBiography() != null && author.getBiography().length() != 0}">
     <h1><fmt:message key="author.bio"/></h1>
     <h2>${author.getBiography()}</h2>
 </c:if>

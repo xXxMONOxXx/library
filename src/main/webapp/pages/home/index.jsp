@@ -14,6 +14,8 @@
     <p class="text-danger"><fmt:message key="invalid_locale"/></p>
 </c:if>
 
+<h1><fmt:message key="index.welcome"/></h1>
+<h2><fmt:message key="index.info"/></h2>
 
 <br/>
 <br/>
