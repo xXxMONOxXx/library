@@ -1,5 +1,5 @@
 # Epam project - Library
-The customer has the ability to get book from list of books for a price. Also customer can return book. Every 24 hours money debited from every client. Customer can search through all books via name. Librarian manages books and everything that connected to that. Admin can manage everything: books, users.
+The customer has the ability to get book from list of books for a price. Also customer can return book. Every 24 hours money debited from every client. Customer can search through all books via name. Librarian manages books and everything that connected to that. Admin can manage everything: books, users. In this project were used JSP, MySQL, Mokito, TestNG, log4j.
 ### Guest can:
   - view books
   - view authors
